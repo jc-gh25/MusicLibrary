@@ -1,6 +1,6 @@
 # 🎵 Music Library API
 
-A comprehensive RESTful API for managing a music library built with **Spring Boot 3.5.7** and **MySQL**. This production-ready application provides full CRUD operations for artists, albums, and genres, with advanced features including pagination, relationship queries, comprehensive testing, and deployment to Railway.
+A comprehensive RESTful API for managing a music library built with **Spring Boot 3.5.7** and **MySQL**. This production-ready application provides full CRUD operations for artists, albums, and genres, with advanced features including pagination, search functionality, album cover images, comprehensive testing, and a rich library of 50 artists and over 100 albums.
 
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.7-brightgreen.svg)](https://spring.io/projects/spring-boot)
 [![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://www.oracle.com/java/)
@@ -20,9 +20,11 @@ A comprehensive RESTful API for managing a music library built with **Spring Boo
 - [DTOs (Data Transfer Objects)](#-dtos-data-transfer-objects)
 - [Project Structure](#️-project-structure)
 - [Configuration](#-configuration)
+- [Database Migrations](#-database-migrations)
 - [Testing](#-testing)
 - [Deployment](#-deployment)
 - [Error Handling](#-error-handling)
+- [Contributing](#-contributing)
 
 ---
 
@@ -44,8 +46,17 @@ The Music Library API is a portfolio-quality Spring Boot application that demons
 ✅ Automatic timestamp tracking (createdAt, updatedAt)  
 ✅ OpenAPI 3.0 specification with interactive Swagger UI  
 ✅ Comprehensive test suite (unit, integration, repository tests)  
-✅ Production deployment on Railway  
+✅ Rich music library with 50 artists and 100+ albums  
+✅ Album cover image support  
 ✅ Environment-based configuration  
+
+### Tools & Technologies
+
+**Postman**  
+Comprehensive collection with 150+ API requests for testing all endpoints and populating the database with realistic music data. Includes organized folders for Artists, Albums, Genres, and relationship queries.
+
+**Node.js Scripts**  
+Custom data processing scripts for downloading album cover images from the iTunes API and preparing JSON data for database population.
 
 ---
 
@@ -61,6 +72,7 @@ The Music Library API is a portfolio-quality Spring Boot application that demons
 - **H2**: In-memory database (testing)
 - **Spring Data JPA**: Data access abstraction
 - **Hibernate**: ORM implementation
+- **Flyway**: Database migration management
 
 ### API & Documentation
 - **Spring Web**: RESTful API framework
@@ -98,6 +110,7 @@ The Music Library API is a portfolio-quality Spring Boot application that demons
 - **Lazy Loading**: Optimized database queries with lazy fetching
 - **Cascade Operations**: Automatic relationship management
 - **Environment Configuration**: YAML-based config with environment variables
+- **Database Migrations**: Version-controlled schema with Flyway
 - **Comprehensive Testing**: Unit, integration, and repository tests
 - **Code Coverage**: JaCoCo reports for test coverage metrics
 
@@ -119,8 +132,8 @@ Before running this application, ensure you have:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/jc-gh25/MusicLibrary.git
-cd MusicLibrary
+git clone <repository-url>
+cd Week16/music-library
 ```
 
 ### 2. Database Setup
@@ -204,7 +217,7 @@ chmod +x populate-music-library.sh
 ./populate-music-library.sh
 ```
 
-Or import the Postman collection located at: `src/test/resources/Music-Library-Sample-Data.postman_collection.json`
+Or import the Postman collection: `Music-Library-Sample-Data.postman_collection.json`
 
 ---
 
@@ -212,12 +225,10 @@ Or import the Postman collection located at: `src/test/resources/Music-Library-S
 
 Once the application is running, access the interactive API documentation:
 
-- **Swagger UI (Local)**: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
-- **Swagger UI (Deployed)**: [https://javabc.up.railway.app/swagger-ui.html](https://javabc.up.railway.app/swagger-ui.html)
+- **Swagger UI**: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 - **OpenAPI JSON**: [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
 - **OpenAPI YAML**: [http://localhost:8080/v3/api-docs.yaml](http://localhost:8080/v3/api-docs.yaml)
-- **API Info (Local)**: [http://localhost:8080/api](http://localhost:8080/api)
-- **API Info (Deployed)**: [https://javabc.up.railway.app/api](https://javabc.up.railway.app/api)
+- **API Info**: [http://localhost:8080/api](http://localhost:8080/api)
 
 The Swagger UI provides:
 - Interactive endpoint testing
@@ -509,8 +520,7 @@ music-library/
 ├── README.md                                   # This file
 ├── populate-music-library.bat                  # Windows data loader
 ├── populate-music-library.sh                   # Unix data loader
-└── src/test/resources/
-    └── Music-Library-Sample-Data.postman_collection.json
+└── Music-Library-Sample-Data.postman_collection.json
 ```
 
 ### Package Structure
@@ -568,7 +578,7 @@ spring:
       path: /swagger-ui.html
       cors-enabled: true
       servers:
-        - url: https://javabc.up.railway.app
+        - url: https://suanne-speedless-chrissy.ngrok-free.dev
 
 # Prevent Spring from executing plain .sql scripts
 sql:
@@ -604,6 +614,62 @@ spring:
   flyway:
     enabled: false
 ```
+
+---
+
+## 🗄️ Database Migrations
+
+The application uses **Flyway** for version-controlled database schema management.
+
+### Migration Scripts
+
+Migration scripts are located in `src/main/resources/db/migration/`:
+
+- **`V1__create_initial_schema.sql`** - Creates tables for Artist, Album, Genre, and join tables
+- **`V2__add_sample_data.sql`** - Populates database with sample data (optional)
+
+### Migration Naming Convention
+
+Flyway follows a strict naming convention:
+
+```
+V{version}__{description}.sql
+```
+
+Examples:
+- `V1__create_initial_schema.sql`
+- `V2__add_sample_data.sql`
+- `V3__add_catalog_number_column.sql`
+
+### Running Migrations
+
+Migrations run automatically on application startup when Flyway is enabled:
+
+```yaml
+spring:
+  flyway:
+    enabled: true
+```
+
+To manually run migrations:
+
+```bash
+mvn flyway:migrate
+```
+
+To view migration status:
+
+```bash
+mvn flyway:info
+```
+
+### Migration Best Practices
+
+1. **Never modify existing migrations** - Create new migrations instead
+2. **Test migrations locally** before deploying
+3. **Use transactions** for data migrations
+4. **Keep migrations small** and focused
+5. **Document complex migrations** with comments
 
 ---
 
@@ -769,71 +835,60 @@ The Maven Surefire plugin automatically activates the test profile:
 
 ## 🚀 Deployment
 
-The application is deployed to **Railway** with MySQL database.
+The application runs locally with MySQL database and can be accessed via **ngrok** for external testing.
 
-### Railway Deployment
+### ngrok Deployment
 
-**Live Application**: [https://javabc.up.railway.app/index.html](https://javabc.up.railway.app/index.html)
-**Live API Base URL**: [https://javabc.up.railway.app/api](https://javabc.up.railway.app/api)
-**Live Swagger UI**: [https://javabc.up.railway.app/swagger-ui.html](https://javabc.up.railway.app/swagger-ui.html)
+**Live API**: [https://suanne-speedless-chrissy.ngrok-free.dev](https://suanne-speedless-chrissy.ngrok-free.dev)
 
 #### Prerequisites
 
-1. Railway account ([Sign up](https://railway.app/))
-2. Railway CLI installed (optional)
-3. GitHub repository connected to Railway
+1. Java 17 or higher installed
+2. MySQL 8.0+ running locally
+3. ngrok account ([Sign up](https://ngrok.com/))
+4. ngrok installed locally
 
 #### Deployment Steps
 
-1. **Create Railway Project**
-   - Connect GitHub repository
-   - Railway auto-detects Spring Boot application
+1. **Start the Application**
+   - Ensure MySQL is running
+   - Set environment variables for database connection
+   - Run the Spring Boot application: `mvn spring-boot:run`
 
-2. **Add MySQL Database**
-   - Add MySQL plugin from Railway marketplace
-   - Railway automatically sets environment variables:
-     - `MYSQL_HOST`
-     - `MYSQL_PORT`
-     - `MYSQL_DATABASE`
-     - `MYSQL_USER`
-     - `MYSQL_PASSWORD`
+2. **Start ngrok Tunnel**
+   - Open a terminal and run: `ngrok http 8080`
+   - ngrok will provide a public URL (e.g., https://suanne-speedless-chrissy.ngrok-free.dev)
+   - This URL forwards to your local application
 
-3. **Configure Environment Variables**
-   - Railway sets `PORT` automatically
-   - Add any custom variables in Railway dashboard
+3. **Access the API**
+   - Use the ngrok URL to access your API from anywhere
+   - Swagger UI: `https://suanne-speedless-chrissy.ngrok-free.dev/swagger-ui.html`
+   - API endpoints: `https://suanne-speedless-chrissy.ngrok-free.dev/api`
 
-4. **Deploy**
-   - Push to GitHub main branch
-   - Railway automatically builds and deploys
-   - Flyway migrations run on startup
+#### Configuration
 
-#### Railway Configuration
-
-The application is configured for Railway deployment:
+The application is configured with environment variables:
 
 ```yaml
 server:
-  port: ${PORT:8080}  # Railway provides PORT variable
+  port: ${PORT:8080}  # Default port 8080
 
 spring:
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?useSSL=true&requireSSL=true
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?useSSL=false
 ```
 
-#### Monitoring
+#### Benefits of ngrok
 
-Railway provides:
-- Real-time logs
-- Metrics dashboard
-- Deployment history
-- Database backups
+ngrok provides:
+- Secure tunneling to localhost
+- Public URL for testing and sharing
+- Request inspection and replay
+- No deployment or hosting costs
 
-#### Custom Domain (Optional)
+#### Note
 
-Configure custom domain in Railway dashboard:
-1. Go to Settings → Domains
-2. Add custom domain
-3. Update DNS records
+The ngrok URL changes each time you restart ngrok (unless using a paid plan with reserved domains). Update the URL in your documentation and clients accordingly.
 
 ---
 
@@ -894,6 +949,65 @@ Input validation errors return detailed field-level errors:
 
 ---
 
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these guidelines:
+
+### Development Workflow
+
+1. **Fork the repository**
+   ```bash
+   git clone https://github.com/yourusername/music-library.git
+   cd music-library
+   ```
+
+2. **Create a feature branch**
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
+
+3. **Make your changes**
+   - Follow existing code style
+   - Add tests for new features
+   - Update documentation
+
+4. **Run tests**
+   ```bash
+   mvn test
+   mvn verify  # Includes coverage report
+   ```
+
+5. **Commit your changes**
+   ```bash
+   git commit -m 'Add amazing feature'
+   ```
+
+6. **Push to your fork**
+   ```bash
+   git push origin feature/amazing-feature
+   ```
+
+7. **Open a Pull Request**
+   - Describe your changes
+   - Reference any related issues
+   - Ensure CI/CD passes
+
+### Code Style
+
+- Follow Java naming conventions
+- Use Lombok annotations to reduce boilerplate
+- Add JavaDoc comments for public methods
+- Keep methods small and focused
+- Use meaningful variable names
+
+### Testing Requirements
+
+- All new features must include tests
+- Maintain or improve code coverage
+- Tests must pass before merging
+
+---
+
 ## 📝 License
 
 This project is part of a Java/MySQL backend development bootcamp (Week 16) and is for **educational purposes**.
@@ -904,9 +1018,10 @@ This project is part of a Java/MySQL backend development bootcamp (Week 16) and 
 
 For questions, issues, or feedback:
 
-1. **Check the API documentation**: [Swagger UI](https://javabc.up.railway.app/swagger-ui.html)
+1. **Check the API documentation**: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 2. **Review test examples**: See `src/test/java/music/library/`
-3. **Check Postman collection**: `src/test/resources/Music-Library-Sample-Data.postman_collection.json`
+3. **Check Postman collection**: `Music-Library-Sample-Data.postman_collection.json`
+4. **Open an issue**: [GitHub Issues](https://github.com/yourusername/music-library/issues)
 
 ---
 
@@ -917,11 +1032,11 @@ This project demonstrates proficiency in:
 ✅ **Spring Boot 3.x** - Modern Spring framework features  
 ✅ **RESTful API Design** - Standard HTTP methods and status codes  
 ✅ **JPA/Hibernate** - Entity relationships and lazy loading  
-✅ **Database Migrations** - Flyway version control  
 ✅ **Testing** - Unit, integration, and repository tests  
 ✅ **API Documentation** - OpenAPI/Swagger specification  
-✅ **Deployment** - Production deployment to Railway  
+✅ **Deployment** - Local development with ngrok tunneling  
 ✅ **Error Handling** - Global exception handling  
+✅ **Rich Content** - 50 artists and 100+ albums with cover images  
 ✅ **Input Validation** - Bean Validation (JSR-380)  
 ✅ **DTO Pattern** - Separation of concerns  
 ✅ **Environment Configuration** - YAML with environment variables  
@@ -931,8 +1046,8 @@ This project demonstrates proficiency in:
 ## 🙏 Acknowledgments
 
 - **Spring Boot Team** - Excellent framework and documentation
-- **Quickstart** - Backend development bootcamp
-- **Railway** - Simple and powerful deployment platform
+- **Promineo Tech** - Backend development bootcamp
+- **ngrok** - Secure tunneling for local development
 
 ---
 

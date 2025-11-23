@@ -8,7 +8,6 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -41,12 +40,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-// @EqualsAndHashCode   // Keep Lombok's generation
+@EqualsAndHashCode(onlyExplicitlyIncluded = true) //Collections should never participate in equals()/hashCode()
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Album {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@EqualsAndHashCode.Include
 	private Long albumId;
 
 	@Column(nullable = false, length = 255)
@@ -93,37 +93,19 @@ public class Album {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "artist_id", nullable = false)
 	@NotNull(message = "Artist must be supplied")
-	@EqualsAndHashCode.Exclude
 	private Artist artist;
 
 	/* Owner side of the many-to-many with Genre via join table */
-	@ManyToMany(cascade = { CascadeType.MERGE }, // Use MERGE only to avoid detached entity issues
-			// PERSIST removed to prevent trying to persist already-persisted Genre entities
-			fetch = FetchType.LAZY)
-	@JoinTable(name = "album_genre", joinColumns = @JoinColumn(name = "album_id"), inverseJoinColumns = @JoinColumn(name = "genre_id"))
-	@EqualsAndHashCode.Exclude // Exclude collection - Collections should never participate in
-								// equals()/hashCode()
-	// for JPA entities – they are mutable proxies and cause "no-row-inserted"
-	// errors.
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "album_genre", 
+	    joinColumns = @JoinColumn(name = "album_id"), 
+	    inverseJoinColumns = @JoinColumn(name = "genre_id"))
 	@Builder.Default
 	private Set<Genre> genres = new HashSet<>();
 
-	// Setter for genres - manages bidirectional relationship properly
+	// Setter for genres
 	public void setGenres(Set<Genre> genres) {
-		// Clear existing relationships
-		if (this.genres != null) {
-			this.genres.forEach(g -> g.getAlbums().remove(this));
-		}
-
-		// Set new genres
-		this.genres = genres == null ? new HashSet<>() : genres;
-
-		// Establish bidirectional relationship
-		this.genres.forEach(g -> {
-			if (!g.getAlbums().contains(this)) {
-				g.getAlbums().add(this);
-			}
-		});
+		this.genres = genres;
 	}
 
 	@PrePersist
