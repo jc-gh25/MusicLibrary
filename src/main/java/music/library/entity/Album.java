@@ -49,7 +49,7 @@ public class Album {
 	@EqualsAndHashCode.Include
 	private Long albumId;
 
-	@Column(nullable = false, length = 255)
+	@Column(nullable = false, length = 255, unique = true)
 	@NotBlank(message = "Album title must not be blank")
 	@Size(max = 255, message = "Album title must be ≤ 255 characters")
 	private String title;
@@ -102,11 +102,6 @@ public class Album {
 	    inverseJoinColumns = @JoinColumn(name = "genre_id"))
 	@Builder.Default
 	private Set<Genre> genres = new HashSet<>();
-
-	// Setter for genres
-	public void setGenres(Set<Genre> genres) {
-		this.genres = genres;
-	}
 
 	@PrePersist
 	void onCreate() {
