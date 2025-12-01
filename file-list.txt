@@ -1,295 +1,430 @@
-# ============================================================================
-# MUSIC LIBRARY API - PROJECT FILE STRUCTURE
-# ============================================================================
-# Java Spring Boot Music Library API deployed on AWS ECS Fargate
-# with Route 53 DNS configuration and MySQL database backend
-# Last Updated: 2025-11-30
-# ============================================================================
+Week16/music-library Project Directory Structure
+=====================================================
+Generated: 2024
 
-# ROOT DIRECTORY - Configuration & Documentation Files
-# ============================================================================
-.classpath
-.factorypath
-.gitignore
-.project
-pom.xml
-README.md
-README-SAMPLE-DATA.md
-file-list.txt
+Root Directory (music-library/)
+├── .gitignore
+├── buildspec.yml
+├── docker-compose.yaml
+├── Dockerfile
+├── Dockerfile.namesilo
+├── file-list.txt
+├── fixed_deploy.zip
+├── pom.xml
+├── README.md
+├── startup.sh
+├── update-namesilo-dns.sh
 
-# DOCKER & DEPLOYMENT FILES
-# ============================================================================
-# Container configuration and orchestration
-Dockerfile
-  - Multi-stage build: Maven build stage + Alpine runtime stage
-  - Includes AWS CLI and jq for Route 53 DNS updates
-  - Route 53 update script: /update-route53.sh
-  - Startup script: /startup.sh
-  - Hosted Zone ID: Z08164103KW73VKOVN6GY
-  - Domain: project.jcarl.net
-  - TTL: 300 seconds
-  - Automatic DNS update on container startup
+Source Code (src/)
+├── main/
+│   ├── java/music/library/
+│   │   ├── MusicLibraryApplication.java
+│   │   │
+│   │   ├── config/
+│   │   │   ├── CorsConfig.java
+│   │   │   ├── PageConfig.java
+│   │   │   └── SwaggerConfig.java
+│   │   │
+│   │   ├── controller/
+│   │   │   ├── MusicLibraryController.java
+│   │   │   └── SwaggerRedirectController.java
+│   │   │
+│   │   ├── dto/
+│   │   │   ├── ApiInfoResponse.java
+│   │   │   ├── CreateAlbumRequest.java
+│   │   │   ├── CreateArtistRequest.java
+│   │   │   ├── CreateGenreRequest.java
+│   │   │   ├── DatabaseResetResponse.java
+│   │   │   ├── UpdateAlbumRequest.java
+│   │   │   ├── UpdateArtistRequest.java
+│   │   │   └── UpdateGenreRequest.java
+│   │   │
+│   │   ├── entity/
+│   │   │   ├── Album.java
+│   │   │   ├── Artist.java
+│   │   │   └── Genre.java
+│   │   │
+│   │   ├── exception/
+│   │   │   ├── ApiError.java
+│   │   │   ├── DuplicateResourceException.java
+│   │   │   ├── GlobalExceptionHandler.java
+│   │   │   └── ResourceNotFoundException.java
+│   │   │
+│   │   ├── repository/
+│   │   │   ├── AlbumRepository.java
+│   │   │   ├── ArtistRepository.java
+│   │   │   └── GenreRepository.java
+│   │   │
+│   │   ├── service/
+│   │   │   ├── AlbumService.java
+│   │   │   ├── ArtistService.java
+│   │   │   ├── DatabaseResetService.java
+│   │   │   └── GenreService.java
+│   │   │
+│   │   └── specification/
+│   │       └── AlbumSpecs.java
+│   │
+│   └── resources/
+│       ├── application-aws.properties
+│       ├── application.properties
+│       ├── application.yaml
+│       │
+│       ├── db/migration/
+│       │   ├── V1__Create_Schema.sql
+│       │   └── V2__Seed_Data.sql
+│       │
+│       └── static/
+│           ├── favicon.ico
+│           ├── index.html
+│           ├── library.html
+│           │
+│           └── covers/ (170+ album cover images)
+│               ├── above-beyond-group-therapy.jpg
+│               ├── above-beyond-tri-state.jpg
+│               ├── above-beyond-we-are-all-we-need.jpg
+│               ├── acdc-back-in-black.jpg
+│               ├── andrea-bocelli-amore.jpg
+│               ├── andrea-bocelli-con-te-partir-.jpg
+│               ├── andrea-bocelli-passione.jpg
+│               ├── andrea-bocelli-romanza.jpg
+│               ├── andrea-bocelli-sacred-arias.jpg
+│               ├── andrea-bocelli-si.jpg
+│               ├── andrea-bocelli-sogno.jpg
+│               ├── armin-van-buuren-76.jpg
+│               ├── armin-van-buuren-balance.jpg
+│               ├── armin-van-buuren-imaginary-landscape.jpg
+│               ├── armin-van-buuren-imagine.jpg
+│               ├── armin-van-buuren-intense.jpg
+│               ├── armin-van-buuren-mirage.jpg
+│               ├── b-b-king-completely-well.jpg
+│               ├── b-b-king-king-of-the-blues.jpg
+│               ├── b-b-king-live-at-the-regal.jpg
+│               ├── b-b-king-lucille.jpg
+│               ├── bon-iver-bon-iver-bon-iver.jpg
+│               ├── bon-iver-for-emma-forever-ago.jpg
+│               ├── boston-boston.jpg
+│               ├── boston-dont-look-back.jpg
+│               ├── carl-cox-all-night-long.jpg
+│               ├── carl-cox-all-roads-lead-to-the-dance-floor.jpg
+│               ├── carl-cox-the-ultimate-house-party.jpg
+│               ├── carl_cox_fact.jpg
+│               ├── chicane-behind-the-sun.jpg
+│               ├── chicane-far-from-the-maddening-crowds.jpg
+│               ├── clint-black-killin-time.jpg
+│               ├── clint-black-put-yourself-in-my-shoes.jpg
+│               ├── creedence-clearwater-revival-cosmos-factory.jpg
+│               ├── creedence-clearwater-revival-green-river.jpg
+│               ├── crosby-stills-and-nash-deja-vu.jpg
+│               ├── crosby-stills-nash-crosby-stills-nash.jpg
+│               ├── crosby-stills-nash-deja-vu.jpg
+│               ├── crosby_stills_nash_deja_vu.jpg
+│               ├── daft-punk-discovery.jpg
+│               ├── daft-punk-homework.jpg
+│               ├── daft-punk-random-access-memories.jpg
+│               ├── deep-purple-burn.jpg
+│               ├── deep-purple-in-rock.jpg
+│               ├── deep-purple-machine-head.jpg
+│               ├── delbert-mcclinton-im-with-you.jpg
+│               ├── delbert-mcclinton-live-from-austin.jpg
+│               ├── delbert-mcclinton-room-to-breathe.jpg
+│               ├── delbert-mcclinton-the-jealous-kind.jpg
+│               ├── depeche-mode-music-for-the-masses.jpg
+│               ├── depeche-mode-songs-of-faith-and-devotion.jpg
+│               ├── depeche-mode-violator.jpg
+│               ├── emma-hewitt-burn-the-sky-down.jpg
+│               ├── epmd-back-to-da-lab.jpg
+│               ├── epmd-business-as-usual.jpg
+│               ├── epmd-strictly-business.jpg
+│               ├── epmd-unfinished-business.jpg
+│               ├── epmd-we-re-in-the-house.jpg
+│               ├── eric-clapton-461-ocean-boulevard.jpg
+│               ├── eric-clapton-from-the-cradle.jpg
+│               ├── eric-clapton-slowhand.jpg
+│               ├── eric-clapton-unplugged.jpg
+│               ├── fleet-foxes-fleet-foxes.jpg
+│               ├── fleet-foxes-helplessness-blues.jpg
+│               ├── fleetwood-mac-fleetwood-mac.jpg
+│               ├── fleetwood-mac-rumours.jpg
+│               ├── fleetwood-mac-tusk.jpg
+│               ├── foreigner-4.jpg
+│               ├── foreigner-agent-provocateur.jpg
+│               ├── foreigner-double-vision.jpg
+│               ├── foreigner-foreigner.jpg
+│               ├── foreigner-head-games.jpg
+│               ├── garth-brooks-garth-brooks.jpg
+│               ├── garth-brooks-no-fences.jpg
+│               ├── garth-brooks-ropin-the-wind.jpg
+│               ├── garth_brooks_ropin_the_wind.jpg
+│               ├── grandmaster-flash-the-furious-five-the-message.jpg
+│               ├── grandmaster-flash-the-message.jpg
+│               ├── il-divo-ancora.jpg
+│               ├── il-divo-il-divo.jpg
+│               ├── il-divo-siempre.jpg
+│               ├── il-divo-the-promise.jpg
+│               ├── jackie-evancho-awakened.jpg
+│               ├── jackie-evancho-dream-with-me.jpg
+│               ├── jackie-evancho-heavenly-christmas.jpg
+│               ├── jackie-evancho-two-worlds.jpg
+│               ├── james-taylor-gorilla.jpg
+│               ├── james-taylor-greatest-hits.jpg
+│               ├── james-taylor-sweet-baby-james.jpg
+│               ├── jimi-hendrix-are-you-experienced-.jpg
+│               ├── jimi-hendrix-are-you-experienced.jpg
+│               ├── jimi-hendrix-axis-bold-as-love.jpg
+│               ├── jimi-hendrix-band-of-gypsys.jpg
+│               ├── jimi-hendrix-electric-ladyland.jpg
+│               ├── josh-groban-awake.jpg
+│               ├── josh-groban-closer.jpg
+│               ├── josh-groban-illuminations.jpg
+│               ├── josh-groban-josh-groban.jpg
+│               ├── journey-escape.jpg
+│               ├── journey-frontiers.jpg
+│               ├── journey-infinity.jpg
+│               ├── journey-raised-on-radio.jpg
+│               ├── katherine-jenkins-believe.jpg
+│               ├── katherine-jenkins-daydreamer.jpg
+│               ├── katherine-jenkins-living-a-dream.jpg
+│               ├── katherine-jenkins-premiere.jpg
+│               ├── katherine-jenkins-second-nature.jpg
+│               ├── katherine_jenkins_second_nature.jpg
+│               ├── led-zeppelin-houses-of-the-holy.jpg
+│               ├── led-zeppelin-led-zeppelin-iv.jpg
+│               ├── led-zeppelin-physical-graffiti.jpg
+│               ├── max-richter-infra.jpg
+│               ├── max-richter-memoryhouse.jpg
+│               ├── max-richter-sleep.jpg
+│               ├── max-richter-the-blue-notebooks.jpg
+│               ├── miles-davis-kind-of-blue.jpg
+│               ├── miles-davis-sketches-of-spain.jpg
+│               ├── muddy-waters-after-the-rain.jpg
+│               ├── muddy-waters-electric-mud.jpg
+│               ├── muddy-waters-folk-singer.jpg
+│               ├── muddy-waters-hard-again.jpg
+│               ├── nirvana-in-utero.jpg
+│               ├── nirvana-mtv-unplugged-in-new-york.jpg
+│               ├── nirvana-nevermind.jpg
+│               ├── oceanlab-sirens-of-the-sea.jpg
+│               ├── peter-gabriel-so.jpg
+│               ├── peter-gabriel-us.jpg
+│               ├── peter_gabriel_us.jpg
+│               ├── philip-glass-einstein-on-the-beach.jpg
+│               ├── philip-glass-glassworks.jpg
+│               ├── philip-glass-koyaanisqatsi.jpg
+│               ├── philip-glass-low-symphony.jpg
+│               ├── philip-glass-metamorphosis.jpg
+│               ├── pink-floyd-animals.jpg
+│               ├── pink-floyd-the-dark-side-of-the-moon.jpg
+│               ├── pink-floyd-the-wall.jpg
+│               ├── pink-floyd-wish-you-were-here.jpg
+│               ├── pink_floyd_animals.jpg
+│               ├── pink_floyd_the_dark_side_of_the_moon.jpg
+│               ├── radiohead-in-rainbows.jpg
+│               ├── radiohead-kid-a.jpg
+│               ├── radiohead-ok-computer.jpg
+│               ├── randy-travis-always-and-forever.jpg
+│               ├── randy-travis-old-8x10.jpg
+│               ├── randy-travis-storms-of-life.jpg
+│               ├── run-dmc-raising-hell.jpg
+│               ├── run-dmc-run-dmc.jpg
+│               ├── run-dmc-tougher-than-leather.jpg
+│               ├── simon-garfunkel-bookends.jpg
+│               ├── simon-garfunkel-bridge-over-troubled-water.jpg
+│               ├── simon-garfunkel-parsley-sage-rosemary-and-thyme.jpg
+│               ├── simon-garfunkel-sounds-of-silence.jpg
+│               ├── steve-wariner-i-am-ready.jpg
+│               ├── steve-wariner-i-should-be-with-you.jpg
+│               ├── steve-wariner-life-s-highway.jpg
+│               ├── sufjan-stevens-carrie-and-lowell.jpg
+│               ├── sufjan-stevens-illinois.jpg
+│               ├── sufjan-stevens-michigan.jpg
+│               ├── the-dillards-back-porch-bluegrass.jpg
+│               ├── the-dillards-wheatstraw-suite.jpg
+│               ├── the-doors-l-a-woman.jpg
+│               ├── the-doors-la-woman.jpg
+│               ├── the-doors-the-doors.jpg
+│               ├── the-eagles-desperado.jpg
+│               ├── the-eagles-hotel-california.jpg
+│               ├── the-eagles-on-the-border.jpg
+│               ├── the-eagles-the-long-run.jpg
+│               ├── the-eagles-their-greatest-hits-1971-1975.jpg
+│               ├── tritonal-metamorphic-i.jpg
+│               └── tritonal-piercing-the-quiet.jpg
+│
+└── test/
+    ├── java/music/library/
+    │   ├── integration/
+    │   │   ├── AlbumControllerIT.java
+    │   │   ├── AlbumControllerUpdateDeleteIT.java
+    │   │   ├── ArtistControllerIT.java
+    │   │   ├── GenreControllerIT.java
+    │   │   └── RestResponsePage.java
+    │   │
+    │   ├── repository/
+    │   │   └── AlbumRepositoryTest.java
+    │   │
+    │   └── service/
+    │       ├── AlbumServiceBidirectionalTest.java
+    │       ├── AlbumServiceTest.java
+    │       └── ArtistServiceTest.java
+    │
+    └── resources/
+        ├── application-repository-test.yml
+        ├── application-test.yml
+        ├── seed.json
+        ├── test_seed.json
+        │
+        ├── docs/
+        │   ├── README-SAMPLE-DATA.md
+        │   ├── TEST_QUICK_REFERENCE.md
+        │   └── TEST_SUITE_ASSESSMENT.md
+        │
+        ├── postman/
+        │   └── Music Library - AWS Deployment.postman_collection.json
+        │
+        └── scripts/
+            ├── populate-music-library-2.sh
+            ├── populate-music-library.bat
+            ├── populate-music-library.ps1
+            └── populate-music-library.sh
 
-docker-compose.yaml
-  - MySQL 8.0 service configuration
-  - Spring Boot application service
-  - Health checks and volume management
-  - Environment variables for database connection
+Build Output (target/)
+├── music-library-0.0.1-SNAPSHOT.jar
+├── music-library-0.0.1-SNAPSHOT.jar.original
+│
+├── classes/
+│   ├── application-aws.properties
+│   ├── application.properties
+│   ├── application.yaml
+│   │
+│   ├── db/migration/
+│   │   ├── V1__Create_Schema.sql
+│   │   └── V2__Seed_Data.sql
+│   │
+│   ├── music/library/
+│   │   ├── MusicLibraryApplication.class
+│   │   │
+│   │   ├── config/
+│   │   │   ├── CorsConfig.class
+│   │   │   ├── PageConfig.class
+│   │   │   └── SwaggerConfig.class
+│   │   │
+│   │   ├── controller/
+│   │   │   ├── MusicLibraryController.class
+│   │   │   └── SwaggerRedirectController.class
+│   │   │
+│   │   ├── dto/
+│   │   │   ├── ApiInfoResponse$Endpoint.class
+│   │   │   ├── ApiInfoResponse$EndpointCategory.class
+│   │   │   ├── ApiInfoResponse.class
+│   │   │   ├── CreateAlbumRequest.class
+│   │   │   ├── CreateArtistRequest.class
+│   │   │   ├── CreateGenreRequest.class
+│   │   │   ├── DatabaseResetResponse.class
+│   │   │   ├── UpdateAlbumRequest.class
+│   │   │   ├── UpdateArtistRequest.class
+│   │   │   └── UpdateGenreRequest.class
+│   │   │
+│   │   ├── entity/
+│   │   │   ├── Album$AlbumBuilder.class
+│   │   │   ├── Album.class
+│   │   │   ├── Artist$ArtistBuilder.class
+│   │   │   ├── Artist.class
+│   │   │   ├── Genre$GenreBuilder.class
+│   │   │   └── Genre.class
+│   │   │
+│   │   ├── exception/
+│   │   │   ├── ApiError$ApiErrorBuilder.class
+│   │   │   ├── ApiError.class
+│   │   │   ├── DuplicateResourceException.class
+│   │   │   ├── GlobalExceptionHandler.class
+│   │   │   └── ResourceNotFoundException.class
+│   │   │
+│   │   ├── repository/
+│   │   │   ├── AlbumRepository.class
+│   │   │   ├── ArtistRepository.class
+│   │   │   └── GenreRepository.class
+│   │   │
+│   │   ├── service/
+│   │   │   ├── AlbumService.class
+│   │   │   ├── ArtistService.class
+│   │   │   ├── DatabaseResetService.class
+│   │   │   └── GenreService.class
+│   │   │
+│   │   └── specification/
+│   │       └── AlbumSpecs.class
+│   │
+│   └── static/
+│       ├── favicon.ico
+│       ├── index.html
+│       ├── library.html
+│       │
+│       └── covers/ (170+ compiled album cover images)
+│           └── [Same album covers as src/main/resources/static/covers/]
+│
+├── test-classes/
+│   ├── application-repository-test.yml
+│   ├── application-test.yml
+│   ├── seed.json
+│   ├── test_seed.json
+│   ├── populate-music-library-2.sh
+│   ├── populate-music-library.bat
+│   ├── populate-music-library.ps1
+│   ├── populate-music-library.sh
+│   ├── TEST_COVERAGE_MAP.md
+│   ├── TEST_ENHANCEMENT_GUIDE.md
+│   ├── TEST_QUICK_REFERENCE.md
+│   ├── TEST_README_TEST_REVIEW.md
+│   ├── TEST_REVIEW_SUMMARY.md
+│   └── TEST_SUITE_ASSESSMENT.md
+│   │
+│   └── music/library/
+│       ├── integration/
+│       │   ├── AlbumControllerIT$1.class
+│       │   ├── AlbumControllerIT.class
+│       │   ├── AlbumControllerUpdateDeleteIT.class
+│       │   ├── ArtistControllerIT$1.class
+│       │   ├── ArtistControllerIT.class
+│       │   ├── GenreControllerIT$1.class
+│       │   ├── GenreControllerIT.class
+│       │   └── RestResponsePage.class
+│       │
+│       ├── repository/
+│       │   └── AlbumRepositoryTest.class
+│       │
+│       └── service/
+│           ├── AlbumServiceBidirectionalTest.class
+│           ├── AlbumServiceTest.class
+│           └── ArtistServiceTest.class
+│
+├── generated-sources/
+│   └── annotations/
+│
+├── generated-test-sources/
+│   └── annotations/
+│
+├── maven-archiver/
+│   └── pom.properties
+│
+└── maven-status/
+    └── maven-compiler-plugin/
+        ├── compile/
+        │   └── default-compile/
+        │       ├── createdFiles.lst
+        │       └── inputFiles.lst
+        │
+        └── testCompile/
+            └── default-testCompile/
+                ├── createdFiles.lst
+                └── inputFiles.lst
 
-# POSTMAN COLLECTION FILES
-# ============================================================================
-# API testing and documentation collections
-collection_current.json
-Music_Library_With_Images.json
-PostmanImport1123a.json
-
-# SOURCE CODE - MAIN APPLICATION
-# ============================================================================
-
-# Application Entry Point
-src/main/java/music/library/MusicLibraryApplication.java
-
-# Configuration Classes
-src/main/java/music/library/config/
-  CorsConfig.java - CORS configuration for cross-origin requests
-  PageConfig.java - Pagination configuration
-  SwaggerConfig.java - Swagger/OpenAPI documentation configuration
-
-# Controllers
-src/main/java/music/library/controller/
-  MusicLibraryController.java - Main REST API endpoints
-  SwaggerRedirectController.java - Swagger UI redirect handler
-  error/ - Error handling controllers
-  model/ - Controller model classes
-
-# Data Transfer Objects (DTOs)
-src/main/java/music/library/dto/
-  ApiInfoResponse.java - API information response
-  CreateAlbumRequest.java - Album creation request
-  CreateArtistRequest.java - Artist creation request
-  CreateGenreRequest.java - Genre creation request
-  DatabaseResetResponse.java - Database reset response
-  UpdateAlbumRequest.java - Album update request
-  UpdateArtistRequest.java - Artist update request
-  UpdateGenreRequest.java - Genre update request
-
-# Entity Classes (JPA/Hibernate)
-src/main/java/music/library/entity/
-  Album.java - Album entity with relationships
-  Artist.java - Artist entity with relationships
-  Genre.java - Genre entity with relationships
-
-# Exception Handling
-src/main/java/music/library/exception/
-  ApiError.java - API error response model
-  GlobalExceptionHandler.java - Global exception handler
-  ResourceNotFoundException.java - Resource not found exception
-
-# Repository Layer (Data Access)
-src/main/java/music/library/repository/
-  AlbumRepository.java - Album data access
-  ArtistRepository.java - Artist data access
-  GenreRepository.java - Genre data access
-
-# Service Layer (Business Logic)
-src/main/java/music/library/service/
-  AlbumService.java - Album business logic
-  ArtistService.java - Artist business logic
-  DatabaseResetService.java - Database reset functionality
-  GenreService.java - Genre business logic
-
-# Specifications (JPA Criteria API)
-src/main/java/music/library/specification/
-  AlbumSpecs.java - Album search specifications
-
-# RESOURCES - CONFIGURATION & STATIC FILES
-# ============================================================================
-
-# Application Configuration
-src/main/resources/application.properties
-src/main/resources/application.yaml
-  - Server port configuration (default: 8080)
-  - MySQL database connection settings
-  - JPA/Hibernate configuration
-  - Swagger/Springdoc configuration
-  - SQL initialization mode
-
-# Database Migration Scripts (Flyway)
-src/main/resources/db/migration/
-  V1__Create_Schema.sql - Initial schema creation
-  V1__Initial_Schema.sql.sql - Alternative schema file
-  V1_1__add_catalog_number_unique.sql - Add unique catalog number constraint
-  V1_2__add_cover_image_url.sql - Add cover image URL column
-  V2__Seed_Data.sql - Initial data seeding
-
-# Static Web Files
-src/main/resources/static/
-  index.html - Landing page with API documentation
-  library.html - Music library web interface
-  favicon.ico - Website favicon
-
-# Album Cover Images
-src/main/resources/static/covers/
-  [Multiple album cover images in JPG format]
-  - 3-create-bayou-country.jpg
-  - 3-create-pendulum.jpg
-  - above-beyond-group-therapy.jpg
-  - above-beyond-tri-state.jpg
-  - andrea-bocelli-amore.jpg
-  - andrea-bocelli-con-te-partir-.jpg
-  - andrea-bocelli-passione.jpg
-  - andrea-bocelli-si.jpg
-  - armin-van-buuren-balance.jpg
-  - armin-van-buuren-imaginary-landscape.jpg
-  - armin-van-buuren-mirage.jpg
-  - b-b-king-king-of-the-blues.jpg
-  - b-b-king-live-at-the-regal.jpg
-  - bon-iver-for-emma-forever-ago.jpg
-  - boston-boston.jpg
-  - carl-cox-all-night-long.jpg
-  - carl-cox-the-ultimate-house-party.jpg
-  - chicane-behind-the-sun.jpg
-  - chicane-far-from-the-maddening-crowds.jpg
-  - clint-black-killin-time.jpg
-  - clint-black-put-yourself-in-my-shoes.jpg
-  - crosby-stills-nash-crosby-stills-nash.jpg
-  - deep-purple-burn.jpg
-  - deep-purple-in-rock.jpg
-  - deep-purple-machine-head.jpg
-  - delbert-mcclinton-room-to-breathe.jpg
-  - delbert-mcclinton-the-jealous-kind.jpg
-  - depeche-mode-music-for-the-masses.jpg
-  - depeche-mode-songs-of-faith-and-devotion.jpg
-  - depeche-mode-violator.jpg
-  - epmd-back-to-da-lab.jpg
-  - epmd-business-as-usual.jpg
-  - epmd-strictly-business.jpg
-  - epmd-we-re-in-the-house.jpg
-  - eric-clapton-from-the-cradle.jpg
-  - eric-clapton-slowhand.jpg
-  - eric-clapton-unplugged.jpg
-  - fleet-foxes-fleet-foxes.jpg
-  - fleetwood-mac-fleetwood-mac.jpg
-  - fleetwood-mac-rumours.jpg
-  - foreigner-4.jpg
-  - foreigner-agent-provocateur.jpg
-  - foreigner-double-vision.jpg
-  - foreigner-head-games.jpg
-  - garth-brooks-no-fences.jpg
-  - garth-brooks-ropin-the-wind.jpg
-  - grandmaster-flash-the-furious-five-the-message.jpg
-  - il-divo-ancora.jpg
-  - il-divo-the-promise.jpg
-  - jackie-evancho-awakened.jpg
-  - jackie-evancho-two-worlds.jpg
-  - james-taylor-greatest-hits.jpg
-  - james-taylor-gorilla.jpg
-  - jimi-hendrix-are-you-experienced.jpg
-  - jimi-hendrix-axis-bold-as-love.jpg
-  - jimi-hendrix-electric-ladyland.jpg
-  - journey-escape.jpg
-  - journey-frontiers.jpg
-  - katherine-jenkins-heavenly-christmas.jpg
-  - katherine-jenkins-living-a-dream.jpg
-  - katherine-jenkins-premiere.jpg
-  - led-zeppelin-houses-of-the-holy.jpg
-  - led-zeppelin-iv.jpg
-  - led-zeppelin-physical-graffiti.jpg
-  - max-richter-koyaanisqatsi.jpg
-  - max-richter-memoryhouse.jpg
-  - max-richter-sleep.jpg
-  - miles-davis-kind-of-blue.jpg
-  - miles-davis-sketches-of-spain.jpg
-  - muddy-waters-completely-well.jpg
-  - muddy-waters-electric-mud.jpg
-  - muddy-waters-folk-singer.jpg
-  - nirvana-in-utero.jpg
-  - nirvana-nevermind.jpg
-  - oceanlab-sirens-of-the-sea.jpg
-  - peter-gabriel-so.jpg
-  - peter-gabriel-us.jpg
-  - philip-glass-einstein-on-the-beach.jpg
-  - philip-glass-glassworks.jpg
-  - pink-floyd-animals.jpg
-  - pink-floyd-the-dark-side-of-the-moon.jpg
-  - pink-floyd-the-wall.jpg
-  - pink-floyd-wish-you-were-here.jpg
-  - radiohead-in-rainbows.jpg
-  - radiohead-kid-a.jpg
-  - radiohead-ok-computer.jpg
-  - randy-travis-killin-time.jpg
-  - randy-travis-storms-of-life.jpg
-  - run-dmc-raising-hell.jpg
-  - run-dmc-run-dmc.jpg
-  - simon-garfunkel-bookends.jpg
-  - simon-garfunkel-bridge-over-troubled-water.jpg
-  - simon-garfunkel-parsley-sage-rosemary-and-thyme.jpg
-  - steve-wariner-i-should-be-with-you.jpg
-  - steve-wariner-second-nature.jpg
-  - sufjan-stevens-carrie-lowell.jpg
-  - sufjan-stevens-illinois.jpg
-  - sufjan-stevens-michigan.jpg
-  - the-dillards-back-porch-bluegrass.jpg
-  - the-dillards-wheatstraw-suite.jpg
-  - the-doors-l-a-woman.jpg
-  - the-doors-the-doors.jpg
-  - the-eagles-hotel-california.jpg
-  - the-eagles-their-greatest-hits-1971-1975.jpg
-  - the-eagles-the-long-run.jpg
-  - tritonal-piercing-the-quiet.jpg
-  - tritonal-tri-state.jpg
-
-# New Covers Directory (for future cover images)
-src/main/resources/static/new_covers/
-
-# TEST FILES
-# ============================================================================
-# Unit and integration tests
-src/test/java/music/library/
-  [Test classes for service, controller, and repository layers]
-
-src/test/resources/
-  [Test configuration and data files]
-
-# BUILD & DEPLOYMENT ARTIFACTS
-# ============================================================================
-target/
-  [Maven build output directory]
-  - Compiled classes
-  - JAR files
-  - Build reports
-
-# ============================================================================
-# PROJECT SUMMARY
-# ============================================================================
-#
-# Technology Stack:
-#   - Java 17
-#   - Spring Boot 3.5.7
-#   - Spring Data JPA / Hibernate
-#   - MySQL 8.0
-#   - Flyway (Database migrations)
-#   - Swagger/OpenAPI (API documentation)
-#   - Docker & Docker Compose
-#   - AWS ECS Fargate (Container orchestration)
-#   - AWS Route 53 (DNS management)
-#
-# Key Features:
-#   - RESTful API for music library management
-#   - Album, Artist, and Genre management
-#   - Database reset functionality
-#   - CORS support for cross-origin requests
-#   - Swagger UI for API documentation
-#   - Automatic Route 53 DNS updates on container startup
-#   - Pagination support for large datasets
-#   - Comprehensive error handling
-#   - Web UI for browsing music library
-#
-# Deployment:
-#   - Containerized with Docker
-#   - Multi-stage build for optimized image size
-#   - AWS ECS Fargate deployment
-#   - Route 53 DNS configuration (project.jcarl.net)
-#   - MySQL database on AWS RDS
-#
-# ============================================================================
+=====================================================
+Project Summary:
+- Spring Boot Music Library API application
+- RESTful API with Swagger documentation
+- PostgreSQL database with Flyway migrations
+- Docker containerization support
+- AWS deployment configuration
+- Comprehensive test suite (integration & unit tests)
+- 170+ album cover images
+- Total Files: 500+ (including all resources and compiled classes)
+=====================================================
