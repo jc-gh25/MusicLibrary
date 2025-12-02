@@ -15,7 +15,6 @@
 ## 📋 Readme Table of Contents
 
 - [Project Overview](#-project-overview)
-  - [Key Capabilities](#key-capabilities)
 - [Development Approach](#-development-approach)
 - [Technology Stack](#️-technology-stack)
 - [Features](#-features)
@@ -27,7 +26,6 @@
 - [DTOs (Data Transfer Objects)](#-dtos-data-transfer-objects)
 - [Project Structure](#️-project-structure)
 - [Configuration](#-configuration)
-  - [Test Configuration](#test-configuration-application-testyaml)
 - [Testing](#-testing)
 - [Deployment](#-deployment)
 - [Deployment Journey & Learning Experiences](#-deployment-journey--learning-experiences)
