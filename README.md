@@ -1,12 +1,18 @@
 # 🎵 Music Library API
 
-A comprehensive RESTful API for managing a music library built with **Spring Boot 3.5.7** and **MySQL**. This Java application provides full CRUD operations for artists, albums, and genres, with advanced features including pagination, search functionality, album cover images, comprehensive testing, and a Postman sample data import with 50 artists and over 100 albums.
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.7-brightgreen.svg)](https://spring.io/projects/spring-boot)
+[![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://www.oracle.com/java/)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0+-blue.svg)](https://www.mysql.com/)
+[![License](https://img.shields.io/badge/License-Educational-yellow.svg)](LICENSE)
+[![Deployment](https://img.shields.io/badge/AWS-ECS%20Fargate-orange)](http://project.jcarl.net)
 
-**Project landing page:** http://project.jcarl.net/index.html
+> 🚀 **Live Production Deployment:**
+> *   **Main Dashboard:** [http://project.jcarl.net](http://project.jcarl.net)
+> *   **Music Browser:** [http://project.jcarl.net/library.html](http://project.jcarl.net/library.html)
+> *   **API Swagger Docs:** [http://project.jcarl.net/swagger-ui.html](http://project.jcarl.net/swagger-ui.html)
 
-**Project web view with album covers:** http://project.jcarl.net/library.html
 
-## 📋 Table of Contents
+## 📋 Readme Table of Contents
 
 - [Project Overview](#-project-overview)
   - [Key Capabilities](#key-capabilities)
@@ -32,11 +38,6 @@ A comprehensive RESTful API for managing a music library built with **Spring Boo
 ---
 
 ## 🎵 Project Overview
-
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.7-brightgreen.svg)](https://spring.io/projects/spring-boot)
-[![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://www.oracle.com/java/)
-[![MySQL](https://img.shields.io/badge/MySQL-8.0+-blue.svg)](https://www.mysql.com/)
-[![License](https://img.shields.io/badge/License-Educational-yellow.svg)](LICENSE)
 
 The Music Library API is a portfolio-quality Spring Boot application that demonstrates modern backend development practices. It provides a complete solution for managing a music catalog with:
 
@@ -1953,7 +1954,7 @@ For questions, issues, or feedback:
 
 1. **Check the API documentation**: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 2. **Review test examples**: See `src/test/java/music/library/`
-3. **Check Postman collection**: `Music-Library-Sample-Data.postman_collection.json`
+3. **Check Postman collection**: `Music Library - AWS Deployment.postman_collection.json`
 
 ---
 
