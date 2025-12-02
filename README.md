@@ -30,8 +30,7 @@
 - [Deployment](#-deployment)
 - [Deployment Journey & Learning Experiences](#-deployment-journey--learning-experiences)
 - [Error Handling](#-error-handling)
-- [Support](#-support)
-- [License](#-license)
+- [Learning Outcomes](#-learning-outcomes)
 
 ---
 
@@ -1942,22 +1941,6 @@ Input validation errors return detailed field-level errors:
 
 ---
 
-## 📝 License
-
-This project is part of a Java/MySQL backend development bootcamp (Week 16) and is for **educational purposes**.
-
----
-
-## ❓ Support
-
-For questions, issues, or feedback:
-
-1. **Check the API documentation**: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
-2. **Review test examples**: See `src/test/java/music/library/`
-3. **Check Postman collection**: `Music Library - AWS Deployment.postman_collection.json`
-
----
-
 ## 🎓 Learning Outcomes
 
 This project demonstrates proficiency in:
@@ -1974,6 +1957,22 @@ This project demonstrates proficiency in:
 ✅ **Input Validation** - Bean Validation (JSR-380)  
 ✅ **DTO Pattern** - Separation of concerns  
 ✅ **Environment Configuration** - YAML with environment variables  
+
+---
+
+## 📝 License
+
+This project is part of a Java/MySQL backend development bootcamp (Week 16) and is for **educational purposes**.
+
+---
+
+## ❓ Support
+
+For questions, issues, or feedback:
+
+1. **Check the API documentation**: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+2. **Review test examples**: See `src/test/java/music/library/`
+3. **Check Postman collection**: `Music Library - AWS Deployment.postman_collection.json`
 
 ---
 
