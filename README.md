@@ -1981,9 +1981,8 @@ For questions, issues, or feedback:
 - **Prashant Hardikar** - Bootcamp Instructor
 - **Michael Goeres** - Bootcamp Mentor
 - **Tammy Ethridge** - Career Services Manager
+- **Tiffany Hudson** - Career Advisor
 - **Quickstart** - Backend development bootcamp | quickstart.com/bootcamp
-- **Spring Boot Team** - Open-source Java framework
-- **ngrok** - Secure tunneling for local development | ngrok.com
 - **Postman** - The World's Leading API Platform | postman.com
 
 ---
