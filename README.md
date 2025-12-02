@@ -59,13 +59,15 @@ The Music Library API is a portfolio-quality Spring Boot application that demons
 ✅ Album cover image support  
 ✅ Environment-based configuration  
 
-### Tools & Technologies
+### Helper Tools
 
-**Postman**  
+**Postman**
 Comprehensive collection with 150+ API requests for testing all endpoints and populating the database with realistic music data. Includes organized folders for Artists, Albums, Genres, and relationship queries.
 
-**Node.js Scripts**  
-Custom data processing scripts for downloading album cover images from the iTunes API and preparing JSON data for database population.
+**Bash Automation Scripts**
+Custom shell scripts developed to streamline development and operations:
+*   **Album Art Downloader:** Automated querying of the iTunes API to fetch, resize, and slugify high-resolution album covers.
+*   **Self-Healing DNS:** The `update-namesilo-dns.sh` script that enables the "Serverless DNS" architecture by managing Namesilo records from within the container.
 
 ---
 
