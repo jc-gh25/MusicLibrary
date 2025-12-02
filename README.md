@@ -3,10 +3,10 @@
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.7-brightgreen.svg)](https://spring.io/projects/spring-boot)
 [![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://www.oracle.com/java/)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0+-blue.svg)](https://www.mysql.com/)
-[![License](https://img.shields.io/badge/License-Educational-yellow.svg)](LICENSE)
 [![Deployment](https://img.shields.io/badge/AWS-ECS%20Fargate-orange)](http://project.jcarl.net)
+[![License](https://img.shields.io/badge/License-Educational-yellow.svg)](LICENSE)
 
-> 🚀 **Live Production Deployment:**
+> **Live Production Deployment:**
 > *   **Main Dashboard:** [http://project.jcarl.net](http://project.jcarl.net)
 > *   **Music Browser:** [http://project.jcarl.net/library.html](http://project.jcarl.net/library.html)
 > *   **API Swagger Docs:** [http://project.jcarl.net/swagger-ui.html](http://project.jcarl.net/swagger-ui.html)
