@@ -1600,7 +1600,7 @@ Input validation errors return detailed field-level errors:
 
 ---
 
-## ⚙️ Deployment Options
+## ⚙ Deployment Options
 
 The Music Library API supports multiple deployment strategies, from local development to production cloud infrastructure.
 
