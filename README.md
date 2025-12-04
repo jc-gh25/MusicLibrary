@@ -37,7 +37,7 @@
 
 ---
 
-## 🎵 Project Overview
+## 🎼 Project Overview
 
 The Music Library API is a portfolio-quality Spring Boot application that demonstrates modern backend development practices. It provides a complete solution for managing a music catalog with:
 
