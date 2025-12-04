@@ -21,6 +21,7 @@
 - [DTOs (Data Transfer Objects)](#-dtos-data-transfer-objects)
 - [Project Structure](#️-project-structure)
 - [Configuration](#-configuration)
+- [Testing](#-testing)
 - [Development Approach](#-development-approach)
 - [Deployment Journey & Learning Experiences](#-deployment-journey--learning-experiences)
 - [DevOps Challenges & Troubleshooting (Quick Reference)](#-devops-challenges--troubleshooting-quick-reference)
@@ -31,8 +32,7 @@
 - [API Documentation](#-api-documentation)
 - [API Endpoints](#-api-endpoints)
 - [Error Handling](#-error-handling)
-- [Testing](#-testing)
-- [Deployment](#-deployment-options)
+- [Deployment Options](#-deployment-options)
 
 
 ---
@@ -988,7 +988,7 @@ aws rds describe-db-instances \
 
 ---
 
-## 🗃️ Deployment Journey & Learning Experiences
+## 🗃 Deployment Journey & Learning Experiences
 
 *For a condensed quick-reference guide, see [DevOps Challenges & Troubleshooting](#-devops-challenges--troubleshooting-quick-reference) at the end of this section.*
 
