@@ -1,3 +1,5 @@
+#Runs the Spring Boot app and triggers DNS updates
+
 #!/bin/bash
 set -e
 

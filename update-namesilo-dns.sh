@@ -1,3 +1,5 @@
+# Updates Namesilo DNS with current ECS Fargate public IP
+
 #!/bin/bash
 set -euo pipefail
 

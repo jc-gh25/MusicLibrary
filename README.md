@@ -367,21 +367,13 @@ music-library/
 ├── target/                                     # Maven build output directory
 ├── pom.xml                                     # Maven configuration
 ├── README.md                                   # This file
-├── README-SAMPLE-DATA.md                       # Sample data documentation
-├── API_WELCOME_ENDPOINT_SUMMARY.md             # API endpoint summary
 ├── Dockerfile                                  # Docker containerization config
 ├── docker-compose.yaml                         # Docker Compose configuration
 ├── buildspec.yml                               # AWS CodeBuild configuration
 ├── startup.sh                                  # Container startup script
 ├── update-namesilo-dns.sh                      # DNS update automation script
-├── collection_current.json                     # Current Postman collection export
-├── Music_Library_With_Images.json              # Postman collection with image data
-├── PostmanImport1123a.json                     # Postman import file
 ├── file-list.txt                               # Complete file listing
 ├── .gitignore                                  # Git ignore rules
-├── .classpath                                  # Eclipse classpath configuration
-├── .project                                    # Eclipse project configuration
-└── .factorypath                                # Eclipse annotation processing
 ```
 
 ### Package Structure
