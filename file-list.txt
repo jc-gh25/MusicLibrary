@@ -4,12 +4,11 @@ Generated: 2025
 
 Root Directory (music-library/)
 ├── .gitignore
+├── .env
 ├── buildspec.yml
 ├── docker-compose.yaml
 ├── Dockerfile
-├── Dockerfile.namesilo
 ├── file-list.txt
-├── fixed_deploy.zip
 ├── pom.xml
 ├── README.md
 ├── startup.sh
