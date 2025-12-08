@@ -996,12 +996,12 @@ This section documents the real-world challenges, solutions, and learning experi
 
 ### Overview
 
-The deployment journey involved multiple iterations, technology pivots, and creative problem-solving to achieve a fully automated, production-ready deployment. The final solution uses **ECS Fargate task revision 11** with **Namesilo DNS API** for automated domain management.
+The deployment journey involved multiple iterations, technology pivots, and creative problem-solving to achieve a fully automated, production-ready deployment. The final solution uses **ECS Fargate task revision 13** with **Namesilo DNS API** for automated domain management.
 
 **Current Deployment Status**:
 - **Domain**: `project.jcarl.net`
-- **Port**: `8080`
-- **ECS Task**: `music-library-task:11`
+- **Port**: `80`
+- **ECS Task**: `music-library-task:13`
 - **DNS Provider**: Namesilo (migrated from Route 53)
 - **Build Environment**: AWS CloudShell (due to Windows LTSB Docker incompatibility)
 
@@ -1381,7 +1381,7 @@ The application uses environment variables for database configuration. Set these
 export MYSQL_HOST=localhost
 export MYSQL_PORT=3306
 export MYSQL_DATABASE=music_library
-export MYSQL_USER=music_user
+export MYSQL_USER=your_username
 export MYSQL_PASSWORD=your_secure_password
 
 # Server Configuration (optional)
@@ -1729,12 +1729,12 @@ aws ecs register-task-definition \
     {
       "name": "music-library",
       "image": "913212790762.dkr.ecr.us-west-2.amazonaws.com/music-library:latest",
-      "portMappings": [{"containerPort": 8080, "protocol": "tcp"}],
+      "portMappings": [{"containerPort": 80, "protocol": "tcp"}],
       "environment": [
         {"name": "MYSQL_HOST", "value": "music-library-db.cv4kawuomqo5.us-west-2.rds.amazonaws.com"},
         {"name": "MYSQL_PORT", "value": "3306"},
         {"name": "MYSQL_DATABASE", "value": "music_library"},
-        {"name": "MYSQL_USER", "value": "admin"},
+        {"name": "MYSQL_USER", "value": "<user>"},
         {"name": "MYSQL_PASSWORD", "value": "<password>"}
       ]
     }
@@ -1765,11 +1765,11 @@ aws ecs create-service \
 ##### ECS Security Group
 
 ```bash
-# Allow HTTP traffic on port 8080
+# Allow HTTP traffic on port 80
 aws ec2 authorize-security-group-ingress \
   --group-id <ecs-security-group-id> \
   --protocol tcp \
-  --port 8080 \
+  --port 80 \
   --cidr 0.0.0.0/0
 
 # Allow outbound to RDS
@@ -1800,9 +1800,9 @@ environment:
   - MYSQL_HOST=music-library-db.cv4kawuomqo5.us-west-2.rds.amazonaws.com
   - MYSQL_PORT=3306
   - MYSQL_DATABASE=music_library
-  - MYSQL_USER=admin
+  - MYSQL_USER=<user>
   - MYSQL_PASSWORD=<secure-password>
-  - PORT=8080
+  - PORT=80
 ```
 
 These variables are referenced in `application.yaml`:
@@ -1814,7 +1814,7 @@ spring:
     username: ${MYSQL_USER}
     password: ${MYSQL_PASSWORD}
 server:
-  port: ${PORT:8080}
+  port: ${PORT:80}
 ```
 
 #### Docker Multi-Stage Build
@@ -1833,7 +1833,7 @@ RUN mvn clean package -DskipTests
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
-EXPOSE 8080
+EXPOSE 80
 ENTRYPOINT ["java", "-jar", "app.jar"]
 ```
 
