@@ -1,0 +1,430 @@
+Week16/music-library Project Directory Structure
+=====================================================
+Generated: 2025
+
+Root Directory (music-library/)
+├── .gitignore
+├── buildspec.yml
+├── docker-compose.yaml
+├── Dockerfile
+├── Dockerfile.namesilo
+├── file-list.txt
+├── fixed_deploy.zip
+├── pom.xml
+├── README.md
+├── startup.sh
+├── update-namesilo-dns.sh
+
+Source Code (src/)
+├── main/
+│   ├── java/music/library/
+│   │   ├── MusicLibraryApplication.java
+│   │   │
+│   │   ├── config/
+│   │   │   ├── CorsConfig.java
+│   │   │   ├── PageConfig.java
+│   │   │   └── SwaggerConfig.java
+│   │   │
+│   │   ├── controller/
+│   │   │   ├── MusicLibraryController.java
+│   │   │   └── SwaggerRedirectController.java
+│   │   │
+│   │   ├── dto/
+│   │   │   ├── ApiInfoResponse.java
+│   │   │   ├── CreateAlbumRequest.java
+│   │   │   ├── CreateArtistRequest.java
+│   │   │   ├── CreateGenreRequest.java
+│   │   │   ├── DatabaseResetResponse.java
+│   │   │   ├── UpdateAlbumRequest.java
+│   │   │   ├── UpdateArtistRequest.java
+│   │   │   └── UpdateGenreRequest.java
+│   │   │
+│   │   ├── entity/
+│   │   │   ├── Album.java
+│   │   │   ├── Artist.java
+│   │   │   └── Genre.java
+│   │   │
+│   │   ├── exception/
+│   │   │   ├── ApiError.java
+│   │   │   ├── DuplicateResourceException.java
+│   │   │   ├── GlobalExceptionHandler.java
+│   │   │   └── ResourceNotFoundException.java
+│   │   │
+│   │   ├── repository/
+│   │   │   ├── AlbumRepository.java
+│   │   │   ├── ArtistRepository.java
+│   │   │   └── GenreRepository.java
+│   │   │
+│   │   ├── service/
+│   │   │   ├── AlbumService.java
+│   │   │   ├── ArtistService.java
+│   │   │   ├── DatabaseResetService.java
+│   │   │   └── GenreService.java
+│   │   │
+│   │   └── specification/
+│   │       └── AlbumSpecs.java
+│   │
+│   └── resources/
+│       ├── application-aws.properties
+│       ├── application.properties
+│       ├── application.yaml
+│       │
+│       ├── db/migration/
+│       │   ├── V1__Create_Schema.sql
+│       │   └── V2__Seed_Data.sql
+│       │
+│       └── static/
+│           ├── favicon.ico
+│           ├── index.html
+│           ├── library.html
+│           │
+│           └── covers/ (170+ album cover images)
+│               ├── above-beyond-group-therapy.jpg
+│               ├── above-beyond-tri-state.jpg
+│               ├── above-beyond-we-are-all-we-need.jpg
+│               ├── acdc-back-in-black.jpg
+│               ├── andrea-bocelli-amore.jpg
+│               ├── andrea-bocelli-con-te-partir-.jpg
+│               ├── andrea-bocelli-passione.jpg
+│               ├── andrea-bocelli-romanza.jpg
+│               ├── andrea-bocelli-sacred-arias.jpg
+│               ├── andrea-bocelli-si.jpg
+│               ├── andrea-bocelli-sogno.jpg
+│               ├── armin-van-buuren-76.jpg
+│               ├── armin-van-buuren-balance.jpg
+│               ├── armin-van-buuren-imaginary-landscape.jpg
+│               ├── armin-van-buuren-imagine.jpg
+│               ├── armin-van-buuren-intense.jpg
+│               ├── armin-van-buuren-mirage.jpg
+│               ├── b-b-king-completely-well.jpg
+│               ├── b-b-king-king-of-the-blues.jpg
+│               ├── b-b-king-live-at-the-regal.jpg
+│               ├── b-b-king-lucille.jpg
+│               ├── bon-iver-bon-iver-bon-iver.jpg
+│               ├── bon-iver-for-emma-forever-ago.jpg
+│               ├── boston-boston.jpg
+│               ├── boston-dont-look-back.jpg
+│               ├── carl-cox-all-night-long.jpg
+│               ├── carl-cox-all-roads-lead-to-the-dance-floor.jpg
+│               ├── carl-cox-the-ultimate-house-party.jpg
+│               ├── carl_cox_fact.jpg
+│               ├── chicane-behind-the-sun.jpg
+│               ├── chicane-far-from-the-maddening-crowds.jpg
+│               ├── clint-black-killin-time.jpg
+│               ├── clint-black-put-yourself-in-my-shoes.jpg
+│               ├── creedence-clearwater-revival-cosmos-factory.jpg
+│               ├── creedence-clearwater-revival-green-river.jpg
+│               ├── crosby-stills-and-nash-deja-vu.jpg
+│               ├── crosby-stills-nash-crosby-stills-nash.jpg
+│               ├── crosby-stills-nash-deja-vu.jpg
+│               ├── crosby_stills_nash_deja_vu.jpg
+│               ├── daft-punk-discovery.jpg
+│               ├── daft-punk-homework.jpg
+│               ├── daft-punk-random-access-memories.jpg
+│               ├── deep-purple-burn.jpg
+│               ├── deep-purple-in-rock.jpg
+│               ├── deep-purple-machine-head.jpg
+│               ├── delbert-mcclinton-im-with-you.jpg
+│               ├── delbert-mcclinton-live-from-austin.jpg
+│               ├── delbert-mcclinton-room-to-breathe.jpg
+│               ├── delbert-mcclinton-the-jealous-kind.jpg
+│               ├── depeche-mode-music-for-the-masses.jpg
+│               ├── depeche-mode-songs-of-faith-and-devotion.jpg
+│               ├── depeche-mode-violator.jpg
+│               ├── emma-hewitt-burn-the-sky-down.jpg
+│               ├── epmd-back-to-da-lab.jpg
+│               ├── epmd-business-as-usual.jpg
+│               ├── epmd-strictly-business.jpg
+│               ├── epmd-unfinished-business.jpg
+│               ├── epmd-we-re-in-the-house.jpg
+│               ├── eric-clapton-461-ocean-boulevard.jpg
+│               ├── eric-clapton-from-the-cradle.jpg
+│               ├── eric-clapton-slowhand.jpg
+│               ├── eric-clapton-unplugged.jpg
+│               ├── fleet-foxes-fleet-foxes.jpg
+│               ├── fleet-foxes-helplessness-blues.jpg
+│               ├── fleetwood-mac-fleetwood-mac.jpg
+│               ├── fleetwood-mac-rumours.jpg
+│               ├── fleetwood-mac-tusk.jpg
+│               ├── foreigner-4.jpg
+│               ├── foreigner-agent-provocateur.jpg
+│               ├── foreigner-double-vision.jpg
+│               ├── foreigner-foreigner.jpg
+│               ├── foreigner-head-games.jpg
+│               ├── garth-brooks-garth-brooks.jpg
+│               ├── garth-brooks-no-fences.jpg
+│               ├── garth-brooks-ropin-the-wind.jpg
+│               ├── garth_brooks_ropin_the_wind.jpg
+│               ├── grandmaster-flash-the-furious-five-the-message.jpg
+│               ├── grandmaster-flash-the-message.jpg
+│               ├── il-divo-ancora.jpg
+│               ├── il-divo-il-divo.jpg
+│               ├── il-divo-siempre.jpg
+│               ├── il-divo-the-promise.jpg
+│               ├── jackie-evancho-awakened.jpg
+│               ├── jackie-evancho-dream-with-me.jpg
+│               ├── jackie-evancho-heavenly-christmas.jpg
+│               ├── jackie-evancho-two-worlds.jpg
+│               ├── james-taylor-gorilla.jpg
+│               ├── james-taylor-greatest-hits.jpg
+│               ├── james-taylor-sweet-baby-james.jpg
+│               ├── jimi-hendrix-are-you-experienced-.jpg
+│               ├── jimi-hendrix-are-you-experienced.jpg
+│               ├── jimi-hendrix-axis-bold-as-love.jpg
+│               ├── jimi-hendrix-band-of-gypsys.jpg
+│               ├── jimi-hendrix-electric-ladyland.jpg
+│               ├── josh-groban-awake.jpg
+│               ├── josh-groban-closer.jpg
+│               ├── josh-groban-illuminations.jpg
+│               ├── josh-groban-josh-groban.jpg
+│               ├── journey-escape.jpg
+│               ├── journey-frontiers.jpg
+│               ├── journey-infinity.jpg
+│               ├── journey-raised-on-radio.jpg
+│               ├── katherine-jenkins-believe.jpg
+│               ├── katherine-jenkins-daydreamer.jpg
+│               ├── katherine-jenkins-living-a-dream.jpg
+│               ├── katherine-jenkins-premiere.jpg
+│               ├── katherine-jenkins-second-nature.jpg
+│               ├── katherine_jenkins_second_nature.jpg
+│               ├── led-zeppelin-houses-of-the-holy.jpg
+│               ├── led-zeppelin-led-zeppelin-iv.jpg
+│               ├── led-zeppelin-physical-graffiti.jpg
+│               ├── max-richter-infra.jpg
+│               ├── max-richter-memoryhouse.jpg
+│               ├── max-richter-sleep.jpg
+│               ├── max-richter-the-blue-notebooks.jpg
+│               ├── miles-davis-kind-of-blue.jpg
+│               ├── miles-davis-sketches-of-spain.jpg
+│               ├── muddy-waters-after-the-rain.jpg
+│               ├── muddy-waters-electric-mud.jpg
+│               ├── muddy-waters-folk-singer.jpg
+│               ├── muddy-waters-hard-again.jpg
+│               ├── nirvana-in-utero.jpg
+│               ├── nirvana-mtv-unplugged-in-new-york.jpg
+│               ├── nirvana-nevermind.jpg
+│               ├── oceanlab-sirens-of-the-sea.jpg
+│               ├── peter-gabriel-so.jpg
+│               ├── peter-gabriel-us.jpg
+│               ├── peter_gabriel_us.jpg
+│               ├── philip-glass-einstein-on-the-beach.jpg
+│               ├── philip-glass-glassworks.jpg
+│               ├── philip-glass-koyaanisqatsi.jpg
+│               ├── philip-glass-low-symphony.jpg
+│               ├── philip-glass-metamorphosis.jpg
+│               ├── pink-floyd-animals.jpg
+│               ├── pink-floyd-the-dark-side-of-the-moon.jpg
+│               ├── pink-floyd-the-wall.jpg
+│               ├── pink-floyd-wish-you-were-here.jpg
+│               ├── pink_floyd_animals.jpg
+│               ├── pink_floyd_the_dark_side_of_the_moon.jpg
+│               ├── radiohead-in-rainbows.jpg
+│               ├── radiohead-kid-a.jpg
+│               ├── radiohead-ok-computer.jpg
+│               ├── randy-travis-always-and-forever.jpg
+│               ├── randy-travis-old-8x10.jpg
+│               ├── randy-travis-storms-of-life.jpg
+│               ├── run-dmc-raising-hell.jpg
+│               ├── run-dmc-run-dmc.jpg
+│               ├── run-dmc-tougher-than-leather.jpg
+│               ├── simon-garfunkel-bookends.jpg
+│               ├── simon-garfunkel-bridge-over-troubled-water.jpg
+│               ├── simon-garfunkel-parsley-sage-rosemary-and-thyme.jpg
+│               ├── simon-garfunkel-sounds-of-silence.jpg
+│               ├── steve-wariner-i-am-ready.jpg
+│               ├── steve-wariner-i-should-be-with-you.jpg
+│               ├── steve-wariner-life-s-highway.jpg
+│               ├── sufjan-stevens-carrie-and-lowell.jpg
+│               ├── sufjan-stevens-illinois.jpg
+│               ├── sufjan-stevens-michigan.jpg
+│               ├── the-dillards-back-porch-bluegrass.jpg
+│               ├── the-dillards-wheatstraw-suite.jpg
+│               ├── the-doors-l-a-woman.jpg
+│               ├── the-doors-la-woman.jpg
+│               ├── the-doors-the-doors.jpg
+│               ├── the-eagles-desperado.jpg
+│               ├── the-eagles-hotel-california.jpg
+│               ├── the-eagles-on-the-border.jpg
+│               ├── the-eagles-the-long-run.jpg
+│               ├── the-eagles-their-greatest-hits-1971-1975.jpg
+│               ├── tritonal-metamorphic-i.jpg
+│               └── tritonal-piercing-the-quiet.jpg
+│
+└── test/
+    ├── java/music/library/
+    │   ├── integration/
+    │   │   ├── AlbumControllerIT.java
+    │   │   ├── AlbumControllerUpdateDeleteIT.java
+    │   │   ├── ArtistControllerIT.java
+    │   │   ├── GenreControllerIT.java
+    │   │   └── RestResponsePage.java
+    │   │
+    │   ├── repository/
+    │   │   └── AlbumRepositoryTest.java
+    │   │
+    │   └── service/
+    │       ├── AlbumServiceBidirectionalTest.java
+    │       ├── AlbumServiceTest.java
+    │       └── ArtistServiceTest.java
+    │
+    └── resources/
+        ├── application-repository-test.yml
+        ├── application-test.yml
+        ├── seed.json
+        ├── test_seed.json
+        │
+        ├── docs/
+        │   ├── README-SAMPLE-DATA.md
+        │   ├── TEST_QUICK_REFERENCE.md
+        │   └── TEST_SUITE_ASSESSMENT.md
+        │
+        ├── postman/
+        │   └── Music Library - AWS Deployment.postman_collection.json
+        │
+        └── scripts/
+            ├── populate-music-library-2.sh
+            ├── populate-music-library.bat
+            ├── populate-music-library.ps1
+            └── populate-music-library.sh
+
+Build Output (target/)
+├── music-library-0.0.1-SNAPSHOT.jar
+├── music-library-0.0.1-SNAPSHOT.jar.original
+│
+├── classes/
+│   ├── application-aws.properties
+│   ├── application.properties
+│   ├── application.yaml
+│   │
+│   ├── db/migration/
+│   │   ├── V1__Create_Schema.sql
+│   │   └── V2__Seed_Data.sql
+│   │
+│   ├── music/library/
+│   │   ├── MusicLibraryApplication.class
+│   │   │
+│   │   ├── config/
+│   │   │   ├── CorsConfig.class
+│   │   │   ├── PageConfig.class
+│   │   │   └── SwaggerConfig.class
+│   │   │
+│   │   ├── controller/
+│   │   │   ├── MusicLibraryController.class
+│   │   │   └── SwaggerRedirectController.class
+│   │   │
+│   │   ├── dto/
+│   │   │   ├── ApiInfoResponse$Endpoint.class
+│   │   │   ├── ApiInfoResponse$EndpointCategory.class
+│   │   │   ├── ApiInfoResponse.class
+│   │   │   ├── CreateAlbumRequest.class
+│   │   │   ├── CreateArtistRequest.class
+│   │   │   ├── CreateGenreRequest.class
+│   │   │   ├── DatabaseResetResponse.class
+│   │   │   ├── UpdateAlbumRequest.class
+│   │   │   ├── UpdateArtistRequest.class
+│   │   │   └── UpdateGenreRequest.class
+│   │   │
+│   │   ├── entity/
+│   │   │   ├── Album$AlbumBuilder.class
+│   │   │   ├── Album.class
+│   │   │   ├── Artist$ArtistBuilder.class
+│   │   │   ├── Artist.class
+│   │   │   ├── Genre$GenreBuilder.class
+│   │   │   └── Genre.class
+│   │   │
+│   │   ├── exception/
+│   │   │   ├── ApiError$ApiErrorBuilder.class
+│   │   │   ├── ApiError.class
+│   │   │   ├── DuplicateResourceException.class
+│   │   │   ├── GlobalExceptionHandler.class
+│   │   │   └── ResourceNotFoundException.class
+│   │   │
+│   │   ├── repository/
+│   │   │   ├── AlbumRepository.class
+│   │   │   ├── ArtistRepository.class
+│   │   │   └── GenreRepository.class
+│   │   │
+│   │   ├── service/
+│   │   │   ├── AlbumService.class
+│   │   │   ├── ArtistService.class
+│   │   │   ├── DatabaseResetService.class
+│   │   │   └── GenreService.class
+│   │   │
+│   │   └── specification/
+│   │       └── AlbumSpecs.class
+│   │
+│   └── static/
+│       ├── favicon.ico
+│       ├── index.html
+│       ├── library.html
+│       │
+│       └── covers/ (170+ compiled album cover images)
+│           └── [Same album covers as src/main/resources/static/covers/]
+│
+├── test-classes/
+│   ├── application-repository-test.yml
+│   ├── application-test.yml
+│   ├── seed.json
+│   ├── test_seed.json
+│   ├── populate-music-library-2.sh
+│   ├── populate-music-library.bat
+│   ├── populate-music-library.ps1
+│   ├── populate-music-library.sh
+│   ├── TEST_COVERAGE_MAP.md
+│   ├── TEST_ENHANCEMENT_GUIDE.md
+│   ├── TEST_QUICK_REFERENCE.md
+│   ├── TEST_README_TEST_REVIEW.md
+│   ├── TEST_REVIEW_SUMMARY.md
+│   └── TEST_SUITE_ASSESSMENT.md
+│   │
+│   └── music/library/
+│       ├── integration/
+│       │   ├── AlbumControllerIT$1.class
+│       │   ├── AlbumControllerIT.class
+│       │   ├── AlbumControllerUpdateDeleteIT.class
+│       │   ├── ArtistControllerIT$1.class
+│       │   ├── ArtistControllerIT.class
+│       │   ├── GenreControllerIT$1.class
+│       │   ├── GenreControllerIT.class
+│       │   └── RestResponsePage.class
+│       │
+│       ├── repository/
+│       │   └── AlbumRepositoryTest.class
+│       │
+│       └── service/
+│           ├── AlbumServiceBidirectionalTest.class
+│           ├── AlbumServiceTest.class
+│           └── ArtistServiceTest.class
+│
+├── generated-sources/
+│   └── annotations/
+│
+├── generated-test-sources/
+│   └── annotations/
+│
+├── maven-archiver/
+│   └── pom.properties
+│
+└── maven-status/
+    └── maven-compiler-plugin/
+        ├── compile/
+        │   └── default-compile/
+        │       ├── createdFiles.lst
+        │       └── inputFiles.lst
+        │
+        └── testCompile/
+            └── default-testCompile/
+                ├── createdFiles.lst
+                └── inputFiles.lst
+
+=====================================================
+Project Summary:
+- Spring Boot Music Library API application
+- RESTful API with Swagger documentation
+- PostgreSQL database with Flyway migrations
+- Docker containerization support
+- AWS deployment configuration
+- Comprehensive test suite (integration & unit tests)
+- 100+ album cover images
+- Total Files: 500+ (including all resources and compiled classes)
+=====================================================

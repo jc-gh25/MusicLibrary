@@ -1,0 +1,41 @@
+# -------------------------------------------------------------
+# Spring Boot Configuration for Music Library API
+# -----------------------------------------------------
+server:
+  port: ${PORT:8080}  # Server port, fallback to 8080 if not specified
+
+spring:
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # Username & password are taken from the separate env vars
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
+
+  # --------------------------------------------------------
+  # JPA / Hibernate Configuration
+  # -------------------------------------------------------
+  jpa:
+    hibernate:
+      ddl-auto: update              # Hibernate manages schema updates
+    show-sql: true                # Print SQL statements (debug)
+
+  # ------------------------------------------------------
+  # Springdoc / Swagger UI
+  # --------------------------------------------------
+  springdoc:
+    api-docs:
+      path: /v3/api-docs
+    swagger-ui:
+      enabled: true
+      path: /swagger-ui.html
+      cors-enabled: true
+      servers:
+        - url: http://project.jcarl.net
+
+# ---------------------------------------------------------
+# Prevent Spring from executing any plain .sql scripts at startup
+# ---------------------------------------------------------
+sql:
+  init:
+    mode: never

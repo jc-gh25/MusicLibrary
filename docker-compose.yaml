@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: music_library
+      MYSQL_USER: music_library
+      MYSQL_PASSWORD: music_library
+      MYSQL_ROOT_PASSWORD: rootpw
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 2s
+      retries: 5
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: music-library:latest
+    container_name: music-library-app
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod,swagger
+      PUBLIC_URL: http://project.jcarl.net
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: music_library
+      MYSQL_USER: music_library
+      MYSQL_PASSWORD: music_library
+      PORT: 80
+    ports:
+      - "80:80"
+
+volumes:
+  mysql-data:
