@@ -5,6 +5,8 @@ server:
   port: ${PORT:8080}  # Server port, fallback to 8080 if not specified
 
 spring:
+  mvc:
+    static-path-pattern: /static/**
   datasource:
     url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?useSSL=false
     driver-class-name: com.mysql.cj.jdbc.Driver
