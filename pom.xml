@@ -32,14 +32,6 @@
 	
 	<dependencies>
 		
-		<!-- provides core Swagger/OpenAPI generation logic (e.g., GroupedOpenApi) 
-		needed for UI and API spec -->
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-webmvc-core</artifactId>
-			<version>1.8.0</version>
-		</dependency>
-		
 		<!-- Provides automatic generation of REST API documentation (JSON spec),
         Interactive UI at /swagger-ui.html for testing endpoints -->
 		<dependency>
