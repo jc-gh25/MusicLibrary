@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springdoc.core.annotations.ParameterObject;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -35,10 +35,11 @@ import music.library.dto.ApiInfoResponse;
 import music.library.dto.ApiInfoResponse.Endpoint;
 import music.library.dto.ApiInfoResponse.EndpointCategory;
 import music.library.dto.CreateAlbumRequest;
-import music.library.dto.UpdateAlbumRequest;
 import music.library.dto.CreateArtistRequest;
-import music.library.dto.UpdateArtistRequest;
 import music.library.dto.CreateGenreRequest;
+import music.library.dto.DatabaseResetResponse;
+import music.library.dto.UpdateAlbumRequest;
+import music.library.dto.UpdateArtistRequest;
 import music.library.dto.UpdateGenreRequest;
 import music.library.entity.Album;
 import music.library.entity.Artist;
@@ -47,8 +48,6 @@ import music.library.service.AlbumService;
 import music.library.service.ArtistService;
 import music.library.service.DatabaseResetService;
 import music.library.service.GenreService;
-import music.library.dto.DatabaseResetResponse;
-import org.springframework.http.ResponseEntity;
 
 /**
  * Main REST controller for the Music Library API.
@@ -271,7 +270,7 @@ public class MusicLibraryController {
 		)
 	})
 	@GetMapping("/artists")
-	public Page<Artist> getAllArtists(@ParameterObject Pageable pageable) {
+	public Page<Artist> getAllArtists(Pageable pageable) {
 		return artistSvc.findAll(pageable);
 	}
 
@@ -433,7 +432,7 @@ public class MusicLibraryController {
 		)
 	})
 	@GetMapping("/albums")
-	public Page<Album> getAllAlbums(@ParameterObject Pageable pageable) {
+	public Page<Album> getAllAlbums(Pageable pageable) {
 		return albumSvc.findAll(pageable);
 	}
 
@@ -581,7 +580,7 @@ public class MusicLibraryController {
 		)
 	})
 	@GetMapping("/genres")
-	public Page<Genre> getAllGenres(@ParameterObject Pageable pageable) {
+	public Page<Genre> getAllGenres(Pageable pageable) {
 		return genreSvc.findAll(pageable);
 	}
 
