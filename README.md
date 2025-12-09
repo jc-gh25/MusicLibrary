@@ -1276,7 +1276,7 @@ This condensed reference guide summarizes the key challenges and their solutions
 ### Final Architecture Summary
 
 **What Works**:
-- ✅ ECS Fargate with task revision 11
+- ✅ ECS Fargate with task revision 13
 - ✅ Namesilo DNS with API-based updates
 - ✅ CloudShell for Docker image building
 - ✅ Simplified startup scripts (ash-compatible)
@@ -1308,7 +1308,7 @@ This deployment journey demonstrates real-world DevOps problem-solving: encounte
 
 This project represents a significant deep-dive into AWS cloud infrastructure and containerization. The final production release is the result of an intensive iterative development process involving:
 
-*   **46+ Build Iterations:** Refined Docker multi-stage builds to optimize image size and security.
+*   **62+ Build Iterations:** Refined Docker multi-stage builds to optimize image size and security.
 *   **13+ Infrastructure Revisions:** Evolved ECS Task Definitions to fine-tune memory allocation (1GB), IAM roles (Least Privilege), and network security.
 *   **Cost-Optimization Strategy:** Engineered a custom "Serverless DNS" solution to bypass the need for an expensive AWS Application Load Balancer ($16+/mo), instead using a self-healing container script to manage a dynamic public IP with a third-party registrar (Namesilo).
 *   **Cross-Platform DevOps:** Overcame significant challenges integrating Windows development environments with Alpine Linux containers, specifically managing `CRLF` line-ending incompatibilities via automated `sed` stream editing in the Dockerfile.
