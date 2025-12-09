@@ -141,7 +141,7 @@ public class MusicLibraryController {
 	public ApiInfoResponse getApiInfo() {
 		// Documentation links
 		Map<String, String> documentation = new LinkedHashMap<>();
-		documentation.put("swagger-ui", "/swagger-ui/index.html");
+		documentation.put("swagger-ui", "/swagger-ui.html");
 		documentation.put("api-docs", "/v3/api-docs");
 		documentation.put("openapi-json", "/v3/api-docs.yaml");
 		documentation.put("github", "https://github.com/jc-gh25/music-library");
