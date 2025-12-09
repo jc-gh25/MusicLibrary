@@ -27,6 +27,9 @@ RUN chmod +x /update-namesilo-dns.sh /startup.sh
 
 COPY --from=build /app/target/*.jar /app/app.jar
 
+#Copies static files from build stage.
+COPY --from=build /app/target/classes/static/ /app/static/  
+
 # Expose standard HTTP port
 EXPOSE 80
 ENTRYPOINT ["/startup.sh"]
