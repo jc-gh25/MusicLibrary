@@ -8,7 +8,10 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -98,10 +101,7 @@ import music.library.service.GenreService;
 
 @RestController
 @RequestMapping("/api")
-@Tag(name = "artist", description = "CRUD operations for artists")
-@Tag(name = "album", description = "CRUD operations for albums")
-@Tag(name = "genre", description = "CRUD operations for genres")
-@Tag(name = "database", description = "Database management operations")
+
 public class MusicLibraryController {
 
 	// Service layer dependencies injected via Spring's @Autowired
@@ -137,6 +137,7 @@ public class MusicLibraryController {
 			)
 		)
 	})
+	
 	@GetMapping
 	public ApiInfoResponse getApiInfo() {
 		// Documentation links
@@ -243,6 +244,7 @@ public class MusicLibraryController {
 			@ApiResponse(responseCode = "201", description = "Artist successfully created", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Artist.class), examples = @ExampleObject(value = "{\"artistId\":1,\"name\":\"The Rolling Stones\",\"description\":\"Legendary British rock band\",\"createdAt\":\"2025-01-19T04:40:37.345906\",\"updatedAt\":\"2025-01-19T04:40:37.345906\"}"))),
 			@ApiResponse(responseCode = "400", description = "Bad Request - Invalid input data (e.g., missing required name field, name exceeds 255 characters)", content = @Content(mediaType = "application/json")) })
 	@PostMapping("/artists")
+	@Tag(name = "Artists", description = "CRUD operations for artists")
 	public ResponseEntity<Artist> createArtist(
 			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Artist object to be created. The 'name' field is required (max 255 characters), and 'description' is optional. Do not include artistId, createdAt, updatedAt, or albums fields as they are auto-generated or ignored.", required = true, content = @Content(mediaType = "application/json", schema = @Schema(implementation = Artist.class), examples = @ExampleObject(name = "Create Artist Example", value = "{\"name\":\"The Beatles\",\"description\":\"Iconic British rock band from Liverpool\"}"))) @Valid @RequestBody CreateArtistRequest request)
 
@@ -269,8 +271,10 @@ public class MusicLibraryController {
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = Page.class))
 		)
 	})
+	
 	@GetMapping("/artists")
-	public Page<Artist> getAllArtists(Pageable pageable) {
+	@Tag(name = "Artists", description = "CRUD operations for artists")
+	public Page<Artist> getAllArtists(@PageableDefault(sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
 		return artistSvc.findAll(pageable);
 	}
 
@@ -298,7 +302,9 @@ public class MusicLibraryController {
 			content = @Content(mediaType = "application/json")
 		)
 	})
+	
 	@GetMapping("/artists/{id}")
+	@Tag(name = "Artists", description = "CRUD operations for artists")
 	public Artist getArtistById(
 		@Parameter(description = "ID of the artist to retrieve", required = true)
 		@PathVariable Long id) {
@@ -337,7 +343,9 @@ public class MusicLibraryController {
 			content = @Content(mediaType = "application/json")
 		)
 	})
+	
 	@PutMapping("/artists/{id}")
+	@Tag(name = "Artists", description = "CRUD operations for artists")
 	public Artist updateArtist(
 		@Parameter(description = "ID of the artist to update", required = true)
 		@PathVariable Long id, 
@@ -369,8 +377,10 @@ public class MusicLibraryController {
 			content = @Content(mediaType = "application/json")
 		)
 	})
+	
 	@DeleteMapping("/artists/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@Tag(name = "Artists", description = "CRUD operations for artists")
 	public void deleteArtist(
 		@Parameter(description = "ID of the artist to delete", required = true)
 		@PathVariable Long id) {
@@ -408,7 +418,9 @@ public class MusicLibraryController {
 			content = @Content(mediaType = "application/json")
 		)
 	})
+	
 	@PostMapping("/albums")
+	@Tag(name = "Albums", description = "CRUD operations for albums")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Album createAlbum(@Valid @RequestBody CreateAlbumRequest request) {
 		return albumSvc.createAlbum(request);
@@ -431,9 +443,21 @@ public class MusicLibraryController {
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = Page.class))
 		)
 	})
+	
 	@GetMapping("/albums")
-	public Page<Album> getAllAlbums(Pageable pageable) {
-		return albumSvc.findAll(pageable);
+	@Tag(name = "Albums", description = "CRUD operations for albums")
+	public Page<Album> getAllAlbums(
+	    @RequestParam(defaultValue = "0") int page,
+	    @RequestParam(defaultValue = "20") int size,
+	    @RequestParam(defaultValue = "id") String sortBy,
+	    @RequestParam(defaultValue = "asc") String sortDir
+	) {
+	    Sort sort = sortDir.equalsIgnoreCase("desc") ? 
+	        Sort.by(sortBy).descending() : 
+	        Sort.by(sortBy).ascending();
+	    
+	    Pageable pageable = PageRequest.of(page, size, sort);
+	    return albumSvc.findAll(pageable);
 	}
 
 	/**
@@ -460,7 +484,9 @@ public class MusicLibraryController {
 			content = @Content(mediaType = "application/json")
 		)
 	})
+	
 	@GetMapping("/albums/{id}")
+	@Tag(name = "Albums", description = "CRUD operations for albums")
 	public Album getAlbumById(
 		@Parameter(description = "ID of the album to retrieve", required = true)
 		@PathVariable Long id) {
@@ -496,7 +522,9 @@ public class MusicLibraryController {
 			content = @Content(mediaType = "application/json")
 		)
 	})
+	
 	@PutMapping("/albums/{id}")
+	@Tag(name = "Albums", description = "CRUD operations for albums")
 	public Album updateAlbum(
 		@Parameter(description = "ID of the album to update", required = true)
 		@PathVariable Long id, 
@@ -526,8 +554,10 @@ public class MusicLibraryController {
 			content = @Content(mediaType = "application/json")
 		)
 	})
+	
 	@DeleteMapping("/albums/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@Tag(name = "Albums", description = "CRUD operations for albums") 
 	public void deleteAlbum(
 		@Parameter(description = "ID of the album to delete", required = true)
 		@PathVariable Long id) {
@@ -556,8 +586,10 @@ public class MusicLibraryController {
 			content = @Content(mediaType = "application/json")
 		)
 	})
+	
 	@PostMapping("/genres")
 	@ResponseStatus(HttpStatus.CREATED)
+	@Tag(name = "Genres", description = "CRUD operations for genres")
 	public Genre createGenre(@Valid @RequestBody CreateGenreRequest request) {
 		return genreSvc.create(request);
 	}
@@ -579,8 +611,10 @@ public class MusicLibraryController {
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = Page.class))
 		)
 	})
+	
 	@GetMapping("/genres")
-	public Page<Genre> getAllGenres(Pageable pageable) {
+	@Tag(name = "Genres", description = "CRUD operations for genres")
+	public Page<Genre> getAllGenres(@PageableDefault(sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
 		return genreSvc.findAll(pageable);
 	}
 
@@ -607,7 +641,9 @@ public class MusicLibraryController {
 			content = @Content(mediaType = "application/json")
 		)
 	})
+	
 	@GetMapping("/genres/{id}")
+	@Tag(name = "Genres", description = "CRUD operations for genres")
 	public Genre getGenreById(
 		@Parameter(description = "ID of the genre to retrieve", required = true)
 		@PathVariable Long id) {
@@ -646,7 +682,9 @@ public class MusicLibraryController {
 			content = @Content(mediaType = "application/json")
 		)
 	})
+	
 	@PutMapping("/genres/{id}")
+	@Tag(name = "Genres", description = "CRUD operations for genres")
 	public Genre updateGenre(
 		@Parameter(description = "ID of the genre to update", required = true)
 		@PathVariable Long id, 
@@ -676,8 +714,10 @@ public class MusicLibraryController {
 			content = @Content(mediaType = "application/json")
 		)
 	})
+	
 	@DeleteMapping("/genres/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@Tag(name = "Genres", description = "CRUD operations for genres")
 	public void deleteGenre(
 		@Parameter(description = "ID of the genre to delete", required = true)
 		@PathVariable Long id) {
@@ -707,7 +747,9 @@ public class MusicLibraryController {
 			content = @Content(mediaType = "application/json")
 		)
 	})
+	
 	@GetMapping("/artists/{artistId}/albums")
+	@Tag(name = "Artists", description = "CRUD operations for artists") 
 	public List<Album> getAlbumsByArtist(
 		@Parameter(description = "ID of the artist whose albums to retrieve", required = true)
 		@PathVariable Long artistId) {
@@ -737,7 +779,9 @@ public class MusicLibraryController {
 			content = @Content(mediaType = "application/json")
 		)
 	})
+	
 	@GetMapping("/genres/{genreId}/albums")
+	@Tag(name = "Genres", description = "CRUD operations for genres")
 	public List<Album> getAlbumsByGenre(
 		@Parameter(description = "ID of the genre whose albums to retrieve", required = true)
 		@PathVariable Long genreId) {
@@ -755,6 +799,7 @@ public class MusicLibraryController {
 					+ "Pass ?confirm=true to confirm the reset operation.", 
 					content = @Content(mediaType = "application/json")) })
 	@DeleteMapping("/reset")
+	@Tag(name = "Database", description = "Database management operations")
 	public ResponseEntity<DatabaseResetResponse> resetDatabase(
 			@Parameter(description = "Confirmation flag - must be set to 'true' to execute the reset", required = true)
 			@RequestParam(value = "confirm", required = false, defaultValue = "false") boolean confirm) {

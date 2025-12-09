@@ -41,6 +41,11 @@ public class Genre {
     @EqualsAndHashCode.Include
 	@Schema(description = "Unique identifier", example = "1")
     private Long genreId;
+	
+	//Add a getter with the variable that pagination uses
+	public Long getId() {
+        return genreId;
+    }
 
     @Column(nullable = false, length = 100, unique = true)
 	@Schema(description = "Genre name", example = "Rock") 

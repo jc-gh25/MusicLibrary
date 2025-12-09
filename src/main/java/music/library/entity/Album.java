@@ -52,13 +52,20 @@ public class Album {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
 	@Schema(description = "Unique identifier", example = "1")
+	@Column(name = "album_id")
 	private Long albumId;
+	
+	// Adding getter with the name expected for pagination
+    public Long getId() {
+        return albumId;
+    }
 
 	@Column(nullable = false, length = 255, unique = true)
 	@NotBlank(message = "Album title must not be blank")
 	@Size(max = 255, message = "Album title must be ≤ 255 characters")
 	@Schema(description = "Album title", example = "Abbey Road")
 	private String title;
+	
 	// private Integer releaseYear; // keep for quick year filtering
 
 	// NEW FIELD: release date. Some releases have an exact day/month (e.g., a

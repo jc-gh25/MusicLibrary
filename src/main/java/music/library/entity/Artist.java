@@ -42,6 +42,11 @@ public class Artist {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(description = "Unique identifier", example = "1")
     private Long artistId;
+	
+	//Add a getter with the variable that pagination uses
+	public Long getId() {
+        return artistId;
+    }
 
     @Column(nullable = false, length = 255, unique = true)
     @NotBlank(message = "Artist name must not be blank")
