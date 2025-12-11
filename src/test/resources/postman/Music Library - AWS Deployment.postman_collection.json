@@ -5,12 +5,62 @@
 		"description": "Music Library API configured for AWS RDS MySQL deployment. The application runs locally but connects to AWS RDS database at music-library-db.cv4kawuomqo5.us-west-2.rds.amazonaws.com. Use this collection to test the API with cloud database backend.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "50127363",
-		"_collection_link": "https://jc-postman-2025-9026430.postman.co/workspace/Week16~42e4eb41-599e-456d-b1f9-dc755e791d71/collection/50127363-8023cc1f-f52f-4c34-9db8-2c4bed97cd19?action=share&source=collection_link&creator=50127363"
+		"_collection_link": "https://jc-postman-2025-9026430.postman.co/workspace/42e4eb41-599e-456d-b1f9-dc755e791d71/collection/50127363-8023cc1f-f52f-4c34-9db8-2c4bed97cd19?action=share&source=collection_link&creator=50127363"
 	},
 	"item": [
 		{
 			"name": "Create Genres",
 			"item": [
+				{
+					"name": "Create a Genre",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"  pm.response.to.have.status(201);",
+									"});",
+									"const jsonData = pm.response.json();",
+									"pm.collectionVariables.set(\"rockId\", jsonData.genreId);",
+									"pm.test(\"Genre created successfully\", function () {",
+									"  pm.expect(jsonData.genreId).to.exist;",
+									"  pm.expect(jsonData.name).to.eql(\"Rock\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"\",\n  \"description\": \"\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/genres",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"genres"
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "Create Rock",
 					"event": [
@@ -376,6 +426,35 @@
 		{
 			"name": "Create Artists",
 			"item": [
+				{
+					"name": "Create an Artist",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Final test 2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/artists",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"artists"
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "Create Max Richter",
 					"event": [
@@ -5681,7 +5760,9 @@
 											"  pm.expect(jsonData.genres.length).to.be.at.least(1);",
 											"});"
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
 									}
 								}
 							],
@@ -5695,7 +5776,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"title\": \"Us\",\n  \"artistId\": {{peterGabrielId}},\n  \"genreIds\": [{{rockId}}],\n  \"releaseDate\": \"1992-09-28\",\n  \"coverImageUrl\": \"covers/peter-gabriel-us.jpg\",\n  \"trackCount\": 10,\n  \"catalogNumber\": \"PGLP7\"\n}"
+									"raw": "{\n  \"title\": \"Us\",\n  \"artistId\": {{peterGabrielId}},\n  \"genreIds\": [{{rockId}}],\n  \"releaseDate\": \"1992-09-28\",\n  \"coverImageUrl\": \"covers/peter_gabriel_us.jpg\",\n  \"trackCount\": 10,\n  \"catalogNumber\": \"PGLP7\"\n}"
 								},
 								"url": {
 									"raw": "{{baseUrl}}/albums",
@@ -9254,31 +9335,67 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "Create an Album (requres genre ID and artist ID)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"  pm.response.to.have.status(201);",
+									"});",
+									"pm.test(\"Album created successfully\", function () {",
+									"  var jsonData = pm.response.json();",
+									"  pm.expect(jsonData.albumId).to.exist;",
+									"  pm.expect(jsonData.title).to.exist;",
+									"});",
+									"pm.test(\"Album has artist relationship\", function () {",
+									"  var jsonData = pm.response.json();",
+									"  pm.expect(jsonData.artist).to.exist;",
+									"  pm.expect(jsonData.artist.artistId).to.exist;",
+									"});",
+									"pm.test(\"Album has genre relationships\", function () {",
+									"  var jsonData = pm.response.json();",
+									"  pm.expect(jsonData.genres).to.be.an('array');",
+									"  pm.expect(jsonData.genres.length).to.be.at.least(1);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"\",\n  \"artistId\": 0,\n  \"genreIds\": [0],\n  \"releaseDate\": \"2000-01-01\",\n  \"coverImageUrl\": \"covers/artist-name-album-name.jpg\",\n  \"trackCount\": 1,\n  \"catalogNumber\": \"A000000\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/albums",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"albums"
+							]
+						}
+					},
+					"response": []
 				}
 			]
-		},
-		{
-			"name": "Reset Database",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{baseUrl}}/reset?confirm=true",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"reset"
-					],
-					"query": [
-						{
-							"key": "confirm",
-							"value": "true"
-						}
-					]
-				}
-			},
-			"response": []
 		},
 		{
 			"name": "Get All Artists",
@@ -9286,12 +9403,22 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/artists",
+					"raw": "{{baseUrl}}/artists?page=0&size=50",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
 						"artists"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "50"
+						}
 					]
 				}
 			},
@@ -9323,11 +9450,293 @@
 				"method": "GET",
 				"header": [],
 				"url": {
+					"raw": "{{baseUrl}}/albums?page=0&size=120",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"albums"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "120"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create an Artist",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Final test 2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/artists",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"artists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create an Album (requres genre ID and artist ID)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"  pm.response.to.have.status(201);",
+							"});",
+							"pm.test(\"Album created successfully\", function () {",
+							"  var jsonData = pm.response.json();",
+							"  pm.expect(jsonData.albumId).to.exist;",
+							"  pm.expect(jsonData.title).to.exist;",
+							"});",
+							"pm.test(\"Album has artist relationship\", function () {",
+							"  var jsonData = pm.response.json();",
+							"  pm.expect(jsonData.artist).to.exist;",
+							"  pm.expect(jsonData.artist.artistId).to.exist;",
+							"});",
+							"pm.test(\"Album has genre relationships\", function () {",
+							"  var jsonData = pm.response.json();",
+							"  pm.expect(jsonData.genres).to.be.an('array');",
+							"  pm.expect(jsonData.genres.length).to.be.at.least(1);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"\",\n  \"artistId\": 0,\n  \"genreIds\": [0],\n  \"releaseDate\": \"2000-01-01\",\n  \"coverImageUrl\": \"covers/artist-name-album-name.jpg\",\n  \"trackCount\": 1,\n  \"catalogNumber\": \"A000000\"\n}"
+				},
+				"url": {
 					"raw": "{{baseUrl}}/albums",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
+						"albums"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a Genre",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"  pm.response.to.have.status(201);",
+							"});",
+							"const jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"rockId\", jsonData.genreId);",
+							"pm.test(\"Genre created successfully\", function () {",
+							"  pm.expect(jsonData.genreId).to.exist;",
+							"  pm.expect(jsonData.name).to.eql(\"Rock\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"\",\n  \"description\": \"\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/genres",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"genres"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Album",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Updated Album Title\",\n  \"artistId\": 1,\n  \"genreIds\": [1],\n  \"releaseDate\": \"2024-01-15\",\n  \"coverImageUrl\": \"covers/updated-album.jpg\",\n  \"trackCount\": 12,\n  \"catalogNumber\": \"UPD2024\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/albums/1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"albums",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Artist",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"New or Original Name\",\n  \"description\": \"Updated or Original description.\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/artists/1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"artists",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Genre",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Updated Genre Name\",\n  \"description\": \"Updated description of the genre with comprehensive details about its characteristics and history.\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/genres/1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"genres",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Albums by Artist",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/artists/1/albums",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"artists",
+						"1",
+						"albums"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Albums by Genre",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/genres/5/albums",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"genres",
+						"5",
 						"albums"
 					]
 				}
@@ -9389,31 +9798,17 @@
 			"response": []
 		},
 		{
-			"name": "Update Album",
+			"name": "Get Genre by ID",
 			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"title\": \"Updated Album Title\", \"releaseYear\": 2024, \"artistId\": 1, \"genreId\": 1}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
+				"method": "GET",
+				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/albums/1",
+					"raw": "{{baseUrl}}/genres/1",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"albums",
+						"genres",
 						"1"
 					]
 				}
@@ -9421,24 +9816,10 @@
 			"response": []
 		},
 		{
-			"name": "Update Artist",
+			"name": "Get Artist by ID",
 			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"name\": \"Updated Artist Name\"}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
+				"method": "GET",
+				"header": [],
 				"url": {
 					"raw": "{{baseUrl}}/artists/1",
 					"host": [
@@ -9453,32 +9834,89 @@
 			"response": []
 		},
 		{
-			"name": "Update Genre",
+			"name": "Get Album by ID",
 			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"name\": \"Updated Genre Name\"}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
+				"method": "GET",
+				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/genres/1",
+					"raw": "{{baseUrl}}/albums/1",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"genres",
+						"albums",
 						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Genres",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/genres?page=0&size=50",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"genres"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "50"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reset Database",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/reset?confirm=true",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"reset"
+					],
+					"query": [
+						{
+							"key": "confirm",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DB Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://project.jcarl.net/actuator/health",
+					"protocol": "http",
+					"host": [
+						"project",
+						"jcarl",
+						"net"
+					],
+					"path": [
+						"actuator",
+						"health"
 					]
 				}
 			},
@@ -9512,7 +9950,7 @@
 	"variable": [
 		{
 			"key": "baseUrl",
-			"value": "http://project.jcarl.net/api"
+			"value": "https://suanne-speedless-chrissy.ngrok-free.dev/api"
 		},
 		{
 			"key": "maxRichterId",
