@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -255,28 +254,33 @@ public class MusicLibraryController {
 	/**
 	 * Retrieves all artists with pagination support.
 	 * 
-	 * @param pageable pagination parameters (page, size, sort) - automatically
-	 *                 bound from query params
-	 * @return paginated list of artists with metadata (totalElements, totalPages,
-	 *         etc.)
+	 * @param page the page number (0-based, default: 0)
+	 * @param size the number of items per page (default: 10)
+	 * @param sortBy the field to sort by (default: "name")
+	 * @return paginated list of artists with metadata (totalElements, totalPages, etc.)
 	 */
 	@Operation(
-		summary = "Get all artists",
-		description = "Returns paginated list of artists with optional sorting. Supports pagination via query parameters: page (default: 0), size (default: 20), and sort (e.g., 'name,asc' or 'createdAt,desc')"
-	)
-	@ApiResponses(value = {
-		@ApiResponse(
-			responseCode = "200",
-			description = "Successfully retrieved paginated list of artists",
-			content = @Content(mediaType = "application/json", schema = @Schema(implementation = Page.class))
+		    summary = "Get all artists",
+		    description = "Returns paginated list of artists with optional sorting. Supports pagination via query parameters: page (default: 0), size (default: 10), and sortBy (default: 'name')"
 		)
-	})
-	
-	@GetMapping("/artists")
-	@Tag(name = "Artists", description = "CRUD operations for artists")
-	public Page<Artist> getAllArtists(@PageableDefault(sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
-		return artistSvc.findAll(pageable);
-	}
+		@ApiResponses(value = {
+		    @ApiResponse(
+		        responseCode = "200",
+		        description = "Successfully retrieved paginated list of artists",
+		        content = @Content(mediaType = "application/json", schema = @Schema(implementation = Page.class))
+		    )
+		})
+
+		@GetMapping("/artists")
+		@Tag(name = "Artists", description = "CRUD operations for artists")
+		public Page<Artist> getAllArtists(
+		    @RequestParam(defaultValue = "0") int page,
+		    @RequestParam(defaultValue = "10") int size,
+		    @RequestParam(defaultValue = "name") String sortBy) {
+		    
+		    Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+		    return artistSvc.findAll(pageable);
+		}
 
 	/**
 	 * Retrieves a single artist by ID.
@@ -429,12 +433,16 @@ public class MusicLibraryController {
 	/**
 	 * Retrieves all albums with pagination support.
 	 * 
-	 * @param pageable pagination parameters (page, size, sort)
-	 * @return paginated list of albums with metadata
+	 * @param page the page number (0-based, default: 0)
+	 * @param size the number of items per page (default: 10)
+	 * @param sortBy the field to sort by (default: "title")
+	 * @return paginated list of albums with metadata (totalElements, totalPages, etc.)
 	 */
 	@Operation(
 		summary = "Get all albums",
-		description = "Returns paginated list of albums with optional sorting. Supports pagination via query parameters: page (default: 0), size (default: 20), and sort (e.g., 'title,asc' or 'releaseYear,desc')"
+		description = "Returns paginated list of albums with optional sorting. "
+				+ "Supports pagination via query parameters: page (default: 0), size (default: 10), "
+				+ "and sortBy (default: 'title')"
 	)
 	@ApiResponses(value = {
 		@ApiResponse(
@@ -597,12 +605,16 @@ public class MusicLibraryController {
 	/**
 	 * Retrieves all genres with pagination support.
 	 * 
-	 * @param pageable pagination parameters (page, size, sort)
-	 * @return paginated list of genres with metadata
+	 * @param page the page number (0-based, default: 0)
+	 * @param size the number of items per page (default: 10)
+	 * @param sortBy the field to sort by (default: "name")
+	 * @return paginated list of genres with metadata (totalElements, totalPages, etc.)
 	 */
 	@Operation(
 		summary = "Get all genres",
-		description = "Returns paginated list of genres with optional sorting. Supports pagination via query parameters: page (default: 0), size (default: 20), and sort (e.g., 'name,asc' or 'createdAt,desc')"
+		description = "Returns paginated list of genres with optional sorting. "
+				+ "Supports pagination via query parameters: page (default: 0), size (default: 10), "
+				+ "and sortBy (default: 'name')"
 	)
 	@ApiResponses(value = {
 		@ApiResponse(
@@ -614,7 +626,10 @@ public class MusicLibraryController {
 	
 	@GetMapping("/genres")
 	@Tag(name = "Genres", description = "CRUD operations for genres")
-	public Page<Genre> getAllGenres(@PageableDefault(sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
+	public Page<Genre> getAllGenres(@RequestParam(defaultValue = "0") int page,
+		    @RequestParam(defaultValue = "10") int size,
+		    @RequestParam(defaultValue = "name") String sortBy) {  
+		Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
 		return genreSvc.findAll(pageable);
 	}
 
