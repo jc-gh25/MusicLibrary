@@ -6,7 +6,7 @@
 [![Deployment](https://img.shields.io/badge/AWS-ECS%20Fargate-orange)](http://project.jcarl.net)
 [![License](https://img.shields.io/badge/License-Educational-yellow.svg)](LICENSE)
 
-> **Live Production Deployment:**
+> **Live Production Deployment:** (12/18: Deployment is currently paused while I work on migrating from AWS ECS to S3/CloudFront to reduce costs)
 > *   **Main Dashboard:** [http://project.jcarl.net](http://project.jcarl.net)
 > *   **Music Browser:** [http://project.jcarl.net/library.html](http://project.jcarl.net/library.html)
 > *   **API Swagger Docs:** [http://project.jcarl.net/swagger-ui.html](http://project.jcarl.net/swagger-ui.html)
