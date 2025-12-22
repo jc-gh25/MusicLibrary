@@ -819,7 +819,7 @@ To minimize costs when not actively using the application:
 3. **Verify**:
    - Wait 1-2 minutes for task to stop
    - Service status should show "0 running tasks"
-   - **Savings**: ~$1.20/day (~$36/month)
+   - **Savings**: ~$36/month
 
 ##### Stop RDS Database (For Extended Breaks)
 
@@ -1034,7 +1034,7 @@ The deployment journey involved multiple iterations, technology pivots, and crea
 
 **Error Message**:
 ```
-AccessDeniedException: User: arn:aws:sts::913212790762:assumed-role/ecsTaskExecutionRole/...
+AccessDeniedException: User: arn:aws:sts:...:assumed-role/ecsTaskExecutionRole/...
 is not authorized to perform: ecs:RegisterTaskDefinition
 ```
 
