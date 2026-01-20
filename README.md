@@ -15,7 +15,7 @@ This application runs **on-demand** to minimize AWS costs (~95% savings).
 
 ### Why On-Demand?
 
-
+On-Demand (current): ~$0.10/month + usage.  Always Running (previous): ~$55/month.  This architecture demonstrates real-world cost optimization strategies.
 
 ## 📋 Table of Contents
 
