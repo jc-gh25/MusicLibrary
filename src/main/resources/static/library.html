@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Browse the Music Library album collection - a Spring Boot REST API portfolio project.">
     <title>Music Library - Browse Albums</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <style>
@@ -183,13 +184,17 @@
         }
 
         .album-card {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
+			background: white;
+			border-radius: 12px;
+			overflow: hidden;
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+			transition: transform 0.3s, box-shadow 0.3s;
+		}
 
+		.album-card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+		}
 
         .album-cover {
             width: 100%;
@@ -318,6 +323,9 @@
 </head>
 <body>
     <div class="container">
+
+	
+	
         <header>
             <h1>🎵 Music Library</h1>
             <p style="color: #666; margin-top: 10px;">Browse and explore the album collection</p>
@@ -372,19 +380,13 @@
             <p>Music Library API - Built with Spring Boot & Java</p>
             <p style="margin-top: 10px; font-size: 0.9rem;">
                 <a href="https://github.com/jc-gh25/MusicLibrary" style="color: white;" target="_blank">VIEW ON GITHUB</a>
-            </p><br><br>
-			<p><i>All images are copyrighted by their respective owners and displayed only for demonstration purposes.</i></p>
+            </p><p style="margin-top: 20px;"><i>All images are copyrighted by their respective owners and displayed only for demonstration purposes.</i></p>
         </footer>
     </div>
 
     <script>
         // API base URL - Automatically detects local vs deployed environment
         const API_BASE = '/api';
-        
-        // Discogs API configuration - DISABLED (requires authentication)
-        const DISCOGS_TOKEN = ''; // Leave empty to disable Discogs lookups
-        const DISCOGS_API = 'https://api.discogs.com/database/search';
-        const discogsCache = new Map();
         
         // Current page state
         let currentPage = 0;
@@ -404,6 +406,7 @@
             loadArtists();
             loadGenres();
             loadAlbums();
+			toggleClearButton();
         });
 
         // Load statistics
@@ -627,52 +630,6 @@
             });
         }
 
-        // Search Discogs API for album images - DISABLED unless token provided
-        async function searchDiscogsImage(artist, album) {
-            if (!DISCOGS_TOKEN) {
-                return null; // Disabled - no token provided
-            }
-            
-            const cacheKey = `${artist}|${album}`;
-            
-            if (discogsCache.has(cacheKey)) {
-                return discogsCache.get(cacheKey);
-            }
-            
-            try {
-                const query = `${artist} ${album}`;
-                const url = `${DISCOGS_API}?q=${encodeURIComponent(query)}&type=release`;
-                
-                const response = await fetch(url, {
-                    headers: { 
-                        'User-Agent': 'MusicLibrary/1.0',
-                        'Authorization': `Discogs token=${DISCOGS_TOKEN}`
-                    }
-                });
-                
-                if (!response.ok) {
-                    console.warn(`Discogs API returned ${response.status}`);
-                    discogsCache.set(cacheKey, null);
-                    return null;
-                }
-                
-                const data = await response.json();
-                
-                if (data.results && data.results.length > 0) {
-                    for (const result of data.results) {
-                        if (result.cover_image && result.cover_image !== 'https://s.discogs.com/images/default-release-cd.png') {
-                            discogsCache.set(cacheKey, result.cover_image);
-                            return result.cover_image;
-                        }
-                    }
-                }
-            } catch (error) {
-                console.warn(`Discogs search failed for "${cacheKey}":`, error);
-            }
-            
-            discogsCache.set(cacheKey, null);
-            return null;
-        }
 
         // Create album card element
         function createAlbumCard(album) {
@@ -713,38 +670,12 @@
             return card;
         }
 
-        // Handle image load errors with fallback
-        async function handleImageError(imgElement) {
-            imgElement.onerror = null;
-            
-            if (imgElement.dataset.retried === 'true') {
-                const placeholderSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Crect fill='%23667eea' width='250' height='250'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' fill='white' font-size='20' dy='.3em'%3ENo Cover%3C/text%3E%3C/svg%3E";
-                imgElement.src = placeholderSvg;
-                return;
-            }
-            
-            imgElement.dataset.retried = 'true';
-            
-            const artist = imgElement.dataset.artist;
-            const album = imgElement.dataset.album;
-            
-            // Try Discogs only if token is configured
-            if (DISCOGS_TOKEN) {
-                const discogsUrl = await searchDiscogsImage(artist, album);
-                if (discogsUrl) {
-                    imgElement.onerror = function() {
-                        this.onerror = null;
-                        const placeholderSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Crect fill='%23667eea' width='250' height='250'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' fill='white' font-size='20' dy='.3em'%3ENo Cover%3C/text%3E%3C/svg%3E";
-                        this.src = placeholderSvg;
-                    };
-                    imgElement.src = discogsUrl;
-                    return;
-                }
-            }
-            
-            // Fallback to placeholder
-            const placeholderSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Crect fill='%23667eea' width='250' height='250'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' fill='white' font-size='20' dy='.3em'%3ENo Cover%3C/text%3E%3C/svg%3E";
-            imgElement.src = placeholderSvg;
+        // Handle image load errors with fallback to placeholder
+		async function handleImageError(imgElement) {
+			imgElement.onerror = null;
+			
+			const placeholderSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Crect fill='%23667eea' width='250' height='250'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' fill='white' font-size='20' dy='.3em'%3ENo Cover%3C/text%3E%3C/svg%3E";
+			imgElement.src = placeholderSvg;
         }
 
         // Display pagination controls
@@ -820,13 +751,9 @@
             }
         });
 
-        // Monitor search input for changes to show/hide clear button
-        document.getElementById('searchInput').addEventListener('input', toggleClearButton);
+        // Monitor search input for changes to show/hide clear button        document.getElementById('searchInput').addEventListener('input', toggleClearButton);
 
-        // Initialize clear button state on page load
-        window.addEventListener('DOMContentLoaded', function() {
-            toggleClearButton();
-        });
+
     </script>
 </body>
 </html>

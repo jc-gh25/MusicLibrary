@@ -1,43 +1,63 @@
-# -------------------------------------------------------------
+# =============================================================================
 # Spring Boot Configuration for Music Library API
-# -----------------------------------------------------
+# =============================================================================
+
 server:
-  port: ${PORT:8080}  # Server port, fallback to 8080 if not specified
+  port: ${PORT:8080}
 
 spring:
-  mvc:
-    static-path-pattern: /static/**
+  # ---------------------------------------------------------------------------
+  # Database Configuration
+  # ---------------------------------------------------------------------------
   datasource:
     url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?useSSL=false
     driver-class-name: com.mysql.cj.jdbc.Driver
-    # Username & password are taken from the separate env vars
     username: ${MYSQL_USER}
     password: ${MYSQL_PASSWORD}
 
-  # --------------------------------------------------------
+  # ---------------------------------------------------------------------------
   # JPA / Hibernate Configuration
-  # -------------------------------------------------------
+  # ---------------------------------------------------------------------------
   jpa:
     hibernate:
-      ddl-auto: update              # Hibernate manages schema updates
-    show-sql: true                # Print SQL statements (debug)
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
 
-  # ------------------------------------------------------
-  # Springdoc / Swagger UI
-  # --------------------------------------------------
-  springdoc:
-    api-docs:
-      path: /v3/api-docs
-    swagger-ui:
-      enabled: true
-      path: /swagger-ui.html
-      cors-enabled: true
-      servers:
-        - url: http://project.jcarl.net
+  # ---------------------------------------------------------------------------
+  # Jackson JSON Configuration
+  # ---------------------------------------------------------------------------
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+      write-dates-as-timestamps: false
+    deserialization:
+      fail-on-unknown-properties: false
 
-# ---------------------------------------------------------
-# Prevent Spring from executing any plain .sql scripts at startup
-# ---------------------------------------------------------
-sql:
-  init:
-    mode: never
+  # ---------------------------------------------------------------------------
+  # Flyway Migration (Disabled)
+  # ---------------------------------------------------------------------------
+  flyway:
+    enabled: false
+
+  # ---------------------------------------------------------------------------
+  # SQL Initialization (Disabled)
+  # ---------------------------------------------------------------------------
+  sql:
+    init:
+      mode: never
+
+# =============================================================================
+# SpringDoc / Swagger UI Configuration
+# =============================================================================
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    operationsSorter: method

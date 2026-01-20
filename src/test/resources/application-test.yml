@@ -18,5 +18,5 @@ spring:
   # Enable for the same Flyway migrations to run against H2. 
   # Or set to false and rely on create-drop.
   flyway:
-    enabled: false  # Flyway is disabled in tests to avoid schema conflicts with H2 - use JPA auto-schema generation
+    enabled: false  # Disabled for tests - use JPA auto-schema generation
     locations: classpath:db/migration   # same scripts used for MySQL

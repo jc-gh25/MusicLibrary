@@ -1,6 +1,5 @@
-# Updates Namesilo DNS with current ECS Fargate public IP
-
 #!/bin/bash
+# Updates Namesilo DNS with current ECS Fargate public IP
 set -euo pipefail
 
 # Configuration
@@ -13,10 +12,24 @@ API_BASE="https://www.namesilo.com/api"
 
 log() { echo "[$(date +'%Y-%m-%d %H:%M:%S')] $1"; }
 
-# 1. Get Public IP
-log "Getting Public IP..."
-PUBLIC_IP=$(curl -s https://api.ipify.org)
-log "Public IP: $PUBLIC_IP"
+# 1. Get ECS Task Public IP
+log "Getting ECS Task Public IP..."
+
+# Get the task ARN
+TASK_ARN=$(aws ecs list-tasks --cluster music-library-cluster1 --service-name music-library-service --query 'taskArns[0]' --output text)
+
+if [[ "$TASK_ARN" == "None" || -z "$TASK_ARN" ]]; then
+    log "ERROR: No running tasks found"
+    exit 1
+fi
+
+# Get the ENI ID from the task
+ENI_ID=$(aws ecs describe-tasks --cluster music-library-cluster1 --tasks "$TASK_ARN" --query 'tasks[0].attachments[0].details[?name==`networkInterfaceId`].value' --output text)
+
+# Get the public IP from the ENI
+PUBLIC_IP=$(aws ec2 describe-network-interfaces --network-interface-ids "$ENI_ID" --query 'NetworkInterfaces[0].Association.PublicIp' --output text)
+
+log "ECS Task Public IP: $PUBLIC_IP"
 
 # 2. Find ALL existing records for this subdomain
 log "Checking for existing records..."
