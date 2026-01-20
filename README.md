@@ -2,12 +2,20 @@
 
 A comprehensive RESTful API for managing a music library built with **Spring Boot 3.5.7** and **MySQL**. This Java application provides full CRUD operations for artists, albums, and genres, with advanced features including pagination, search functionality, album cover images, comprehensive testing, and a Postman sample data import with 50 artists and over 100 albums.
 
-## Quick Links
+## Accessing the Live Demo
 
-| **Live API** | http://project.jcarl.net/api |
-| **Swagger UI** | http://project.jcarl.net/swagger-ui.html |
-| **Music Library Browser** | http://project.jcarl.net/library.html |
-| **GitHub Repository** | https://github.com/jc-gh25/MusicLibrary |
+This application runs **on-demand** to minimize AWS costs (~95% savings).
+
+### For Employers/Reviewers:
+
+1. **Visit the launcher**: [https://projectlauncher.jcarl.net](https://projectlauncher.jcarl.net)
+2. **Click "Launch Music Library"**
+3. DB starts and application deploys in around 5 minutes. Amazon ECS assigns a new IP after each deployment.
+4. **Use the direct IP link provided** (DNS for the hostname project.jcarl.net may take several hours to propagate)
+
+### Why On-Demand?
+
+
 
 ## 📋 Table of Contents
 
