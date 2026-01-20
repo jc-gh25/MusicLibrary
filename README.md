@@ -2,7 +2,7 @@
 
 A comprehensive RESTful API for managing a music library built with **Spring Boot 3.5.7** and **MySQL**. This Java application provides full CRUD operations for artists, albums, and genres, with advanced features including pagination, search functionality, album cover images, comprehensive testing, and a Postman sample data import with 50 artists and over 100 albums.
 
-## ⚡ Quick Links
+## Quick Links
 
 | **Live API** | http://project.jcarl.net/api |
 | **Swagger UI** | http://project.jcarl.net/swagger-ui.html |
@@ -71,7 +71,7 @@ Custom data processing scripts for downloading album cover images from the iTune
 
 ---
 
-## 🤖 Development Approach
+## Development Approach
 
 This project was developed using **AI-assisted development practices**, a modern approach that combines human expertise with AI tools to accelerate development while maintaining high code quality and architectural integrity.
 
@@ -500,7 +500,7 @@ aws rds describe-db-instances \
 
 ---
 
-## ✨ Features
+## Features
 
 ### API Features
 - **RESTful Design**: Standard HTTP methods (GET, POST, PUT, DELETE)
@@ -532,7 +532,7 @@ aws rds describe-db-instances \
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### 1. Clone the Repository
 
@@ -1193,7 +1193,7 @@ The Maven Surefire plugin automatically activates the test profile:
 
 ---
 
-## 🚀 Deployment Options
+## Deployment Options
 
 The Music Library API supports multiple deployment strategies, from local development to production cloud infrastructure.
 
@@ -1561,7 +1561,7 @@ The ngrok URL changes each time you restart ngrok (unless using a paid plan with
 
 ---
 
-## 🚀 Deployment Journey & Learning Experiences
+## Deployment Journey & Learning Experiences
 
 This section documents the real-world challenges, solutions, and learning experiences encountered during the AWS deployment process. It demonstrates problem-solving skills, adaptability, and persistence in overcoming infrastructure obstacles.
 
