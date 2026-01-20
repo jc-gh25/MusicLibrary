@@ -13,11 +13,11 @@ A comprehensive RESTful API for managing a music library built with **Spring Boo
 
 - [Project Overview](#-project-overview)
   - [Key Capabilities](#key-capabilities)
-- [Development Approach](#-development-approach)
+- [Development Approach](#development-approach)
 - [Technology Stack](#️-technology-stack)
-- [Features](#-features)
+- [Features](#features)
 - [Prerequisites](#-prerequisites)
-- [Getting Started](#-getting-started)
+- [Getting Started](#getting-started)
 - [API Documentation](#-api-documentation)
 - [API Endpoints](#-api-endpoints)
 - [Data Models](#-data-models)
@@ -26,8 +26,8 @@ A comprehensive RESTful API for managing a music library built with **Spring Boo
 - [Configuration](#-configuration)
   - [Test Configuration](#test-configuration-application-testyaml)
 - [Testing](#-testing)
-- [Deployment](#-deployment)
-- [Deployment Journey & Learning Experiences](#-deployment-journey--learning-experiences)
+- [Deployment](#deployment)
+- [Deployment Journey & Learning Experiences](#deployment-journey--learning-experiences)
 - [Error Handling](#-error-handling)
 - [Support](#-support)
 - [License](#-license)
@@ -1033,7 +1033,7 @@ spring:
 
 ---
 
-## 🧪 Testing
+## 🔍 Testing
 
 The application includes a comprehensive test suite covering multiple layers.
 
