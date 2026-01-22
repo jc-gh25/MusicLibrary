@@ -10,7 +10,7 @@ For Employers/Reviewers:
 **Visit the launcher:** [https://projectlauncher.jcarl.net](https://projectlauncher.jcarl.net)  
 **Click "Launch Music Library".**
 The DB starts and application deploys in around 5 minutes. 
-Amazon ECS assigns a new IP after each deployment. **Use the dynamic ECS IP link provided.** (DNS for project.jcarl.net may take several hours to propagate)
+Amazon ECS assigns a new IP after each deployment. **Use the ECS IP link provided.** (DNS for project.jcarl.net may take several hours to propagate)
 
 Why On-Demand?
 On-Demand costs: ~$0.10/month + usage. 
@@ -91,7 +91,7 @@ What started as a bootcamp final project became a 400+ hour deep dive into cloud
 |-------|---------------|---------------|
 | Bootcamp project | ~50 hours | Built core API with AI assistance, deployed to Railway |
 | AWS migration | ~150 hours | Moved from Railway to AWS ECS/RDS (1 week before deadline) |
-| Cost optimization | ~200+ hours | Converted from always-on (~$55/mo) to on-demand (~$1-5/mo) |
+| Cost optimization | ~200+ hours | Converted from always-on ($55/mo) to on-demand ($1-5/mo) |
 | **Total** | **400+ hours** | **108 builds**, countless debugging sessions |
 
 Most bootcamp students probably completed this assignment in <20 hours by editing previous assignments where the code was provided. I chose to focus on learning AWS instead.
