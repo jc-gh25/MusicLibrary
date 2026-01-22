@@ -2,20 +2,12 @@
 
 A comprehensive RESTful API for managing a music library built with **Spring Boot 3.5.7** and **MySQL**. This Java application provides full CRUD operations for artists, albums, and genres, with advanced features including pagination, search functionality, album cover images, comprehensive testing, and a Postman sample data import with 50 artists and over 100 albums.
 
-## Accessing the Live Demo
+## Quick Links
 
-This application runs **on-demand** to minimize AWS costs (~95% savings).
-
-### For Employers/Reviewers:
-
-1. **Visit the launcher**: [https://projectlauncher.jcarl.net](https://projectlauncher.jcarl.net)
-2. **Click "Launch Music Library"**
-3. DB starts and application deploys in around 5 minutes. Amazon ECS assigns a new IP after each deployment.
-4. **Use the direct IP link provided** (DNS for the hostname project.jcarl.net may take several hours to propagate)
-
-### Why On-Demand?
-
-On-Demand (current): ~$0.10/month + usage.  Always Running (previous): ~$55/month.  This architecture demonstrates real-world cost optimization strategies.
+| **Live API** | http://project.jcarl.net/api |
+| **Swagger UI** | http://project.jcarl.net/swagger-ui.html |
+| **Music Library Browser** | http://project.jcarl.net/library.html |
+| **GitHub Repository** | https://github.com/jc-gh25/MusicLibrary |
 
 ## 📋 Table of Contents
 
@@ -35,7 +27,7 @@ On-Demand (current): ~$0.10/month + usage.  Always Running (previous): ~$55/mont
   - [Test Configuration](#test-configuration-application-testyaml)
 - [Testing](#-testing)
 - [Deployment](#deployment)
-- [Deployment Journey & Learning Experiences](#deployment-journey--learning-experiences)
+- [Deployment Journey & Learning Experiences](#-deployment-journey--learning-experiences)
 - [Error Handling](#-error-handling)
 - [Support](#-support)
 - [License](#-license)
@@ -81,64 +73,73 @@ Custom data processing scripts for downloading album cover images from the iTune
 
 ## Development Approach
 
-This project was developed using **AI-assisted development practices**, a modern approach that combines human expertise with AI tools to accelerate development while maintaining high code quality and architectural integrity.
+This project was developed using **AI-assisted development**, with AI tools generating the majority of the code while I focused on project direction, integration, and deployment.
 
-### Developer Responsibilities
+### Project Timeline & Scope
 
-The developer was responsible for all critical aspects of the application, including:
+What started as a bootcamp final project became a 400+ hour deep dive into cloud infrastructure:
 
-**Architecture & Design**
-- Database schema design with complex many-to-many relationships
-- Entity structure and relationship mapping
-- RESTful API design patterns
-- DTO pattern implementation
+| Phase | Time Invested | What Happened |
+|-------|---------------|---------------|
+| Bootcamp project | ~50 hours | Built core API with AI assistance, deployed to Railway |
+| AWS migration | ~150 hours | Moved from Railway to AWS ECS/RDS (1 week before deadline) |
+| Cost optimization | ~200+ hours | Converted from always-on (~$55/mo) to on-demand (~$1-5/mo) |
+| **Total** | **400+ hours** | **108 builds**, countless debugging sessions |
 
-**Problem-Solving & Debugging**
-- Created PUT methods for Album, Artist, and Genre entities
-- Fixed test scripts (corrected validation tests for albums)
-- Debugged functionality in library.html
-- Resolved artist-album association issues in the database
-- Implemented data integrity solutions using programmatic variable patterns in Postman
+Most bootcamp students probably completed this assignment in <20 hours by editing previous assignments where the code was provided. I chose to focus on learning AWS instead.
 
-**Feature Development & Enhancement**
-- Added clear search button functionality to library.html
-- Integrated album cover images with iTunes API
-- Implemented pagination and sorting across all endpoints
+### What I Did
 
-**Integration & Testing**
-- Integrated multiple technologies: Spring Boot, MySQL, Postman, Node.js, ngrok
-- Created and validated comprehensive Postman collection with 150+ API requests
-- Performed collection runs to ensure data integrity
-- Validated all CRUD operations and relationship queries
+**Project Vision & Direction**
+- Conceived the project concept and scope
+- Made architectural decisions (entities, relationships, features)
+- Directed AI tools with specific requirements and constraints
 
-### AI Tool Usage
+**AWS Deployment & Infrastructure (Hands-On)**
+- Deployed to AWS: ECS Fargate, RDS MySQL, ECR, Lambda, EventBridge, S3
+- Debugged real infrastructure issues: ECS circuit breaker rollbacks, DNS automation, IAM permissions
+- Solved the dynamic IP problem with Namesilo API integration
+- Iterated through 108+ Docker builds and 17+ ECS task revisions
 
-AI tools including Claude Sonnet 4.5, GPT-5, DeepSeek R1, Gemini 3 Pro, and Llama 4 Maverick were used as development accelerators for:
-- Generating boilerplate code
-- Discussing implementation patterns for common Spring Boot features
-- Providing syntax assistance and code completion
-- Generating initial test structures
-- HTML/CSS/JS creation
-- Creating debugging scripts
-- Code review, method improvements, code comments
-- Data validation and error handling
+**Cost Optimization (Post-Bootcamp)**
+- Redesigned architecture from always-on to on-demand
+- Built S3-hosted landing page with Lambda-triggered startup
+- Implemented auto-shutdown after 30 minutes of inactivity
+- Reduced monthly costs from ~$55 to ~$1-5
 
-### Why This Approach Works
+**Integration & Problem-Solving**
+- Connected: Spring Boot, MySQL, Postman, Lambda, EventBridge, Namesilo API, S3
+- Pivoted from Route 53 to Namesilo when original DNS approach proved too complex
+- When things broke, researched solutions and worked with AI to implement fixes
 
-Modern software development increasingly leverages AI tools as productivity multipliers. This approach mirrors real-world professional development where:
-- Developers focus on architecture, design decisions, and problem-solving
-- AI tools handle repetitive coding tasks and boilerplate generation
-- Human expertise guides the overall direction and ensures quality
-- Debugging and integration remain fundamentally human skills
+### What AI Did
 
-The result is a **production-quality application** that demonstrates both technical competency and the ability to effectively leverage modern development tools — a skill increasingly valued in professional software engineering.
+AI tools (Claude, GPT, and others) generated:
+- Most of the Java/Spring Boot code (services, controllers, repositories)
+- Test files
+- HTML/CSS/JavaScript
+- Lambda function code
+- Shell scripts
+- This README
+
+### Why This Matters
+
+This project demonstrates:
+
+- **Persistence** — 400+ hours, 108 builds, mass trial and error
+- **Cost consciousness** — Reduced hosting costs by 90%+ through architectural redesign
+- **Real infrastructure skills** — AWS deployment, debugging, integration
+- **Effective AI collaboration** — A genuine and growing professional skill
+- **Honesty** — I'd rather set accurate expectations than oversell
+
+The bootcamp taught Java basics. The 350 extra hours taught me how software actually gets deployed, operated, and optimized in the real world.
 
 
 ### AWS Cloud Deployment
 
 The application has been successfully deployed to **Amazon Web Services (AWS)** using a modern containerized architecture with managed services. This production deployment demonstrates enterprise-grade cloud infrastructure skills and DevOps practices.
 
-**Live Production API**: [http://project.jcarl.net:8080/api](http://project.jcarl.net:8080/api)  
+**Live Production API**: [http://project.jcarl.net/api](http://project.jcarl.net/api)  
 **Custom Domain**: `project.jcarl.net` (via Namesilo DNS with API-based auto-update)
 
 #### AWS Architecture
@@ -766,15 +767,15 @@ Represents a music album with detailed metadata.
 ```json
 {
   "albumId": 1,
-490│  "title": "Abbey Road",
-491│  "releaseDate": "1969-09-26",
-492│  "releaseYear": 1969,
-493│  "coverImageUrl": "https://example.com/covers/abbey-road.jpg",
+  "title": "Abbey Road",
+  "releaseDate": "1969-09-26",
+  "releaseYear": 1969,
+  "coverImageUrl": "https://example.com/covers/abbey-road.jpg",
   "trackCount": 10,
   "catalogNumber": "COC-59100",
   "artist": {
     "artistId": 1,
-498│    "name": "The Beatles"
+      "name": "The Beatles"
   },
   "genres": [
     {
@@ -1041,7 +1042,7 @@ spring:
 
 ---
 
-## 🔍 Testing
+## 🧪 Testing
 
 The application includes a comprehensive test suite covering multiple layers.
 
@@ -1215,7 +1216,7 @@ The Music Library API supports multiple deployment strategies, from local develo
 
 The application is deployed on AWS using a containerized, serverless architecture with managed services.
 
-#### AWS Services Used
+#### AWS Services Tried or Implemented
 
 | Service | Purpose | Configuration |
 |---------|---------|---------------|
@@ -1580,7 +1581,7 @@ The deployment journey involved multiple iterations, technology pivots, and crea
 **Current Deployment Status**:
 - **Domain**: `project.jcarl.net`
 - **IP Address**: Dynamic, assigned on each deploy
-- **Port**: `8080`
+- **Port**: `80`
 - **ECS Task**: `music-library-task:x`
 - **DNS Provider**: Namesilo (migrated from Route 53)
 - **Build Environment**: AWS CloudShell (due to Windows LTSB Docker incompatibility)
@@ -1910,7 +1911,7 @@ Input validation errors return detailed field-level errors:
 
 ## 📝 License
 
-This project is part of a Java/MySQL backend development bootcamp (Week 16) and is for **educational purposes**.
+This project is part of a Java/MySQL backend development bootcamp and is for **educational purposes**.
 
 ---
 
@@ -1945,14 +1946,11 @@ This project demonstrates proficiency in:
 
 ## 🙏 Acknowledgments
 
-- **Spring Boot Team** - Open-source Java framework
-- **Quickstart** - Backend development bootcamp | quickstart.com/bootcamp
-- **Amazon Web Services (AWS)** - Cloud infrastructure and managed services | aws.amazon.com
-- **ngrok** - Secure tunneling for local development | ngrok.com
-- **Postman** - The World's Leading API Platform | postman.com
+My thanks to:
+- **Prashant H.** - Bootcamp Instructor
+- **Michael G.** - Bootcamp Mentor
+- **Tammy E.** - Career Services Manager
+- **Tiffany H.** - Career Advisor
+- **Postman** - "The World's Leading API Platform" | postman.com
 
 ---
-
-**Built with ❤️ by JC - Backend Developer**
-
-**Happy coding! 🎵**
