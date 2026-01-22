@@ -7,10 +7,10 @@ A comprehensive RESTful API for managing a music library built with **Spring Boo
 This application runs on-demand to minimize AWS costs (~95% savings).
 
 For Employers/Reviewers:
-Visit the launcher: [https://projectlauncher.jcarl.net](https://projectlauncher.jcarl.net)  
-Click "Launch Music Library"
-DB starts and application deploys in around 5 minutes. Amazon ECS assigns a new IP after each deployment.
-Use the dynamic ECS IP link provided (DNS for project.jcarl.net may take several hours to propagate)
+**Visit the launcher:** [https://projectlauncher.jcarl.net](https://projectlauncher.jcarl.net)  
+**Click "Launch Music Library".**
+The DB starts and application deploys in around 5 minutes. 
+Amazon ECS assigns a new IP after each deployment. **Use the dynamic ECS IP link provided.** (DNS for project.jcarl.net may take several hours to propagate)
 
 Why On-Demand?
 On-Demand costs: ~$0.10/month + usage. 
