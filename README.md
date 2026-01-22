@@ -90,11 +90,12 @@ What started as a bootcamp final project became a 400+ hour deep dive into cloud
 | Phase | Time Invested | What Happened |
 |-------|---------------|---------------|
 | Bootcamp project | ~50 hours | Built core API with AI assistance, deployed to Railway |
-| AWS migration | ~150 hours | Moved from Railway to AWS ECS/RDS (1 week before deadline) |
-| Cost optimization | ~200+ hours | Converted from always-on ($55/mo) to on-demand ($1-5/mo) |
+| AWS migration | ~150 hours | Moved from Railway to AWS ECS/RDS |
+| Cost optimization | ~100+ hours | Converted from always-on ($55/mo) to on-demand ($1-5/mo) |
+| Tweaks and improvements | ~100+ hours | Analyzed and improved all aspects of UX |
 | **Total** | **400+ hours** | **108 builds**, countless debugging sessions |
 
-Most bootcamp students probably completed this assignment in <20 hours by editing previous assignments where the code was provided. I chose to focus on learning AWS instead.
+Most bootcamp students probably completed this assignment in <20 hours by editing previous assignments where the code was provided. I chose to focus on learning AWS and enjoying AI-powered iterative development instead.
 
 ### What I Did
 
