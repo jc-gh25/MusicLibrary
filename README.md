@@ -4,24 +4,39 @@ A comprehensive RESTful API for managing a music library built with **Spring Boo
 
 ## Accessing the Live Demo
 
-This application runs on-demand to minimize AWS costs (~95% savings).
+This application runs **on-demand** to minimize AWS costs (~98% savings vs always-on).
 
-For Employers/Reviewers:
-**Visit the launcher:** [https://projectlauncher.jcarl.net](https://projectlauncher.jcarl.net)  
-**Click "Launch Music Library".**
-The DB starts and application deploys in around 5 minutes. 
-Amazon ECS assigns a new IP after each deployment. **Use the ECS IP link provided.** (DNS for project.jcarl.net may take several hours to propagate)
+**For Employers/Reviewers:**
 
-Why On-Demand?
-On-Demand costs: ~$0.10/month + usage. 
-Always Running (previous strategy): ~$55/month. 
-This architecture demonstrates real-world cost optimization strategies.
+1. **Visit the launcher:** [https://projectlauncher.jcarl.net](https://projectlauncher.jcarl.net)
+2. **Click "Launch Music Library"**
+3. The database and application deploy in approximately **5-7 minutes**
+4. Use the **direct IP link provided** (DNS for project.jcarl.net may take hours to propagate)
+
+**Why On-Demand?**
+
+| Architecture | Monthly Cost |
+|--------------|--------------|
+| Always-On (previous) | ~$55/month |
+| On-Demand (current) | ~$1/month idle |
+
+This architecture demonstrates real-world **cost optimization** and **serverless thinking** — the same strategies used by companies to reduce cloud spend by 90%+.
+
+**What Happens When You Click Launch:**
+1. Lambda function triggers RDS database startup (~2-3 min)
+2. Once DB is available, Lambda starts ECS Fargate task (~2-3 min)
+3. Container updates DNS record via Namesilo API
+4. Status page shows real-time progress and direct IP link
+5. After 30 minutes of inactivity, auto-shutdown Lambda stops everything
+
+---
 
 ## 📋 Table of Contents
 
 - [Project Overview](#-project-overview)
   - [Key Capabilities](#key-capabilities)
 - [Development Approach](#development-approach)
+- [On-Demand Architecture](#-on-demand-architecture)
 - [Technology Stack](#️-technology-stack)
 - [Features](#features)
 - [Prerequisites](#-prerequisites)
@@ -32,10 +47,10 @@ This architecture demonstrates real-world cost optimization strategies.
 - [DTOs (Data Transfer Objects)](#-dtos-data-transfer-objects)
 - [Project Structure](#️-project-structure)
 - [Configuration](#-configuration)
-  - [Test Configuration](#test-configuration-application-testyaml)
 - [Testing](#-testing)
-- [Deployment](#deployment)
+- [AWS Cloud Deployment](#-aws-cloud-deployment)
 - [Deployment Journey & Learning Experiences](#-deployment-journey--learning-experiences)
+- [Cost Management](#-cost-management)
 - [Error Handling](#-error-handling)
 - [Support](#-support)
 - [License](#-license)
@@ -46,10 +61,11 @@ This architecture demonstrates real-world cost optimization strategies.
 
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.7-brightgreen.svg)](https://spring.io/projects/spring-boot)
 [![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://www.oracle.com/java/)
-[![MySQL](https://img.shields.io/badge/MySQL-8.0+-blue.svg)](https://www.mysql.com/)
+[![MySQL](https://img.shields.io/badge/MySQL-8.4-blue.svg)](https://www.mysql.com/)
+[![AWS](https://img.shields.io/badge/AWS-ECS%20%7C%20Lambda%20%7C%20RDS-orange.svg)](https://aws.amazon.com/)
 [![License](https://img.shields.io/badge/License-Educational-yellow.svg)](LICENSE)
 
-The Music Library API is a portfolio-quality Spring Boot application that demonstrates modern backend development practices. It provides a complete solution for managing a music catalog with:
+The Music Library API is a portfolio-quality Spring Boot application that demonstrates modern backend development and **cloud infrastructure** practices. It provides a complete solution for managing a music catalog with:
 
 - **Artists** - Musicians and bands with biographical information
 - **Albums** - Music releases with detailed metadata (release dates, cover art, track counts, catalog numbers)
@@ -68,6 +84,9 @@ The Music Library API is a portfolio-quality Spring Boot application that demons
 ✅ Rich music library with 50 artists and 100+ albums  
 ✅ Album cover image support  
 ✅ Environment-based configuration  
+✅ **On-demand serverless architecture (98% cost reduction)**  
+✅ **Auto-shutdown after inactivity**  
+✅ **Real-time infrastructure status monitoring**  
 
 ### Tools & Technologies
 
@@ -85,15 +104,15 @@ This project was developed using **AI-assisted development**, with AI tools gene
 
 ### Project Timeline & Scope
 
-What started as a bootcamp final project became a 400+ hour deep dive into cloud infrastructure:
+What started as a bootcamp final project became a 500+ hour deep dive into cloud infrastructure:
 
 | Phase | Time Invested | What Happened |
 |-------|---------------|---------------|
 | Bootcamp project | ~50 hours | Built core API with AI assistance, deployed to Railway |
 | AWS migration | ~150 hours | Moved from Railway to AWS ECS/RDS |
-| Cost optimization | ~100+ hours | Converted from always-on ($55/mo) to on-demand ($1-5/mo) |
-| Tweaks and improvements | ~100+ hours | Analyzed and improved all aspects of UX |
-| **Total** | **400+ hours** | **108 builds**, countless debugging sessions |
+| Cost optimization | ~200 hours | Converted from always-on ($55/mo) to on-demand (~$1/mo) |
+| Tweaks and improvements | ~100+ hours | UX improvements, monitoring, email notifications |
+| **Total** | **500+ hours** | **110+ builds**, countless debugging sessions |
 
 Most bootcamp students probably completed this assignment in <20 hours by editing previous assignments where the code was provided. I chose to focus on learning AWS and enjoying AI-powered iterative development instead.
 
@@ -105,20 +124,24 @@ Most bootcamp students probably completed this assignment in <20 hours by editin
 - Directed AI tools with specific requirements and constraints
 
 **AWS Deployment & Infrastructure (Hands-On)**
-- Deployed to AWS: ECS Fargate, RDS MySQL, ECR, Lambda, EventBridge, S3
+- Deployed to AWS: ECS Fargate, RDS MySQL, ECR, Lambda, API Gateway, EventBridge, S3, CloudFront, SES
+- Built serverless launcher with real-time status monitoring
+- Implemented auto-shutdown system using CloudWatch metrics
 - Debugged real infrastructure issues: ECS circuit breaker rollbacks, DNS automation, IAM permissions
 - Solved the dynamic IP problem with Namesilo API integration
-- Iterated through 108+ Docker builds and 17+ ECS task revisions
+- Iterated through 110+ Docker builds and 17+ ECS task revisions
 
-**Cost Optimization (Post-Bootcamp)**
-- Redesigned architecture from always-on to on-demand
+**Cost Optimization (Major Focus)**
+- Redesigned architecture from always-on ($55/mo) to on-demand (~$1/mo)
+- Eliminated Application Load Balancer ($16+/mo savings)
 - Built S3-hosted landing page with Lambda-triggered startup
 - Implemented auto-shutdown after 30 minutes of inactivity
-- Reduced monthly costs from ~$55 to ~$1-5
+- **Achieved 98% cost reduction while maintaining professional UX**
 
 **Integration & Problem-Solving**
-- Connected: Spring Boot, MySQL, Postman, Lambda, EventBridge, Namesilo API, S3
+- Connected: Spring Boot, MySQL, Lambda, API Gateway, EventBridge, CloudWatch, SES, Namesilo API, S3, CloudFront
 - Pivoted from Route 53 to Namesilo when original DNS approach proved too complex
+- Calibrated CloudWatch CPU thresholds through production testing
 - When things broke, researched solutions and worked with AI to implement fixes
 
 ### What AI Did
@@ -127,7 +150,7 @@ AI tools (Claude, GPT, and others) generated:
 - Most of the Java/Spring Boot code (services, controllers, repositories)
 - Test files
 - HTML/CSS/JavaScript
-- Lambda function code
+- Lambda function code (Python boto3)
 - Shell scripts
 - This README
 
@@ -135,344 +158,130 @@ AI tools (Claude, GPT, and others) generated:
 
 This project demonstrates:
 
-- **Persistence** — 400+ hours, 108 builds, mass trial and error
-- **Cost consciousness** — Reduced hosting costs by 90%+ through architectural redesign
-- **Real infrastructure skills** — AWS deployment, debugging, integration
+- **Persistence** — 500+ hours, 110+ builds, mass trial and error
+- **Cost consciousness** — Reduced hosting costs by 98% through architectural redesign
+- **Real infrastructure skills** — AWS deployment, debugging, multi-service integration
+- **Serverless thinking** — On-demand resources, event-driven architecture
 - **Effective AI collaboration** — A genuine and growing professional skill
 - **Honesty** — I'd rather set accurate expectations than oversell
 
-The bootcamp taught Java basics. The 350 extra hours taught me how software actually gets deployed, operated, and optimized in the real world.
-
-
-### AWS Cloud Deployment
-
-The application has been successfully deployed to **Amazon Web Services (AWS)** using a modern containerized architecture with managed services. This production deployment demonstrates enterprise-grade cloud infrastructure skills and DevOps practices.
-
-**Live Production API**: [http://project.jcarl.net/api](http://project.jcarl.net/api)  
-**Custom Domain**: `project.jcarl.net` (via Namesilo DNS with API-based auto-update)
-
-#### AWS Architecture
-
-The deployment leverages multiple AWS services in a scalable, secure architecture:
-
-- **AWS RDS MySQL**: Managed database service for production data
-  - Endpoint: `music-library-db.cv4kawuomqo5.us-west-2.rds.amazonaws.com:3306`
-  - Automated backups, monitoring, and maintenance
-  - Security group configured for ECS access only
-
-- **AWS ECR**: Private Docker container registry
-  - Repository: `913212790762.dkr.ecr.us-west-2.amazonaws.com/music-library`
-  - Secure image storage and versioning
-
-- **AWS ECS Fargate**: Serverless container orchestration
-  - Cluster: `music-library-cluster1`
-  - Service: `music-library-service`
-  - No server management required
-  - Auto-scaling capabilities
-  - Dynamic IP address management
-
-- **Namesilo DNS**: Third-party DNS management with API-based automation
-  - Domain: `jcarl.net` managed through Namesilo
-  - A Record: `project.jcarl.net` → ECS Fargate public IP
-  - Automated DNS updates via Namesilo API at container startup
-  - Record ID: `<record-id>`
-  - TTL: 7207 seconds
-
-- **AWS CodeBuild**: Automated CI/CD pipeline
-  - Builds Docker images from source
-  - Pushes to ECR automatically
-  - Configured via `buildspec.yml`
-
-- **AWS S3**: Build artifact storage
-- **AWS IAM**: Role-based access control and security
-  - Task execution role for ECS container management
-  - Secure environment variable management
-
-#### Solving the Dynamic IP Challenge
-
-**Problem**: AWS ECS Fargate assigns dynamic public IP addresses that change whenever tasks restart, making it difficult to maintain a consistent API endpoint for users and documentation.
-
-**Solution**: Implemented a container-based automated DNS management system that updates Namesilo DNS at startup:
-
-1. **Container Scripts**: Created `/update-namesilo-dns.sh` and `/startup.sh` scripts embedded in the Docker image
-2. **IP Detection**: Uses ECS Task Metadata Endpoint V4 (`$ECS_CONTAINER_METADATA_URI_V4/task`) to retrieve the Fargate task's public IP
-3. **DNS Update**: Namesilo API call updates the A record for `project.jcarl.net`
-4. **Startup Integration**: Docker ENTRYPOINT runs `startup.sh` which calls the Namesilo DNS update script before starting the application
-5. **API Authentication**: Uses Namesilo API key stored as ECS environment variable
-6. **Required Tools**: Container includes `curl` and `jq` (installed in Alpine Linux base image)
-7. **Error Handling**: Graceful degradation - application starts even if DNS update fails
-
-**Technical Implementation**:
-```bash
-# Container detects its own IP and updates Namesilo DNS
-TASK_METADATA=$(curl -s $ECS_CONTAINER_METADATA_URI_V4/task)
-PUBLIC_IP=$(echo $TASK_METADATA | jq -r '.Containers[0].Networks[0].IPv4Addresses[0]')
-
-# Update Namesilo DNS record via API
-curl "https://www.namesilo.com/api/dnsUpdateRecord?version=1&type=xml&key=${NAMESILO_API_KEY}&domain=jcarl.net&rrid=<record-id>&rrhost=project&rrvalue=${PUBLIC_IP}&rrttl=7207"
-```
-
-**Benefits**:
-- ✅ Consistent API endpoint regardless of infrastructure changes
-- ✅ Self-contained solution - no external Lambda functions required
-- ✅ Updates DNS within seconds of container startup
-- ✅ Fully automated - no manual intervention required
-- ✅ Professional custom domain instead of raw IP addresses
-- ✅ No AWS IAM permissions required for DNS updates
-- ✅ Works with third-party DNS providers
-
-This solution showcases real-world DevOps problem-solving: identifying infrastructure limitations and implementing automated solutions using container-native approaches and third-party API integration.
-
-#### Docker Containerization
-
-The application uses a **multi-stage Docker build** for optimal image size and security. Two Dockerfile versions are maintained:
-
-**Current Version (Namesilo DNS)**:
-```dockerfile
-# Stage 1: Build with Maven
-FROM maven:3.9-eclipse-temurin-17 AS build
-WORKDIR /app
-COPY pom.xml .
-COPY src ./src
-RUN mvn clean package -DskipTests
-
-# Stage 2: Runtime with OpenJDK + Namesilo DNS automation
-FROM eclipse-temurin:17-jre-alpine
-WORKDIR /app
-
-# Install curl and jq for DNS updates
-RUN apk add --no-cache curl jq
-
-# Copy DNS update scripts
-COPY update-namesilo-dns.sh /update-namesilo-dns.sh
-COPY startup.sh /startup.sh
-RUN chmod +x /update-namesilo-dns.sh /startup.sh
-
-COPY --from=build /app/target/*.jar app.jar
-EXPOSE 8080
-ENTRYPOINT ["/startup.sh"]
-```
-
-**Previous Version (Route 53 DNS)**: Available in git history, used AWS CLI for Route 53 DNS updates
-
-**Benefits**:
-- Smaller final image (only JRE, not full JDK)
-- Build dependencies not included in runtime
-- Faster deployments and reduced attack surface
-- Automated DNS management at container startup
-- Shell compatibility with Alpine Linux (ash shell)
-
-#### Deployment Validation
-
-The AWS deployment was thoroughly tested using Postman:
-- **182 API requests** executed successfully
-- **600 tests** passed (100% pass rate)
-- All CRUD operations validated
-- Relationship queries verified
-- Performance metrics collected
-
-This comprehensive testing ensures production readiness and API reliability.
+The bootcamp taught Java basics. The 450+ extra hours taught me how software actually gets deployed, operated, and optimized in the real world.
 
 ---
 
-### AWS Cost Management
+## 🏗️ On-Demand Architecture
 
-Understanding and managing AWS costs is crucial for maintaining a cost-effective deployment. This section provides guidance on optimizing your AWS spending while keeping the application available when needed.
+The application uses a **serverless-first architecture** that scales to zero when not in use, dramatically reducing costs while maintaining a professional user experience.
 
-#### Cost Breakdown
+### Architecture Diagram
 
-The Music Library API deployment incurs the following monthly costs:
-
-| Service | Cost | Notes |
-|---------|------|-------|
-| **RDS MySQL (db.t3.micro)** | ~$13/month | ~$0.017/hour, runs continuously |
-| **ECS Fargate** | ~$1.20/day when running | ~$0.05/hour, only when tasks are active |
-| **ECR + S3** | ~$0.10/month | Storage for Docker images and artifacts |
-| **Data Transfer** | Variable | Minimal for development/demo usage |
-
-**Total Cost Scenarios:**
-- **Always Running**: ~$49/month (RDS + ECS 24/7)
-- **Daily Use** (ECS stopped overnight): ~$25/month
-- **On-Demand** (both stopped): ~$0.10/month (storage only)
-
-#### How to Stop the Deployment
-
-To minimize costs when not actively using the application:
-
-##### Stop ECS Service (Recommended for Daily Savings)
-
-1. **Navigate to ECS Console**:
-   - Go to [AWS ECS Console](https://console.aws.amazon.com/ecs/)
-   - Select region: **us-west-2**
-   - Click on cluster: **music-library-cluster1**
-
-2. **Update Service**:
-   - Click on service: **music-library-service**
-   - Click **Update** button (top right)
-   - Under **Desired tasks**, change from `1` to `0`
-   - Click **Update** at the bottom
-
-3. **Verify**:
-   - Wait 1-2 minutes for task to stop
-   - Service status should show "0 running tasks"
-   - **Savings**: ~$1.20/day (~$36/month)
-
-##### Stop RDS Database (For Extended Breaks)
-
-⚠️ **Note**: RDS can only be stopped for 7 days maximum. After 7 days, AWS automatically restarts it.
-
-1. **Navigate to RDS Console**:
-   - Go to [AWS RDS Console](https://console.aws.amazon.com/rds/)
-   - Select region: **us-west-2**
-   - Click on database: **music-library-db**
-
-2. **Stop Database**:
-   - Click **Actions** dropdown
-   - Select **Stop temporarily**
-   - Confirm the action
-
-3. **Verify**:
-   - Status changes to "Stopping" then "Stopped"
-   - **Savings**: ~$13/month (while stopped)
-   - **Important**: Database will auto-restart after 7 days
-
-#### How to Start the Deployment
-
-When you need to use the application again:
-
-##### Start RDS Database (If Stopped)
-
-1. **Navigate to RDS Console**:
-   - Go to [AWS RDS Console](https://console.aws.amazon.com/rds/)
-   - Select region: **us-west-2**
-   - Click on database: **music-library-db**
-
-2. **Start Database**:
-   - Click **Actions** dropdown
-   - Select **Start**
-   - Wait 3-5 minutes for database to become available
-
-3. **Verify**:
-   - Status changes to "Starting" then "Available"
-   - Endpoint becomes accessible
-
-##### Start ECS Service
-
-1. **Navigate to ECS Console**:
-   - Go to [AWS ECS Console](https://console.aws.amazon.com/ecs/)
-   - Select region: **us-west-2**
-   - Click on cluster: **music-library-cluster1**
-
-2. **Update Service**:
-   - Click on service: **music-library-service**
-   - Click **Update** button
-   - Under **Desired tasks**, change from `0` to `1`
-   - Click **Update**
-
-3. **Wait for Deployment**:
-   - Task status changes to "PROVISIONING" → "PENDING" → "RUNNING"
-   - **Expected time**: 2-3 minutes
-   - Health checks must pass before accepting traffic
-
-4. **Verify Application**:
-   ```bash
-   curl <IP Dynamically assigned> (auto-updated via Namesilo DNS)
-   ```
-   - Should return API information
-   - Swagger UI should be accessible
-
-#### Best Practices
-
-Choose a cost management strategy based on your usage pattern:
-
-##### For Daily Development
-- **Stop ECS overnight** (set desired tasks to 0)
-- **Keep RDS running** for quick morning startups
-- **Cost**: ~$25/month
-- **Startup time**: 2-3 minutes (ECS only)
-- **Best for**: Active development, frequent testing
-
-##### For Weekend/Short Breaks (1-7 days)
-- **Stop both ECS and RDS**
-- **Cost**: ~$0.10/month (storage only)
-- **Startup time**: 5-8 minutes (RDS + ECS)
-- **Best for**: Weekends, short vacations
-
-##### For Long Breaks (7+ days)
-- **Stop ECS** (set desired tasks to 0)
-- **Keep RDS running** (it will auto-restart anyway)
-- **Cost**: ~$13/month
-- **Startup time**: 2-3 minutes when needed
-- **Best for**: Extended breaks, infrequent use
-
-##### For Job Hunting/Portfolio Demos
-- **Keep both stopped** by default
-- **Start on-demand** before interviews/demos
-- **Cost**: ~$0.10/month + usage
-- **Startup time**: 5-8 minutes
-- **Best for**: Showing to employers, portfolio demonstrations
-
-#### AWS CLI Quick Commands
-
-For faster management, use AWS CLI commands:
-
-##### Stop Services
-```bash
-# Stop ECS service (set desired count to 0)
-aws ecs update-service \
-  --cluster music-library-cluster1 \
-  --service music-library-service \
-  --desired-count 0 \
-  --region us-west-2
-
-# Stop RDS database
-aws rds stop-db-instance \
-  --db-instance-identifier music-library-db \
-  --region us-west-2
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    ALWAYS-ON LAYER (Pennies/month)                      │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│   ┌─────────────────────┐         ┌─────────────────────┐              │
+│   │  S3 Static Site     │         │  CloudFront + ACM   │              │
+│   │  projectlauncher.   │ ──────► │  HTTPS termination  │              │
+│   │  jcarl.net          │         │  SSL certificate    │              │
+│   └─────────────────────┘         └─────────────────────┘              │
+│              │                                                          │
+│              ▼                                                          │
+│   ┌─────────────────────────────────────────────────────┐              │
+│   │              API Gateway + Lambda                    │              │
+│   │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐ │              │
+│   │  │ /status     │  │ /start      │  │ Auto-       │ │              │
+│   │  │ GET         │  │ POST        │  │ Shutdown    │ │              │
+│   │  │ Check state │  │ Start infra │  │ (EventBridge│ │              │
+│   │  └─────────────┘  └─────────────┘  │  triggered) │ │              │
+│   │                                     └─────────────┘ │              │
+│   └─────────────────────────────────────────────────────┘              │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼ (On-Demand Start)
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    ON-DEMAND LAYER (Pay only when running)              │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│   ┌─────────────────────┐         ┌─────────────────────┐              │
+│   │  RDS MySQL          │         │  ECS Fargate        │              │
+│   │  (starts first)     │ ──────► │  (starts when DB    │              │
+│   │  ~2-3 min startup   │         │   is available)     │              │
+│   └─────────────────────┘         └─────────────────────┘              │
+│                                              │                          │
+│                                              ▼                          │
+│                                   ┌─────────────────────┐              │
+│                                   │  Namesilo DNS API   │              │
+│                                   │  Updates A record   │              │
+│                                   │  project.jcarl.net  │              │
+│                                   └─────────────────────┘              │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼ (After 30 min idle)
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    AUTO-SHUTDOWN FLOW                                   │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│   EventBridge (every 5 min) ──► Lambda: Check CloudWatch CPU metrics   │
+│                                         │                               │
+│                                         ▼                               │
+│                                   CPU < 2% for 30 min?                 │
+│                                         │                               │
+│                              ┌──────────┴──────────┐                   │
+│                              ▼                     ▼                    │
+│                           No: Continue         Yes: Stop ECS + RDS     │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
 ```
 
-##### Start Services
-```bash
-# Start RDS database
-aws rds start-db-instance \
-  --db-instance-identifier music-library-db \
-  --region us-west-2
+### Startup Sequence
 
-# Wait for RDS to be available (optional)
-aws rds wait db-instance-available \
-  --db-instance-identifier music-library-db \
-  --region us-west-2
+When a user clicks "Launch Music Library":
 
-# Start ECS service (set desired count to 1)
-aws ecs update-service \
-  --cluster music-library-cluster1 \
-  --service music-library-service \
-  --desired-count 1 \
-  --region us-west-2
+| Step | Action | Duration |
+|------|--------|----------|
+| 1 | Lambda receives POST request | <1 sec |
+| 2 | Lambda calls `rds.start_db_instance()` | <1 sec |
+| 3 | RDS transitions: stopped → starting → available | ~2-3 min |
+| 4 | Lambda calls `ecs.update_service(desiredCount=1)` | <1 sec |
+| 5 | ECS provisions Fargate task | ~1-2 min |
+| 6 | Container runs startup script (DNS update) | ~10 sec |
+| 7 | Spring Boot application starts | ~30-60 sec |
+| 8 | Health checks pass, app ready | - |
+| **Total** | | **~5-7 min** |
+
+### Auto-Shutdown Logic
+
+The auto-shutdown Lambda runs every 5 minutes via EventBridge and:
+
+1. **Queries CloudWatch** for ECS CPU utilization (30-minute average)
+2. **Checks threshold**: If average CPU < 2%, services are idle
+3. **Stops ECS**: Sets desired count to 0
+4. **Stops RDS**: Calls `stop_db_instance()`
+5. **Logs action**: Records shutdown in CloudWatch Logs
+
+**Why 2% threshold?** Spring Boot idles at ~10-12% CPU. The 2% threshold ensures we only shut down when truly idle (no requests), not during normal low-activity periods.
+
+### Real-Time Status Monitoring
+
+The status Lambda provides live infrastructure state:
+
+```json
+{
+  "database_status": "available",
+  "application_status": "RUNNING",
+  "public_ip": "44.xxx.xxx.xxx",
+  "message": "Application is running"
+}
 ```
 
-##### Check Status
-```bash
-# Check ECS service status
-aws ecs describe-services \
-  --cluster music-library-cluster1 \
-  --services music-library-service \
-  --region us-west-2 \
-  --query 'services[0].[serviceName,runningCount,desiredCount]' \
-  --output table
-
-# Check RDS status
-aws rds describe-db-instances \
-  --db-instance-identifier music-library-db \
-  --region us-west-2 \
-  --query 'DBInstances[0].[DBInstanceIdentifier,DBInstanceStatus]' \
-  --output table
-```
-
-**Prerequisites for CLI commands:**
-- Install [AWS CLI](https://aws.amazon.com/cli/)
-- Configure credentials: `aws configure`
-- Set default region to `us-west-2`
+The web UI polls this endpoint every 10 seconds during startup, showing:
+- Database: Stopped → Starting → Available
+- App: PENDING → PROVISIONING → ACTIVATING → RUNNING
+- Progress bar with visual feedback
+- Direct IP link (bypasses DNS propagation delays)
 
 ---
 
@@ -484,7 +293,7 @@ aws rds describe-db-instances \
 - **Maven**: Build automation and dependency management
 
 ### Database & Persistence
-- **MySQL**: 8.0+ (production)
+- **MySQL**: 8.4 LTS (production on AWS RDS)
 - **H2**: In-memory database (testing)
 - **Spring Data JPA**: Data access abstraction
 - **Hibernate**: ORM implementation
@@ -501,16 +310,28 @@ aws rds describe-db-instances \
 - **Testcontainers**: Real MySQL containers for integration tests
 - **JaCoCo**: 0.8.12 (code coverage reporting)
 
-### Containerization & Deployment
-- **Docker**: Multi-stage containerization with Maven and OpenJDK
-- **AWS RDS**: Managed MySQL database service
-- **AWS ECR**: Elastic Container Registry for Docker images
+### AWS Cloud Services
+- **AWS RDS MySQL**: Managed database with on-demand start/stop
 - **AWS ECS Fargate**: Serverless container orchestration
-- **AWS CloudShell**: Cloud-based shell environment for Docker image building
-- **Namesilo DNS**: Third-party DNS provider with API-based automation
+- **AWS ECR**: Private Docker container registry
+- **AWS Lambda**: Serverless functions (status, startup, auto-shutdown)
+- **AWS API Gateway**: REST API endpoints for Lambda functions
+- **AWS EventBridge**: Scheduled triggers for auto-shutdown
+- **AWS CloudWatch**: Metrics, logs, and monitoring
+- **AWS S3**: Static website hosting for launcher
+- **AWS CloudFront**: CDN with SSL/TLS termination
+- **AWS ACM**: SSL certificate management
+- **AWS SES**: Email notifications (DKIM verified)
+- **AWS IAM**: Role-based access control and security
 - **AWS CodeBuild**: CI/CD pipeline for automated builds
-- **AWS S3**: Storage for build artifacts
-- **AWS IAM**: Identity and access management
+
+### DNS & Networking
+- **Namesilo DNS**: Third-party DNS with API-based automation
+- **Dynamic IP Management**: Container-based DNS updates at startup
+
+### Containerization
+- **Docker**: Multi-stage builds for optimized images
+- **Alpine Linux**: Lightweight container base image
 
 ### Utilities
 - **Lombok**: Boilerplate code reduction
@@ -539,14 +360,22 @@ aws rds describe-db-instances \
 - **Comprehensive Testing**: Unit, integration, and repository tests
 - **Code Coverage**: JaCoCo reports for test coverage metrics
 
+### Infrastructure Features
+- **On-Demand Architecture**: Services start only when needed
+- **Auto-Shutdown**: Automatic resource cleanup after 30 minutes idle
+- **Real-Time Monitoring**: Live status API for infrastructure state
+- **Cost Optimization**: 98% reduction vs always-on architecture
+- **Email Notifications**: SES-powered alerts for application lifecycle
+- **Dynamic DNS**: Automatic A record updates for ephemeral IPs
+
 ---
 
 ## 📋 Prerequisites
 
-- **Java 17** or higher installed ([Download](https://www.oracle.com/java/technologies/downloads/#java17))
-- **MySQL 8.0+** running locally or accessible remotely ([Download](https://dev.mysql.com/downloads/mysql/))
-- **Maven 3.6+** for building the project ([Download](https://maven.apache.org/download.cgi))
-- **Git** for version control ([Download](https://git-scm.com/downloads))
+- **Java 17** or higher installed [Download](https://www.oracle.com/java/technologies/downloads/#java17)
+- **MySQL 8.0+** running locally or accessible remotely [Download](https://dev.mysql.com/downloads/mysql/)
+- **Maven 3.6+** for building the project [Download](https://maven.apache.org/download.cgi)
+- **Git** for version control [Download](https://git-scm.com/downloads)
 
 ---
 
@@ -555,8 +384,8 @@ aws rds describe-db-instances \
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
-cd Week16/music-library
+git clone https://github.com/jc-gh25/MusicLibrary.git
+cd music-library
 ```
 
 ### 2. Database Setup
@@ -941,7 +770,7 @@ music-library/
 │   │       ├── application.yaml                # Main configuration
 │   │       ├── application-test.yaml           # Test profile configuration
 │   │       └── static/                         # Static web resources
-│   │           ├── index.html                  # API welcome page
+│   │           ├── index.html                  # API welcome/launcher page
 │   │           ├── library.html                # Music library browser UI
 │   │           └── covers/                     # Album cover images directory
 │   └── test/
@@ -963,6 +792,8 @@ music-library/
 ├── populate-music-library.bat                  # Windows data loader script
 ├── populate-music-library.sh                   # Unix/Mac data loader script
 ├── Dockerfile                                  # Docker containerization config
+├── startup.sh                                  # Container startup with DNS update
+├── update-namesilo-dns.sh                      # Namesilo API DNS update script
 ├── docker-compose.yaml                         # Docker Compose configuration
 └── Music-Library-Sample-Data.postman_collection.json # Postman API collection
 ```
@@ -1028,12 +859,13 @@ Required environment variables:
 
 | Variable | Description | Example |
 |----------|-------------|---------|
-| `MYSQL_HOST` | MySQL server hostname | `localhost` |
+| `MYSQL_HOST` | MySQL server hostname | `localhost` or RDS endpoint |
 | `MYSQL_PORT` | MySQL server port | `3306` |
 | `MYSQL_DATABASE` | Database name | `music_library` |
 | `MYSQL_USER` | Database username | `music_user` |
 | `MYSQL_PASSWORD` | Database password | `your_secure_password` |
 | `PORT` | Server port (optional) | `8080` |
+| `NAMESILO_API_KEY` | DNS update API key (ECS only) | `your_api_key` |
 
 ### Test Configuration (application-test.yaml)
 
@@ -1154,8 +986,8 @@ mvn test
 # Run specific test class
 mvn test -Dtest=ArtistControllerIT
 
-# Run tests
-mvn test
+# Run tests with coverage report
+mvn verify
 
 # View test results
 # Individual test results are in target/surefire-reports/
@@ -1169,37 +1001,6 @@ Test execution results are generated by **Maven Surefire**:
 - XML and text reports for each test class
 - Console output shows test pass/fail summary
 
-### Test Configuration
-
-Tests use a separate profile (`test`) with H2 database:
-
-```yaml
-# application-test.yaml
-spring:
-  datasource:
-    url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
-  jpa:
-    hibernate:
-      ddl-auto: create-drop
-  flyway:
-    enabled: false
-```
-
-The Maven Surefire plugin automatically activates the test profile:
-
-```xml
-<plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-surefire-plugin</artifactId>
-    <configuration>
-        <systemPropertyVariables>
-            <spring.profiles.active>test</spring.profiles.active>
-        </systemPropertyVariables>
-    </configuration>
-</plugin>
-```
-
 ### Test Best Practices
 
 ✅ Use `@TestInstance(PER_CLASS)` for efficient test data reuse  
@@ -1211,387 +1012,190 @@ The Maven Surefire plugin automatically activates the test profile:
 
 ---
 
-## Deployment Options
+## ☁️ AWS Cloud Deployment
 
-The Music Library API supports multiple deployment strategies, from local development to production cloud infrastructure.
-
----
-
-### 1. AWS Cloud Deployment (Production)
+The application is deployed on **Amazon Web Services (AWS)** using a modern, cost-optimized architecture that combines always-on serverless components with on-demand compute resources.
 
 **Live Production API**: [http://project.jcarl.net/api](http://project.jcarl.net/api)  
-**Swagger UI**: [http://project.jcarl.net/swagger-ui/index.html](http://project.jcarl.net/swagger-ui/index.html)  
-**Custom Domain**: `project.jcarl.net`
+**Launcher Page**: [https://projectlauncher.jcarl.net](https://projectlauncher.jcarl.net)  
+**Custom Domain**: `project.jcarl.net` (via Namesilo DNS with API-based auto-update)
 
-The application is deployed on AWS using a containerized, serverless architecture with managed services.
+### AWS Services Used
 
-#### AWS Services Tried or Implemented
+| Service | Purpose | Always-On? |
+|---------|---------|------------|
+| **S3** | Static website hosting (launcher) | ✅ Yes (pennies/mo) |
+| **CloudFront** | CDN + SSL termination | ✅ Yes (pennies/mo) |
+| **ACM** | SSL certificate | ✅ Yes (free) |
+| **API Gateway** | REST endpoints for Lambda | ✅ Yes (pennies/mo) |
+| **Lambda** | Status check, startup, auto-shutdown | ✅ Yes (pennies/mo) |
+| **EventBridge** | Scheduled auto-shutdown trigger | ✅ Yes (free) |
+| **CloudWatch** | Metrics, logs, monitoring | ✅ Yes (minimal) |
+| **SES** | Email notifications | ✅ Yes (pennies/mo) |
+| **RDS MySQL** | Production database | ❌ On-demand |
+| **ECS Fargate** | Container orchestration | ❌ On-demand |
+| **ECR** | Docker image registry | ✅ Yes (minimal) |
+| **IAM** | Access control | ✅ Yes (free) |
 
-| Service | Purpose | Configuration |
-|---------|---------|---------------|
-| **RDS MySQL** | Production database | `music-library-db.cv4kawuomqo5.us-west-2.rds.amazonaws.com` |
-| **ECR** | Docker image registry | `913212790762.dkr.ecr.us-west-2.amazonaws.com/music-library` |
-| **ECS Fargate** | Container orchestration | Cluster: `music-library-cluster1` |
-| **Route 53** | DNS management | Domain: `project.jcarl.net` with automated updates |
-| **Lambda** | Infrastructure automation | Auto-updates DNS on ECS IP changes |
-| **EventBridge** | Event monitoring | Triggers Lambda on ECS task state changes |
-| **CodeBuild** | CI/CD pipeline | Automated builds with `buildspec.yml` |
-| **S3** | Build artifacts | Secure storage for deployment files |
-| **IAM** | Access management | Role-based security policies |
+### Lambda Functions
 
-#### Step-by-Step AWS Deployment Process
+Three Lambda functions power the on-demand architecture:
 
-##### 1. Database Setup (RDS)
-
-```bash
-# Create RDS MySQL instance
-aws rds create-db-instance \
-  --db-instance-identifier music-library-db \
-  --db-instance-class db.t3.micro \
-  --engine mysql \
-  --master-username admin \
-  --master-user-password <password> \
-  --allocated-storage 20 \
-  --vpc-security-group-ids <security-group-id>
-
-# Configure security group to allow ECS access
-aws ec2 authorize-security-group-ingress \
-  --group-id <rds-security-group-id> \
-  --protocol tcp \
-  --port 3306 \
-  --source-group <ecs-security-group-id>
+#### 1. Status Lambda (`/status` endpoint)
+```python
+# Queries ECS and RDS to return current infrastructure state
+{
+  "database_status": "available",      # RDS status
+  "application_status": "RUNNING",     # ECS task status
+  "public_ip": "44.xxx.xxx.xxx",       # Fargate task public IP
+  "message": "Application is running"
+}
 ```
 
-**RDS Endpoint**: `music-library-db.cv4kawuomqo5.us-west-2.rds.amazonaws.com:3306`
+**Key features:**
+- Extracts public IP from ECS task ENI attachments
+- Handles various RDS states (stopped, starting, available, configuring-enhanced-monitoring)
+- Returns actionable status for frontend UI
 
-##### 2. Container Registry Setup (ECR)
-
-```bash
-# Create ECR repository
-aws ecr create-repository \
-  --repository-name music-library \
-  --region us-west-2
-
-# Authenticate Docker to ECR
-aws ecr get-login-password --region us-west-2 | \
-  docker login --username AWS \
-  --password-stdin 913212790762.dkr.ecr.us-west-2.amazonaws.com
-
-# Build and push Docker image
-docker build -t music-library .
-docker tag music-library:latest \
-  913212790762.dkr.ecr.us-west-2.amazonaws.com/music-library:latest
-docker push 913212790762.dkr.ecr.us-west-2.amazonaws.com/music-library:latest
+#### 2. Startup Lambda (`/start` endpoint)
+```python
+# Orchestrates the startup sequence
+1. Start RDS instance (rds.start_db_instance())
+2. Wait for RDS to become available
+3. Start ECS service (ecs.update_service(desiredCount=1))
+4. Optionally trigger email notification via SES
 ```
 
-**ECR Repository**: `913212790762.dkr.ecr.us-west-2.amazonaws.com/music-library`
+**Key features:**
+- Handles idempotency (safe to call multiple times)
+- Coordinates timing between RDS and ECS
+- Self-invocation pattern for long-running operations
 
-##### 3. CodeBuild Configuration (CI/CD)
-
-Create `buildspec.yml` in project root:
-
-```yaml
-version: 0.2
-
-phases:
-  pre_build:
-    commands:
-      - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 913212790762.dkr.ecr.us-west-2.amazonaws.com
-  build:
-    commands:
-      - echo Build started on `date`
-      - echo Building the Docker image...
-      - docker build -t music-library .
-      - docker tag music-library:latest 913212790762.dkr.ecr.us-west-2.amazonaws.com/music-library:latest
-  post_build:
-    commands:
-      - echo Build completed on `date`
-      - echo Pushing the Docker image...
-      - docker push 913212790762.dkr.ecr.us-west-2.amazonaws.com/music-library:latest
+#### 3. Auto-Shutdown Lambda (EventBridge triggered)
+```python
+# Runs every 5 minutes via EventBridge
+1. Query CloudWatch for ECS CPU metrics (30-min average)
+2. If CPU < 2%: services are idle
+3. Stop ECS service (desiredCount=0)
+4. Stop RDS instance
+5. Log shutdown action
 ```
 
-```bash
-# Create CodeBuild project
-aws codebuild create-project \
-  --name music-library-build \
-  --source type=GITHUB,location=<github-repo-url> \
-  --artifacts type=NO_ARTIFACTS \
-  --environment type=LINUX_CONTAINER,image=aws/codebuild/standard:7.0,computeType=BUILD_GENERAL1_SMALL \
-  --service-role <codebuild-role-arn>
+**Key features:**
+- CloudWatch metrics analysis for idle detection
+- Startup protection (won't shutdown during boot)
+- 2% CPU threshold calibrated through production testing
+- 30-second Lambda timeout to accommodate CloudWatch API calls
+
+### RDS MySQL Configuration
+
+**Current Instance**: Optimizing for cold-start performance
+
+| Setting | Value |
+|---------|-------|
+| Engine | MySQL 8.4 LTS |
+| Storage | 20 GB gp2 |
+| Endpoint | `music-library-db.cv4kawuomqo5.us-west-2.rds.amazonaws.com` |
+| Security | VPC security group, ECS access only |
+
+**Database Evolution:**
+```
+db.t3.micro → db.t4g.micro (Graviton2, 20% faster)
+                    ↓
+         Currently testing larger instances
+         for faster cold-start times
 ```
 
-##### 4. ECS Cluster Setup
+### ECS Fargate Configuration
 
-```bash
-# Create ECS cluster
-aws ecs create-cluster \
-  --cluster-name music-library-cluster1 \
-  --region us-west-2
+| Setting | Value |
+|---------|-------|
+| Cluster | `music-library-cluster1` |
+| Service | `music-library-service` |
+| Task CPU | 256 (0.25 vCPU) |
+| Task Memory | 512 MB |
+| Launch Type | FARGATE |
+| Network | awsvpc with public IP |
 
-# Register task definition
-aws ecs register-task-definition \
-  --family music-library-task \
-  --network-mode awsvpc \
-  --requires-compatibilities FARGATE \
-  --cpu 256 \
-  --memory 512 \
-  --container-definitions '[
-    {
-      "name": "music-library",
-      "image": "913212790762.dkr.ecr.us-west-2.amazonaws.com/music-library:latest",
-      "portMappings": [{"containerPort": 80, "protocol": "tcp"}],
-      "environment": [
-        {"name": "MYSQL_HOST", "value": "music-library-db.cv4kawuomqo5.us-west-2.rds.amazonaws.com"},
-        {"name": "MYSQL_PORT", "value": "3306"},
-        {"name": "MYSQL_DATABASE", "value": "music_library"},
-        {"name": "MYSQL_USER", "value": "admin"},
-        {"name": "MYSQL_PASSWORD", "value": "<password>"}
-      ]
-    }
-  ]'
-```
+### Docker Containerization
 
-##### 5. ECS Service Creation
-
-```bash
-# Create ECS service
-aws ecs create-service \
-  --cluster music-library-cluster1 \
-  --service-name music-library-service \
-  --task-definition music-library-task \
-  --desired-count 1 \
-  --launch-type FARGATE \
-  --network-configuration "awsvpcConfiguration={
-    subnets=[<subnet-id>],
-    securityGroups=[<security-group-id>],
-    assignPublicIp=ENABLED
-  }"
-```
-
-**ECS Service**: `music-library-service` in cluster `music-library-cluster1`
-
-#### Security Configuration
-
-##### ECS Security Group
-
-```bash
-# Allow HTTP traffic on port 80
-aws ec2 authorize-security-group-ingress \
-  --group-id <ecs-security-group-id> \
-  --protocol tcp \
-  --port 80 \
-  --cidr 0.0.0.0/0
-
-# Allow outbound to RDS
-aws ec2 authorize-security-group-egress \
-  --group-id <ecs-security-group-id> \
-  --protocol tcp \
-  --port 3306 \
-  --destination-group <rds-security-group-id>
-```
-
-##### RDS Security Group
-
-```bash
-# Allow inbound from ECS only
-aws ec2 authorize-security-group-ingress \
-  --group-id <rds-security-group-id> \
-  --protocol tcp \
-  --port 3306 \
-  --source-group <ecs-security-group-id>
-```
-
-#### Environment Variables
-
-The application is configured via environment variables in the ECS task definition:
-
-```yaml
-environment:
-  - MYSQL_HOST=music-library-db.cv4kawuomqo5.us-west-2.rds.amazonaws.com
-  - MYSQL_PORT=3306
-  - MYSQL_DATABASE=music_library
-  - MYSQL_USER=admin
-  - MYSQL_PASSWORD=<secure-password>
-  - PORT=80
-```
-
-These variables are referenced in `application.yaml`:
-
-```yaml
-spring:
-  datasource:
-    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?useSSL=false
-    username: ${MYSQL_USER}
-    password: ${MYSQL_PASSWORD}
-server:
-  port: ${PORT:80}
-```
-
-#### Docker Multi-Stage Build
-
-The `Dockerfile` uses a multi-stage build for optimization:
+The application uses a **multi-stage Docker build** optimized for size and includes DNS automation:
 
 ```dockerfile
-# Stage 1: Build application with Maven
+# Stage 1: Build with Maven
 FROM maven:3.9-eclipse-temurin-17 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
 RUN mvn clean package -DskipTests
 
-# Stage 2: Create runtime image
+# Stage 2: Runtime with DNS automation
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
+
+# Install curl and jq for DNS updates
+RUN apk add --no-cache curl jq
+
+# Copy DNS update scripts
+COPY update-namesilo-dns.sh /update-namesilo-dns.sh
+COPY startup.sh /startup.sh
+RUN chmod +x /update-namesilo-dns.sh /startup.sh
+
 COPY --from=build /app/target/*.jar app.jar
-EXPOSE 80
-ENTRYPOINT ["java", "-jar", "app.jar"]
+EXPOSE 8080
+ENTRYPOINT ["/startup.sh"]
+```
+
+### Solving the Dynamic IP Challenge
+
+**Problem**: AWS ECS Fargate assigns dynamic public IP addresses that change whenever tasks restart.
+
+**Solution**: Container-based automated DNS management:
+
+1. **Container startup** runs `startup.sh`
+2. **IP Detection** uses ECS Task Metadata Endpoint V4 to get public IP
+3. **DNS Update** calls Namesilo API to update A record
+4. **Application starts** after DNS is updated
+
+```bash
+# Container detects its own IP and updates Namesilo DNS
+TASK_METADATA=$(curl -s $ECS_CONTAINER_METADATA_URI_V4/task)
+PUBLIC_IP=$(echo $TASK_METADATA | jq -r '.Containers[0].Networks[0].IPv4Addresses[0]')
+
+# Update Namesilo DNS record via API
+curl "https://www.namesilo.com/api/dnsUpdateRecord?version=1&type=xml&key=${NAMESILO_API_KEY}&domain=jcarl.net&rrid=<record-id>&rrhost=project&rrvalue=${PUBLIC_IP}&rrttl=7207"
 ```
 
 **Benefits**:
-- **Smaller image size**: Only JRE in final image (~150MB vs ~600MB)
-- **Faster deployments**: Less data to transfer
-- **Better security**: Build tools not in production image
-- **Layer caching**: Maven dependencies cached separately
+- ✅ Consistent API endpoint regardless of infrastructure changes
+- ✅ Self-contained solution - no external Lambda required for DNS
+- ✅ Updates DNS within seconds of container startup
+- ✅ Fully automated - no manual intervention
+- ✅ Direct IP provided to users (bypasses DNS propagation)
 
-#### Deployment Validation
+### Deployment Validation
 
-The AWS deployment was validated using comprehensive Postman testing:
-
-- ✅ **182 API requests** executed successfully
-- ✅ **600 tests** passed (100% pass rate)
-- ✅ **19.2 seconds** total execution time
-- ✅ All CRUD operations verified
-- ✅ Relationship queries validated
-- ✅ Error handling confirmed
-- ✅ Pagination and sorting tested
-
-#### AWS Deployment Benefits
-
-- **Scalability**: ECS Fargate auto-scales based on demand
-- **Reliability**: Managed services with built-in redundancy
-- **Security**: VPC isolation, security groups, IAM roles
-- **Maintenance**: Automated backups, patching, monitoring
-- **Cost-effective**: Pay only for resources used
-- **CI/CD**: Automated builds and deployments with CodeBuild
+The AWS deployment was thoroughly tested using Postman:
+- **182 API requests** executed successfully
+- **600 tests** passed (100% pass rate)
+- All CRUD operations validated
+- Relationship queries verified
+- Performance metrics collected
 
 ---
 
-### 2. Railway Platform (Alternative Cloud Option - Not Currently Used)
+## 🛤️ Deployment Journey & Learning Experiences
 
-*Evaluated but not selected for production deployment.*
-
-Railway is a modern cloud platform that simplifies deployment with automatic CI/CD from GitHub.
-
-#### Railway Setup
-
-1. **Create Railway Account**: [railway.app](https://railway.app)
-2. **Create New Project**: Connect GitHub repository
-3. **Add MySQL Database**: Railway provides managed MySQL
-4. **Configure Environment Variables**:
-   ```
-   MYSQL_HOST=${{MYSQLHOST}}
-   MYSQL_PORT=${{MYSQLPORT}}
-   MYSQL_DATABASE=${{MYSQLDATABASE}}
-   MYSQL_USER=${{MYSQLUSER}}
-   MYSQL_PASSWORD=${{MYSQLPASSWORD}}
-   ```
-5. **Deploy**: Railway automatically builds and deploys on git push
-
-#### Railway Benefits
-
-- Zero-configuration deployments
-- Automatic HTTPS certificates
-- Built-in monitoring and logs
-- Free tier available for testing
-- GitHub integration for CI/CD
-
----
-
-### 3. ngrok Tunneling (Local Development)
-
-**Example URL**: `https://<your-subdomain>.ngrok-free.dev` (generated when you run ngrok)
-
-ngrok provides secure tunneling to expose your local development server to the internet.
-
-#### Prerequisites
-
-1. Java 17 or higher installed
-2. MySQL 8.0+ running locally
-3. ngrok account ([Sign up](https://ngrok.com/))
-4. ngrok installed locally
-
-#### Deployment Steps
-
-1. **Start the Application**
-   - Ensure MySQL is running
-   - Set environment variables for database connection
-   - Run the Spring Boot application: `mvn spring-boot:run`
-
-2. **Start ngrok Tunnel**
-   - Open a terminal and run: `ngrok http 8080`
-   - ngrok will provide a public URL (e.g., https://x-x-x.ngrok-free.dev)
-   - This URL forwards to your local application
-
-3. **Access the API**
-   - Use the ngrok URL to access your API from anywhere
-   - Swagger UI: `https://x-x-x.ngrok-free.dev/swagger-ui.html`
-   - API endpoints: `https://x-x-x.ngrok-free.dev/api`
-
-#### Configuration
-
-The application is configured with environment variables:
-
-```yaml
-server:
-  port: ${PORT:8080}  # Default port 8080
-
-spring:
-  datasource:
-    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?useSSL=false
-```
-
-#### Benefits of ngrok
-
-- **Quick setup**: No deployment configuration needed
-- **Secure tunneling**: HTTPS encryption to localhost
-- **Request inspection**: Built-in debugging tools
-- **Zero cost**: Free tier for development
-- **Instant sharing**: Share local work with team/clients
-
-#### Note
-
-The ngrok URL changes each time you restart ngrok (unless using a paid plan with reserved domains). Update the URL in your documentation and clients accordingly.
-
----
-
-### Deployment Comparison
-
-| Feature | AWS (Production) | Railway | ngrok (Dev) |
-|---------|------------------|---------|-------------|
-| **Cost** | Pay-as-you-go | Free tier available | Free tier available |
-| **Scalability** | Auto-scaling | Auto-scaling | Not scalable |
-| **Reliability** | 99.99% SLA | 99.9% uptime | Depends on local machine |
-| **Setup Complexity** | High (full control) | Low (automated) | Very low |
-| **CI/CD** | CodeBuild | Built-in GitHub integration | Manual |
-| **Custom Domain** | Yes (Route 53) | Yes | Paid plans only |
-| **Best For** | Production apps | Small-medium projects | Development/testing |
-
----
-
-## Deployment Journey & Learning Experiences
-
-This section documents the real-world challenges, solutions, and learning experiences encountered during the AWS deployment process. It demonstrates problem-solving skills, adaptability, and persistence in overcoming infrastructure obstacles.
+This section documents the real-world challenges, solutions, and learning experiences encountered during the AWS deployment and cost optimization process. It demonstrates problem-solving skills, adaptability, and persistence in overcoming infrastructure obstacles.
 
 ### Overview
 
-The deployment journey involved multiple iterations, technology pivots, and creative problem-solving to achieve a fully automated, production-ready deployment. The final solution uses **ECS Fargate task revision 7** with **Namesilo DNS API** for automated domain management.
+The deployment journey involved multiple iterations, technology pivots, and creative problem-solving. What started as a simple "deploy to AWS" goal evolved into a comprehensive cost optimization project that reduced monthly costs by 98%.
 
-**Current Deployment Status**:
-- **Domain**: `project.jcarl.net`
-- **IP Address**: Dynamic, assigned on each deploy
-- **Port**: `80`
-- **ECS Task**: `music-library-task:x`
+**Final Architecture**:
+- **Domain**: `project.jcarl.net` (app) + `projectlauncher.jcarl.net` (launcher)
+- **Build Count**: 110+ Docker builds
+- **Task Revisions**: 17+ ECS task definition updates
 - **DNS Provider**: Namesilo (migrated from Route 53)
 - **Build Environment**: AWS CloudShell (due to Windows LTSB Docker incompatibility)
 
@@ -1604,23 +1208,16 @@ The deployment journey involved multiple iterations, technology pivots, and crea
 **Problems Encountered**:
 
 1. **Bash Heredoc Syntax Errors in Alpine Linux**
-   - **Issue**: Alpine Linux uses `ash` shell, not `bash`
-   - **Symptom**: Heredoc syntax in Route 53 update scripts failed with parsing errors
-   - **Root Cause**: Bash-specific features not available in ash shell
-   - **Attempted Solutions**:
-     - Tried installing bash in Alpine container
-     - Attempted to rewrite scripts for ash compatibility
-     - Explored alternative JSON formatting approaches
-   - **Outcome**: Syntax complexity made Route 53 automation unreliable in Alpine
+   - Alpine Linux uses `ash` shell, not `bash`
+   - Heredoc syntax in Route 53 update scripts failed with parsing errors
+   - Bash-specific features not available in ash shell
 
 2. **JSON Formatting Challenges**
-   - **Issue**: Route 53 API requires complex nested JSON structures
-   - **Symptom**: JSON escaping errors in shell scripts
-   - **Attempted Solutions**:
-     - Used jq for JSON construction
-     - Tried heredoc with proper escaping
-     - Attempted external JSON template files
-   - **Outcome**: Overly complex for container startup automation
+   - Route 53 API requires complex nested JSON structures
+   - JSON escaping errors in shell scripts
+   - Overly complex for container startup automation
+
+**Outcome**: Pivoted away from Route 53 to simpler solution.
 
 **Learning**: Shell compatibility matters when choosing base images. Alpine's ash shell has limitations compared to bash.
 
@@ -1630,25 +1227,19 @@ The deployment journey involved multiple iterations, technology pivots, and crea
 
 **Problem**: ECS tasks failed to register new task definitions due to insufficient IAM permissions.
 
-**Error Message**:
+**Error**:
 ```
-AccessDeniedException: User: arn:aws:sts::913212790762:assumed-role/ecsTaskExecutionRole/...
-is not authorized to perform: ecs:RegisterTaskDefinition
+AccessDeniedException: User is not authorized to perform: ecs:RegisterTaskDefinition
 ```
 
 **Investigation**:
-- Task execution role had permissions for ECR, CloudWatch, but not ECS task registration
-- Needed to distinguish between task execution role and task role
-- Route 53 permissions were added to task role, but ECS permissions were missing
+- Task execution role vs task role distinction was unclear
+- Route 53 permissions were added to wrong role
+- ECS permissions were missing entirely
 
-**Attempted Solutions**:
-1. Added `ecs:RegisterTaskDefinition` to task execution role
-2. Created separate task role with Route 53 permissions
-3. Verified IAM policy attachments in AWS Console
+**Solution**: Properly configured separate roles for task execution (infrastructure) vs task role (application permissions).
 
-**Outcome**: Permissions resolved, but led to next challenge with ECS circuit breaker.
-
-**Learning**: AWS IAM has distinct roles for task execution (infrastructure) vs. task role (application). Understanding this distinction is critical for ECS deployments.
+**Learning**: AWS IAM has distinct roles for different purposes. Understanding this distinction is critical for ECS deployments.
 
 ---
 
@@ -1660,204 +1251,358 @@ is not authorized to perform: ecs:RegisterTaskDefinition
 - Tasks would start (PROVISIONING → PENDING → RUNNING)
 - Health checks would fail
 - Circuit breaker triggered automatic rollback
-- Service reverted to last known good revision (revision 2)
-
-**Error Pattern**:
-```
-Task revision 4: RUNNING → STOPPED (Circuit breaker threshold exceeded)
-Task revision 5: RUNNING → STOPPED (Circuit breaker threshold exceeded)
-Task revision 6: RUNNING → STOPPED (Circuit breaker threshold exceeded)
-Rolled back to: Task revision 2
-```
 
 **Root Causes Identified**:
-1. **DNS Update Script Failures**: Route 53 scripts failing silently, causing container startup delays
-2. **Health Check Timeouts**: Application took too long to start due to DNS script execution
-3. **Shell Compatibility**: Ash vs. bash issues causing script failures
-4. **Missing Dependencies**: AWS CLI installation issues in Alpine Linux
+1. DNS update script failures causing container startup delays
+2. Health check timeouts during script execution
+3. Shell compatibility issues (ash vs bash)
+4. Missing dependencies in Alpine Linux
 
-**Attempted Solutions**:
-1. Increased health check grace period
-2. Modified startup scripts to continue even if DNS update fails
-3. Simplified Route 53 update logic
-4. Added verbose logging to diagnose failures
-5. Tested scripts locally in Alpine container
+**Outcome**: Circuit breaker continued triggering. Decision made to simplify DNS approach.
 
-**Outcome**: Circuit breaker continued to trigger. Decision made to pivot away from Route 53.
-
-**Learning**: ECS circuit breaker is aggressive but protective. When tasks repeatedly fail health checks, it's better to pivot to a simpler solution than fight the system.
+**Learning**: ECS circuit breaker is protective. When tasks repeatedly fail, it's better to simplify than fight the system.
 
 ---
 
 ### Challenge 4: Windows LTSB Docker Incompatibility
 
-**Problem**: Local Windows LTSB (Long-Term Servicing Branch) system incompatible with Docker Desktop.
-
-**Symptoms**:
-- Docker Desktop installation failed
-- Hyper-V requirements not met on LTSB
-- Unable to build Docker images locally for testing
+**Problem**: Local Windows LTSB system incompatible with Docker Desktop.
 
 **Impact**:
 - Couldn't test Dockerfile changes locally
-- Had to rely on ECS deployments for testing (slow feedback loop)
+- Slow feedback loop (had to deploy to test)
 - Difficult to debug container startup issues
 
 **Solution**: **AWS CloudShell**
 - Cloud-based Linux environment with Docker pre-installed
 - Direct access to AWS services (ECR, ECS)
 - No local Docker installation required
-- Commands used:
-  ```bash
-  # Build in CloudShell
-  docker build -t music-library .
-  
-  # Tag for ECR
-  docker tag music-library:latest 913212790762.dkr.ecr.us-west-2.amazonaws.com/music-library:latest
-  
-  # Push to ECR
-  docker push 913212790762.dkr.ecr.us-west-2.amazonaws.com/music-library:latest
-  ```
 
-**Outcome**: CloudShell became the primary build environment, enabling rapid iteration.
-
-**Learning**: Cloud-based development environments can overcome local system limitations. AWS CloudShell is a powerful tool for AWS-centric workflows.
+**Learning**: Cloud-based development environments can overcome local system limitations.
 
 ---
 
 ### Challenge 5: Migration to Namesilo DNS
 
-**Decision Point**: After multiple failed attempts with Route 53 automation, decided to migrate to Namesilo DNS API.
+**Decision Point**: After multiple failed Route 53 attempts, migrated to Namesilo DNS API.
 
 **Reasons for Migration**:
-1. **Simpler API**: Namesilo uses simple HTTP GET requests vs. Route 53's complex JSON
-2. **No IAM Required**: API key-based authentication, no AWS IAM complexity
-3. **Shell-Friendly**: Single curl command vs. multi-line bash scripts
-4. **Proven Reliability**: Namesilo API known for stability
-
-**Migration Process**:
-
-1. **DNS Provider Switch**:
-   - Transferred domain management from Route 53 to Namesilo
-   - Updated nameservers at domain registrar
-   - Waited for DNS propagation (24-48 hours)
-
-2. **API Integration**:
-   - Obtained Namesilo API key
-   - Identified DNS record ID: `<record-id>`
-   - Created simplified update script:
-     ```bash
-     #!/bin/sh
-     # Get container IP
-     TASK_METADATA=$(curl -s $ECS_CONTAINER_METADATA_URI_V4/task)
-     PUBLIC_IP=$(echo $TASK_METADATA | jq -r '.Containers[0].Networks[0].IPv4Addresses[0]')
-     
-     # Update Namesilo DNS
-     curl "https://www.namesilo.com/api/dnsUpdateRecord?version=1&type=xml&key=${NAMESILO_API_KEY}&domain=jcarl.net&rrid=<record-id>&rrhost=project&rrvalue=${PUBLIC_IP}&rrttl=7207"
-     ```
-
-3. **Dockerfile Updates**:
-   - Removed AWS CLI installation (no longer needed)
-   - Kept curl and jq (lightweight dependencies)
-   - Simplified startup script
-   - Reduced container image size
-
-4. **ECS Task Definition Updates**:
-   - Added `NAMESILO_API_KEY` environment variable
-   - Removed Route 53 IAM role references
-   - Simplified task role permissions
+1. **Simpler API**: HTTP GET requests vs Route 53's complex JSON
+2. **No IAM Required**: API key authentication
+3. **Shell-Friendly**: Single curl command
+4. **Proven Reliability**: Stable third-party API
 
 **Results**:
-- **Task Revision 7**: Successfully deployed and stable
-- **DNS Updates**: Working reliably on container startup
-- **Health Checks**: Passing consistently
-- **No Rollbacks**: Circuit breaker no longer triggering
+- Task deployments became stable
+- DNS updates work reliably on container startup
+- No more circuit breaker rollbacks
 
 **Learning**: Sometimes the best solution is the simplest one. Third-party APIs can be more reliable than complex AWS service integrations.
 
 ---
 
-### Challenge 6: DNS TTL and Propagation Delays
+### Challenge 6: Static File Serving After Spring Boot Update
 
-**Problem**: DNS changes taking too long to propagate globally.
+**Problem**: After Spring Boot/Swagger configuration updates, static HTML files returned "No endpoint GET" errors on AWS ECS.
 
-**Initial TTL**: 300 seconds (5 minutes) - inherited from Route 53
+**Root Cause**: Spring Boot version changes disabled default static resource serving.
 
-**Issue**: When ECS tasks restarted with new IPs, users experienced downtime during DNS propagation.
+**Solution**: Added environment variable to ECS task definition:
+```
+SPRING_WEB_RESOURCES_STATIC_LOCATIONS=classpath:/static/,classpath:/public/
+```
 
-**Solution**: Increased TTL to 7207 seconds (~2 hours)
-- **Rationale**: ECS tasks restart infrequently in production
-- **Benefit**: Reduced DNS query load on Namesilo
-- **Trade-off**: Longer propagation time when IP changes (acceptable for this use case)
-
-**Learning**: TTL values should match deployment patterns. Frequent changes need low TTL; stable deployments can use higher TTL for better caching.
+**Learning**: Environment-specific configuration differences between local and AWS deployment require careful attention.
 
 ---
 
-### Key Takeaways and Skills Demonstrated
+### Challenge 7: API Pagination & Swagger Integration
+
+**Problem**: 500 errors in REST API endpoints caused by Swagger UI parameter conflicts.
+
+**Root Cause**: Swagger UI injected default `sort=string` parameters that overrode Spring's `@PageableDefault` annotations, causing "No property 'string' found" errors.
+
+**Solution**:
+- Migrated from implicit Pageable parameters to explicit `@RequestParam` declarations
+- Standardized pagination across all endpoints
+- Updated OpenAPI documentation to match actual parameters
+
+**Learning**: API documentation tools can introduce unexpected behavior. Test endpoints through Swagger UI, not just direct calls.
+
+---
+
+### Challenge 8: Cost Optimization - From $55/mo to $1/mo
+
+**Problem**: Always-on architecture cost ~$55/month for a portfolio project with minimal traffic.
+
+**Cost Breakdown (Before)**:
+| Service | Monthly Cost |
+|---------|--------------|
+| RDS (db.t3.micro, 24/7) | ~$13 |
+| ECS Fargate (24/7) | ~$36 |
+| ALB | ~$16 |
+| Other | ~$5 |
+| **Total** | **~$55-70** |
+
+**Solution**: Complete architecture redesign:
+
+1. **Eliminated ALB** - Direct IP access + DNS automation
+2. **On-Demand ECS** - Runs only when launched
+3. **On-Demand RDS** - Starts with application
+4. **S3 Static Launcher** - Always-on landing page (pennies/month)
+5. **Lambda Functions** - Serverless status/startup/shutdown
+6. **Auto-Shutdown** - Stops everything after 30 min idle
+
+**Cost Breakdown (After)**:
+| Service | Monthly Cost |
+|---------|--------------|
+| S3 + CloudFront | ~$0.10 |
+| Lambda + API Gateway | ~$0.10 |
+| RDS (when running) | ~$0.02/hour |
+| ECS (when running) | ~$0.05/hour |
+| **Idle Total** | **~$0.50-1.00** |
+
+**Learning**: Serverless-first thinking can dramatically reduce costs for low-traffic applications.
+
+---
+
+### Challenge 9: Lambda Auto-Shutdown Implementation
+
+**Problem**: Needed automatic resource cleanup to prevent cost accumulation.
+
+**Initial Approach**: Simple timer-based shutdown.
+
+**Problems**:
+- Couldn't distinguish between "idle" and "low activity"
+- Risk of shutting down during legitimate use
+- Spring Boot idles at ~10-12% CPU, not 0%
+
+**Solution**: CloudWatch metrics-based idle detection:
+1. Query ECS CPU utilization via CloudWatch API
+2. Calculate 30-minute rolling average
+3. Shutdown only if CPU < 2% (truly idle, no requests)
+4. Added startup protection to prevent shutdown during boot
+
+**Technical Details**:
+- Lambda timeout: 30 seconds (needed for CloudWatch API calls)
+- EventBridge trigger: Every 5 minutes
+- CPU threshold: 2% (calibrated through production testing)
+- Initial threshold of 35% was too aggressive (shut down active app)
+
+**Learning**: Idle detection requires careful threshold calibration. Production testing is essential.
+
+---
+
+### Challenge 10: Real-Time Status Monitoring
+
+**Problem**: Users needed feedback during 5-7 minute startup sequence.
+
+**Solution**: Built Lambda-based status API that queries live infrastructure state:
+
+1. **ECS Status**: PENDING → PROVISIONING → ACTIVATING → RUNNING
+2. **RDS Status**: stopped → starting → available
+3. **Public IP Extraction**: Query ENI attachments from Fargate task
+4. **Progress UI**: Frontend polls every 10 seconds with visual progress bar
+
+**Challenges Solved**:
+- Extracting public IP from Fargate task (requires EC2 network interface permissions)
+- Handling various RDS states (including `configuring-enhanced-monitoring`)
+- CORS configuration for cross-origin API calls
+- Direct IP link to bypass DNS propagation delays
+
+**Learning**: Good UX requires visibility into system state. Real-time feedback transforms a frustrating wait into an engaging experience.
+
+---
+
+### Challenge 11: Email Notifications with SES
+
+**Problem**: Wanted to notify users when application was ready.
+
+**Implementation**:
+1. Configured Amazon SES with domain verification (jcarl.net)
+2. Set up DKIM authentication for deliverability
+3. Requested and received SES production access
+4. Integrated notifications into startup Lambda
+
+**Challenge**: Lambda timeout during email delay
+- Needed 5-minute delay before sending "app ready" email
+- Standard Lambda timeout is 15 minutes max
+- Solution: Self-invocation pattern for async delay
+
+**Learning**: SES production access requires proper use case documentation. Async patterns needed for long delays in Lambda.
+
+---
+
+### Challenge 12: Database Performance & Cold Start Optimization
+
+**Problem**: RDS cold start times affecting user experience.
+
+**Evolution**:
+```
+db.t3.micro (original)
+    ↓
+db.t4g.micro (Graviton2, 20% faster, same cost)
+    ↓
+Testing larger instances for faster cold boot
+```
+
+**Observations**:
+- MySQL 8.0.43 → 8.4.7 LTS upgrade for security/performance
+- Graviton2 (ARM) provides better price/performance
+- Larger instances have faster cold start but higher per-hour cost
+- Trade-off: faster startup vs cost when running
+
+**Current Status**: Actively optimizing instance size for best cold-start performance within budget.
+
+**Learning**: Database cold start is a real consideration for on-demand architectures. Instance sizing affects both performance and cost.
+
+---
+
+### Key Takeaways
 
 **Problem-Solving**:
-- ✅ Diagnosed complex multi-layer issues (shell compatibility, IAM permissions, health checks)
+- ✅ Diagnosed complex multi-layer issues (shell compatibility, IAM, health checks)
 - ✅ Pivoted strategies when initial approaches failed
-- ✅ Researched alternative solutions (Namesilo vs. Route 53)
-- ✅ Made data-driven decisions based on error logs and AWS metrics
+- ✅ Made data-driven decisions based on production metrics
 
 **Technical Skills**:
-- ✅ Shell scripting (bash vs. ash compatibility)
-- ✅ Docker containerization and multi-stage builds
-- ✅ AWS ECS Fargate task management
+- ✅ Shell scripting and container debugging
+- ✅ Docker multi-stage builds
+- ✅ AWS service integration (ECS, RDS, Lambda, API Gateway, CloudWatch, SES)
 - ✅ IAM role and policy configuration
-- ✅ DNS management and API integration
-- ✅ CloudShell for cloud-based development
+- ✅ DNS automation with third-party APIs
+- ✅ CloudWatch metrics analysis
 
 **DevOps Practices**:
-- ✅ Infrastructure as Code (Dockerfile, task definitions)
-- ✅ Automated DNS management
-- ✅ Health check configuration
-- ✅ Circuit breaker understanding and mitigation
-- ✅ Iterative deployment and testing
+- ✅ Infrastructure as code thinking
+- ✅ Cost optimization strategies
+- ✅ Automated monitoring and alerting
+- ✅ Production debugging and troubleshooting
 
 **Adaptability**:
-- ✅ Overcame local development environment limitations (Windows LTSB)
-- ✅ Migrated between DNS providers mid-project
+- ✅ Overcame local environment limitations
+- ✅ Migrated DNS providers mid-project
 - ✅ Simplified architecture when complexity became a liability
 - ✅ Learned from failures and adjusted approach
 
-**Documentation**:
-- ✅ Comprehensive error tracking and analysis
-- ✅ Clear documentation of attempted solutions
-- ✅ Knowledge sharing for future reference
-
 ---
 
-### Final Architecture Summary
+## 💰 Cost Management
 
-**What Works**:
-- ✅ ECS Fargate with task revision 7
-- ✅ Namesilo DNS with API-based updates
-- ✅ CloudShell for Docker image building
-- ✅ Simplified startup scripts (ash-compatible)
-- ✅ Minimal IAM permissions (task execution role only)
-- ✅ Reliable health checks and no circuit breaker triggers
+Understanding and managing AWS costs was a **primary focus** of this project. The architecture was specifically designed to minimize costs while maintaining professional presentation for portfolio demonstrations.
 
-**What Was Abandoned**:
-- ❌ Route 53 DNS automation (too complex for Alpine/ash)
-- ❌ Bash-specific scripting (Alpine uses ash)
-- ❌ Local Docker builds (Windows LTSB incompatibility)
-- ❌ Complex IAM task roles (simplified to execution role)
-- ❌ Low TTL values (increased for stability)
+### Cost Comparison
 
-**Lessons for Future Projects**:
-1. **Start Simple**: Begin with the simplest solution that works, add complexity only when needed
-2. **Test Locally**: Ensure local testing environment matches production (shell, OS, dependencies)
-3. **Understand IAM**: Know the difference between task execution roles and task roles
-4. **Monitor Health Checks**: ECS circuit breaker is your friend, not your enemy
-5. **Choose Tools Wisely**: Third-party APIs can be simpler than native AWS services
-6. **Document Everything**: Future you will thank present you for detailed notes
-7. **Cloud Development**: Cloud-based IDEs/shells can overcome local limitations
-8. **Shell Compatibility**: Alpine Linux (ash) ≠ Ubuntu/Debian (bash)
+| Architecture | Monthly Cost | Notes |
+|--------------|--------------|-------|
+| **Always-On (Original)** | ~$55-70 | ECS + RDS + ALB running 24/7 |
+| **On-Demand (Current)** | ~$0.50-1.00 idle | Pay only when running |
+| **Savings** | **98%** | Same functionality, fraction of cost |
 
-This deployment journey demonstrates real-world DevOps problem-solving: encountering obstacles, researching solutions, testing hypotheses, and iterating until achieving a stable, production-ready deployment.
+### Detailed Cost Breakdown
+
+#### Always-On Costs (Before)
+
+| Service | Hourly | Monthly | Notes |
+|---------|--------|---------|-------|
+| RDS db.t3.micro | $0.017 | ~$13 | 24/7 database |
+| ECS Fargate | $0.05 | ~$36 | 24/7 container |
+| Application Load Balancer | - | ~$16 | Base + LCU charges |
+| Data Transfer | - | ~$5 | Variable |
+| **Total** | - | **~$55-70** | - |
+
+#### On-Demand Costs (After)
+
+**Always-On Components** (pennies/month):
+| Service | Monthly Cost |
+|---------|--------------|
+| S3 Static Hosting | ~$0.02 |
+| CloudFront | ~$0.05 |
+| API Gateway | ~$0.03 |
+| Lambda | ~$0.01 |
+| CloudWatch | ~$0.05 |
+| **Subtotal** | **~$0.15-0.20** |
+
+**On-Demand Components** (only when running):
+| Service | Hourly Cost | If running 10 hrs/month |
+|---------|-------------|-------------------------|
+| RDS | ~$0.02 | ~$0.20 |
+| ECS Fargate | ~$0.05 | ~$0.50 |
+| **Subtotal** | - | **~$0.70** |
+
+**Realistic Monthly Total**: ~$1-5 depending on usage
+
+### Cost Optimization Strategies Used
+
+1. **Eliminated ALB** ($16+/month savings)
+   - Direct IP access to Fargate task
+   - DNS automation handles dynamic IPs
+   - Trade-off: No HTTPS on app (acceptable for portfolio)
+
+2. **On-Demand Compute**
+   - ECS service scales to 0 when not needed
+   - RDS stops after inactivity
+   - Lambda handles startup orchestration
+
+3. **Serverless-First Architecture**
+   - S3 for static hosting (vs EC2)
+   - Lambda for logic (vs always-on server)
+   - API Gateway for endpoints (vs custom server)
+
+4. **Auto-Shutdown System**
+   - EventBridge triggers Lambda every 5 minutes
+   - CloudWatch metrics detect idle state
+   - Automatic cleanup prevents cost accumulation
+
+5. **Right-Sizing Resources**
+   - Fargate: 0.25 vCPU, 512MB (minimum viable)
+   - RDS: Optimizing instance size for cold-start vs cost
+
+### Starting and Stopping Resources
+
+#### Automatic (Recommended)
+- **Start**: Click "Launch Music Library" on [projectlauncher.jcarl.net](https://projectlauncher.jcarl.net)
+- **Stop**: Automatic after 30 minutes of inactivity
+
+#### Manual via AWS Console
+
+**Stop ECS Service**:
+1. Navigate to ECS Console → Clusters → `music-library-cluster1`
+2. Select service → Update → Set desired tasks to `0`
+
+**Stop RDS Database**:
+1. Navigate to RDS Console → Databases → `music-library-db`
+2. Actions → Stop temporarily
+
+**Note**: RDS can only be stopped for 7 days. AWS automatically restarts it after 7 days.
+
+#### Manual via AWS CLI
+
+```bash
+# Stop ECS service
+aws ecs update-service \
+  --cluster music-library-cluster1 \
+  --service music-library-service \
+  --desired-count 0 \
+  --region us-west-2
+
+# Stop RDS database
+aws rds stop-db-instance \
+  --db-instance-identifier music-library-db \
+  --region us-west-2
+
+# Start RDS database
+aws rds start-db-instance \
+  --db-instance-identifier music-library-db \
+  --region us-west-2
+
+# Start ECS service
+aws ecs update-service \
+  --cluster music-library-cluster1 \
+  --service music-library-service \
+  --desired-count 1 \
+  --region us-west-2
+```
 
 ---
 
@@ -1918,6 +1663,64 @@ Input validation errors return detailed field-level errors:
 
 ---
 
+## 🎓 Learning Outcomes
+
+This project demonstrates proficiency in:
+
+### Backend Development
+✅ **Spring Boot 3.x** - Modern Spring framework features  
+✅ **RESTful API Design** - Standard HTTP methods and status codes  
+✅ **JPA/Hibernate** - Entity relationships and lazy loading  
+✅ **Testing** - Unit, integration, and repository tests  
+✅ **API Documentation** - OpenAPI/Swagger specification  
+✅ **Error Handling** - Global exception handling  
+✅ **Input Validation** - Bean Validation (JSR-380)  
+✅ **DTO Pattern** - Separation of concerns  
+
+### AWS Cloud & DevOps
+✅ **ECS Fargate** - Serverless container orchestration  
+✅ **RDS MySQL** - Managed database with start/stop automation  
+✅ **Lambda** - Serverless functions for infrastructure automation  
+✅ **API Gateway** - REST API for Lambda integration  
+✅ **EventBridge** - Scheduled triggers for auto-shutdown  
+✅ **CloudWatch** - Metrics analysis and monitoring  
+✅ **S3 + CloudFront** - Static website hosting with CDN  
+✅ **SES** - Email notifications with domain verification  
+✅ **IAM** - Role-based access control and security policies  
+✅ **ECR** - Private Docker container registry  
+✅ **CodeBuild** - CI/CD pipeline automation  
+
+### Cost Optimization
+✅ **Serverless-First Architecture** - On-demand resources  
+✅ **Auto-Shutdown Systems** - CloudWatch metrics-based idle detection  
+✅ **Resource Right-Sizing** - Balancing performance vs cost  
+✅ **ALB Elimination** - Direct IP access with DNS automation  
+✅ **98% Cost Reduction** - From $55/mo to ~$1/mo  
+
+### Infrastructure & DevOps Practices
+✅ **Docker Containerization** - Multi-stage builds  
+✅ **DNS Automation** - Third-party API integration  
+✅ **Real-Time Monitoring** - Infrastructure status dashboards  
+✅ **Production Debugging** - ECS circuit breaker, IAM permissions  
+✅ **Environment Configuration** - YAML with environment variables  
+
+---
+
+## 📈 Project Metrics
+
+| Metric | Value |
+|--------|-------|
+| **Docker Builds** | 110+ |
+| **ECS Task Revisions** | 17+ |
+| **Development Hours** | 500+ |
+| **Cost Reduction** | 98% ($55 → $1/mo) |
+| **API Requests Tested** | 182 |
+| **Automated Tests** | 600 (100% pass rate) |
+| **Artists in Library** | 50 |
+| **Albums in Library** | 100+ |
+
+---
+
 ## 📝 License
 
 This project is part of a Java/MySQL backend development bootcamp and is for **educational purposes**.
@@ -1928,28 +1731,10 @@ This project is part of a Java/MySQL backend development bootcamp and is for **e
 
 For questions, issues, or feedback:
 
-1. **Check the API documentation**: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+1. **Check the API documentation**: [Swagger UI](http://project.jcarl.net/swagger-ui/index.html) (when app is running)
 2. **Review test examples**: See `src/test/java/music/library/`
 3. **Check Postman collection**: `Music-Library-Sample-Data.postman_collection.json`
-
----
-
-## 🎓 Learning Outcomes
-
-This project demonstrates proficiency in:
-
-✅ **Spring Boot 3.x** - Modern Spring framework features  
-✅ **RESTful API Design** - Standard HTTP methods and status codes  
-✅ **JPA/Hibernate** - Entity relationships and lazy loading  
-✅ **Testing** - Unit, integration, and repository tests  
-✅ **API Documentation** - OpenAPI/Swagger specification  
-✅ **Cloud Deployment** - AWS ECS Fargate with RDS, ECR, and CodeBuild  
-✅ **Containerization** - Docker multi-stage builds  
-✅ **Error Handling** - Global exception handling  
-✅ **Rich Content** - 50 artists and 100+ albums with cover images  
-✅ **Input Validation** - Bean Validation (JSR-380)  
-✅ **DTO Pattern** - Separation of concerns  
-✅ **Environment Configuration** - YAML with environment variables  
+4. **Launch the app**: [projectlauncher.jcarl.net](https://projectlauncher.jcarl.net)
 
 ---
 
@@ -1960,6 +1745,3 @@ My thanks to:
 - **Michael G.** - Bootcamp Mentor
 - **Tammy E.** - Career Services Manager
 - **Tiffany H.** - Career Advisor
-- **Postman** - "The World's Leading API Platform" | postman.com
-
----
