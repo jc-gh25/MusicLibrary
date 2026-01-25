@@ -86,15 +86,7 @@ The Music Library API is a portfolio-quality Spring Boot application that demons
 ✅ Environment-based configuration  
 ✅ **On-demand serverless architecture (98% cost reduction)**  
 ✅ **Auto-shutdown after inactivity**  
-✅ **Real-time infrastructure status monitoring**  
-
-### Tools & Technologies
-
-**Postman**  
-Comprehensive collection with 150+ API requests for testing all endpoints and populating the database with realistic music data. Includes organized folders for Artists, Albums, Genres, and relationship queries.
-
-**Node.js Scripts**  
-Custom data processing scripts for downloading album cover images from the iTunes API and preparing JSON data for database population.
+✅ **Real-time infrastructure status monitoring**
 
 ---
 
@@ -109,12 +101,12 @@ What started as a bootcamp final project became a 500+ hour deep dive into cloud
 | Phase | Time Invested | What Happened |
 |-------|---------------|---------------|
 | Bootcamp project | ~50 hours | Built core API with AI assistance, deployed to Railway |
-| AWS migration | ~150 hours | Moved from Railway to AWS ECS/RDS |
-| Cost optimization | ~200 hours | Converted from always-on ($55/mo) to on-demand (~$1/mo) |
-| Tweaks and improvements | ~100+ hours | UX improvements, monitoring, email notifications |
-| **Total** | **500+ hours** | **110+ builds**, countless debugging sessions |
+| AWS migration | ~100 hours | Moved from Railway to AWS ECS/RDS |
+| Cost optimization | ~150 hours | Converted from always-on ($55/mo) to on-demand (~$1/mo) |
+| Tweaks and improvements | ~100+ hours | UX improvements, monitoring, email notification option for long startup |
+| **Total** | **400+ hours** | **110+ builds**, countless debugging sessions |
 
-Most bootcamp students probably completed this assignment in <20 hours by editing previous assignments where the code was provided. I chose to focus on learning AWS and enjoying AI-powered iterative development instead.
+Most bootcamp students probably completed this assignment in <30 hours by editing previous assignments where the code was provided. I chose to focus on learning AWS and enjoying AI-powered iterative development instead.
 
 ### What I Did
 
@@ -180,22 +172,22 @@ The application uses a **serverless-first architecture** that scales to zero whe
 │                    ALWAYS-ON LAYER (Pennies/month)                      │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                         │
-│   ┌─────────────────────┐         ┌─────────────────────┐              │
-│   │  S3 Static Site     │         │  CloudFront + ACM   │              │
-│   │  projectlauncher.   │ ──────► │  HTTPS termination  │              │
-│   │  jcarl.net          │         │  SSL certificate    │              │
-│   └─────────────────────┘         └─────────────────────┘              │
+│   ┌─────────────────────┐         ┌─────────────────────┐               │
+│   │  S3 Static Site     │         │  CloudFront + ACM   │               │
+│   │  projectlauncher.   │ ──────► │  HTTPS termination  │               │
+│   │  jcarl.net          │         │  SSL certificate    │               │
+│   └─────────────────────┘         └─────────────────────┘               │
 │              │                                                          │
 │              ▼                                                          │
-│   ┌─────────────────────────────────────────────────────┐              │
+│   ┌─────────────────────────────────────────────────────┐               │
 │   │              API Gateway + Lambda                    │              │
-│   │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐ │              │
-│   │  │ /status     │  │ /start      │  │ Auto-       │ │              │
-│   │  │ GET         │  │ POST        │  │ Shutdown    │ │              │
-│   │  │ Check state │  │ Start infra │  │ (EventBridge│ │              │
-│   │  └─────────────┘  └─────────────┘  │  triggered) │ │              │
-│   │                                     └─────────────┘ │              │
-│   └─────────────────────────────────────────────────────┘              │
+│   │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐ │                │
+│   │  │ /status     │  │ /start      │  │ Auto-       │ │                │
+│   │  │ GET         │  │ POST        │  │ Shutdown    │ │                │
+│   │  │ Check state │  │ Start infra │  │ (EventBridge│ │                │
+│   │  └─────────────┘  └─────────────┘  │  triggered) │ │                │
+│   │                                     └─────────────┘ │               │
+│   └─────────────────────────────────────────────────────┘               │
 │                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
                               │
@@ -204,18 +196,18 @@ The application uses a **serverless-first architecture** that scales to zero whe
 │                    ON-DEMAND LAYER (Pay only when running)              │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                         │
-│   ┌─────────────────────┐         ┌─────────────────────┐              │
-│   │  RDS MySQL          │         │  ECS Fargate        │              │
-│   │  (starts first)     │ ──────► │  (starts when DB    │              │
-│   │  ~2-3 min startup   │         │   is available)     │              │
-│   └─────────────────────┘         └─────────────────────┘              │
+│   ┌─────────────────────┐         ┌─────────────────────┐               │
+│   │  RDS MySQL          │         │  ECS Fargate        │               │
+│   │  (starts first)     │ ──────► │  (starts when DB    │               │
+│   │  ~2-3 min startup   │         │   is available)     │               │
+│   └─────────────────────┘         └─────────────────────┘               │
 │                                              │                          │
 │                                              ▼                          │
-│                                   ┌─────────────────────┐              │
-│                                   │  Namesilo DNS API   │              │
-│                                   │  Updates A record   │              │
-│                                   │  project.jcarl.net  │              │
-│                                   └─────────────────────┘              │
+│                                   ┌─────────────────────┐               │
+│                                   │  Namesilo DNS API   │               │
+│                                   │  Updates A record   │               │
+│                                   │  project.jcarl.net  │               │
+│                                   └─────────────────────┘               │
 │                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
                               │
@@ -224,14 +216,14 @@ The application uses a **serverless-first architecture** that scales to zero whe
 │                    AUTO-SHUTDOWN FLOW                                   │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                         │
-│   EventBridge (every 5 min) ──► Lambda: Check CloudWatch CPU metrics   │
+│   EventBridge (every 5 min) ──► Lambda: Check CloudWatch CPU metrics    │
 │                                         │                               │
 │                                         ▼                               │
-│                                   CPU < 2% for 30 min?                 │
+│                                   CPU < 2% for 30 min?                  │
 │                                         │                               │
-│                              ┌──────────┴──────────┐                   │
+│                              ┌──────────┴──────────┐                    │
 │                              ▼                     ▼                    │
-│                           No: Continue         Yes: Stop ECS + RDS     │
+│                           No: Continue         Yes: Stop ECS + RDS      │
 │                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
@@ -257,12 +249,13 @@ When a user clicks "Launch Music Library":
 The auto-shutdown Lambda runs every 5 minutes via EventBridge and:
 
 1. **Queries CloudWatch** for ECS CPU utilization (30-minute average)
-2. **Checks threshold**: If average CPU < 2%, services are idle
+2. **Checks threshold**: If average CPU < 1.5%, services are idle
 3. **Stops ECS**: Sets desired count to 0
 4. **Stops RDS**: Calls `stop_db_instance()`
 5. **Logs action**: Records shutdown in CloudWatch Logs
 
-**Why 2% threshold?** Spring Boot idles at ~10-12% CPU. The 2% threshold ensures we only shut down when truly idle (no requests), not during normal low-activity periods.
+**Why 1.5% threshold?** With 8 vCPUs (db.t4g.2xlarge), Spring Boot idles at ~0.5-1% CPU. The 1.5% threshold ensures we only shut down when truly idle (no requests), not during normal low-activity periods.
+
 
 ### Real-Time Status Monitoring
 
@@ -274,6 +267,7 @@ The status Lambda provides live infrastructure state:
   "application_status": "RUNNING",
   "public_ip": "44.xxx.xxx.xxx",
   "message": "Application is running"
+  "startup_time": "X seconds"
 }
 ```
 
@@ -1712,7 +1706,7 @@ This project demonstrates proficiency in:
 |--------|-------|
 | **Docker Builds** | 110+ |
 | **ECS Task Revisions** | 17+ |
-| **Development Hours** | 500+ |
+| **Development Hours** | 400+ |
 | **Cost Reduction** | 98% ($55 → $1/mo) |
 | **API Requests Tested** | 182 |
 | **Automated Tests** | 600 (100% pass rate) |
