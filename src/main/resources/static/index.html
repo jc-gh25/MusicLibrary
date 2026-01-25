@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-
-<html lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="description" content="Music Library API - A Spring Boot REST API portfolio project demonstrating backend development, AWS deployment, and DevOps practices.">
-    
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Music Library API - A Spring Boot REST API portfolio project demonstrating backend development, AWS cloud deployment, cost optimization, and DevOps practices.">
     <title>Music Library API - Backend Development Portfolio Project</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <!-- Prism.js CSS for syntax highlighting (Light Theme) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <style>
@@ -74,26 +74,13 @@
             font-weight: 500;
         }
 
-        /* Technology-specific brand colors */
-        .badge-spring {
-            background: #6DB33F; /* Spring Boot official green */
-        }
-
-        .badge-java {
-            background: #E76F00; /* Java official orange */
-        }
-
-        .badge-mysql {
-            background: #00758F; /* MySQL official blue */
-        }
-
-        .badge-jpa {
-            background: #59666C; /* Hibernate gray */
-        }
-
-        .badge-rest {
-            background: #8B5CF6; /* Purple for RESTful - distinct from buttons */
-        }
+        .badge-spring { background: #6DB33F; }
+        .badge-java { background: #E76F00; }
+        .badge-mysql { background: #00758F; }
+        .badge-aws { background: #FF9900; }
+        .badge-lambda { background: #FF9900; }
+        .badge-docker { background: #2496ED; }
+        .badge-rest { background: #8B5CF6; }
 
         .section {
             background: var(--bg-white);
@@ -153,7 +140,6 @@
             color: var(--text-dark);
         }
 
-
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -179,6 +165,56 @@
             margin-bottom: 10px;
         }
 
+        .cost-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .cost-card {
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .cost-card.before {
+            background: linear-gradient(135deg, #fca5a5 0%, #fecaca 100%);
+        }
+
+        .cost-card.after {
+            background: linear-gradient(135deg, #86efac 0%, #bbf7d0 100%);
+        }
+
+        .cost-card .amount {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .cost-card .label {
+            font-size: 1rem;
+            color: #374151;
+            margin-top: 5px;
+        }
+
+        .cost-card .detail {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-top: 10px;
+        }
+
+        .savings-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
         .architecture-layer {
             background: var(--bg-light);
             padding: 20px;
@@ -191,34 +227,6 @@
             color: var(--primary-color);
             margin-bottom: 10px;
             font-size: 1.15rem;
-        }
-
-        .class-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .class-item {
-            background: #ffffff;
-            padding: 15px;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
-        }
-
-        .class-item h5 {
-            color: var(--secondary-color);
-            margin-bottom: 8px;
-            font-size: 1rem;
-        }
-
-        .class-item code {
-            background: var(--code-bg);
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-size: 0.9rem;
-            color: var(--primary-color);
         }
 
         .cta-buttons {
@@ -321,272 +329,258 @@
             }
 
             .tech-stack,
-            .features-grid,
-            .class-list {
+            .features-grid {
                 grid-template-columns: 1fr;
             }
 
             .cta-buttons {
                 flex-direction: column;
             }
+
+            .cost-comparison {
+                grid-template-columns: 1fr;
+            }
         }
 
-        /* Custom CSS for code wrapping */
+        /* Prism overrides */
         pre[class*="language-"] {
             white-space: pre-wrap;
             word-wrap: break-word;
             overflow-wrap: break-word;
         }
 
-        code[class*="language-"] {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-
-        /* Custom Prism color overrides for better readability */
         pre[class*="language-"],
         code[class*="language-"] {
             background: #f8f9fa !important;
             color: #24292e !important;
         }
 
-        .token.comment,
-        .token.prolog,
-        .token.doctype,
-        .token.cdata {
-            color: #6a737d !important;
+        .token.keyword { color: #d73a49 !important; }
+        .token.function, .token.class-name { color: #6f42c1 !important; }
+        .token.string { color: #032f62 !important; }
+        .token.comment { color: #6a737d !important; }
+        .token.annotation { color: #22863a !important; font-weight: bold !important; }
+
+        /* App Launcher Styles */
+        .app-launcher-container {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
         }
 
-        .token.punctuation {
-            color: #24292e !important;
+        .start-app-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            box-shadow: 0 8px 14px rgba(1, 1, 1, 0.4);
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 2px solid var(--primary-color);
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
 
-        .token.property,
-        .token.tag,
-        .token.boolean,
-        .token.number,
-        .token.constant,
-        .token.symbol,
-        .token.deleted {
-            color: #005cc5 !important;
+        .start-app-button:hover {
+            background: #0056b3;
         }
 
-        .token.selector,
-        .token.attr-name,
-        .token.string,
-        .token.char,
-        .token.builtin,
-        .token.inserted {
-            color: #032f62 !important;
+        .start-app-button:disabled {
+            background-color: #6c757d !important;
+            cursor: not-allowed !important;
+            opacity: 0.6;
         }
 
-        .token.operator,
-        .token.entity,
-        .token.url,
-        .language-css .token.string,
-        .style .token.string {
-            color: #d73a49 !important;
+        .launcher-progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
         }
 
-        .token.atrule,
-        .token.attr-value,
-        .token.keyword {
-            color: #d73a49 !important;
+        .launcher-progress-fill {
+            height: 100%;
+            background: #007bff;
+            width: 0%;
+            transition: width 0.5s ease;
         }
 
-        .token.function,
-        .token.class-name {
-            color: #6f42c1 !important;
+        .launcher-note {
+            font-size: 14px;
+            color: #6c757d;
+            margin: 10px 0 0 0;
         }
 
-        .token.annotation {
-            color: #22863a !important;
-            font-weight: bold !important;
+        .launcher-email-input {
+            padding: 10px 15px;
+            font-size: 14px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            margin: 10px 5px;
+            width: 250px;
+            max-width: 90%;
         }
-
-        .token.regex,
-        .token.important,
-        .token.variable {
-            color: #e36209 !important;
-        }
-		
-		.app-launcher-container {
-			background: #f8f9fa;
-			border: 2px solid #e9ecef;
-			border-radius: 8px;
-			padding: 20px;
-			margin: 20px 0;
-			text-align: center;
-		}
-
-		.start-app-button {
-			background: #007bff;
-			color: white;
-			border: none;
-			box-shadow: 0 8px 14px rgba(1, 1, 1, 0.4);
-			padding: 12px 24px;
-			font-size: 16px;
-			border-radius: 5px;
-			border: 2px solid var(--primary-color);
-			cursor: pointer;
-			transition: background-color 0.3s;
-		}
-
-		.start-app-button:hover {
-			background: #0056b3;
-		}
-
-		.start-app-button:disabled {
-			background-color: #6c757d !important; /* Gray background */
-			cursor: not-allowed !important;       /* No-entry cursor */
-			opacity: 0.6;                        /* Slightly faded */
-		}
-
-		.start-app-button:disabled:hover {
-			background-color: #6c757d !important; /* Stay gray on hover */
-		}
-
-
-		.launcher-progress-bar {
-			width: 100%;
-			height: 20px;
-			background: #e9ecef;
-			border-radius: 10px;
-			overflow: hidden;
-			margin: 15px 0;
-		}
-
-		.launcher-progress-fill {
-			height: 100%;
-			background: #007bff;
-			width: 0%;
-			transition: width 0.5s ease;
-		}
-
-		.launcher-note {
-			font-size: 14px;
-			color: #6c757d;
-			margin: 10px 0 0 0;
-		}
-
-		
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Music Library API </h1>
-            <p class="subtitle">Java Bootcamp Project - RESTful API for Music Album Management</p>
+            <h1>🎵 Music Library API</h1>
+            <p class="subtitle">Spring Boot REST API with On-Demand AWS Infrastructure</p>
             
-           
             <div style="margin-bottom: 20px;">
                 <span class="badge badge-spring">Spring Boot 3.5.7</span>
                 <span class="badge badge-java">Java 17</span>
-                <span class="badge badge-mysql">MySQL</span>
-                <span class="badge badge-jpa">JPA/Hibernate</span>
-                <span class="badge badge-rest">RESTful</span>
+                <span class="badge badge-mysql">MySQL 8.4</span>
+                <span class="badge badge-aws">AWS ECS</span>
+                <span class="badge badge-lambda">Lambda</span>
+                <span class="badge badge-docker">Docker</span>
+                <span class="badge badge-rest">RESTful API</span>
             </div>
-	
-		
-			
-			<!-- Application Launcher Section -->
-			<div id="app-launcher" class="app-launcher-container">
-				<!-- Initial state: Shows launch button and description -->
-			<div id="launcher-idle" class="launcher-idle">
-				<h2>🎵 Launch Application</h2>
-				<p>Loads on-demand to minimize costs. Takes ~5-7 minutes to load database and Java application.</p>
-				<p> Enter your email address to be notified when ready (optional).</p>
-				
-				<!-- Allow email address input -->
-				<input type="email" id="user-email" class="launcher-email-input" placeholder="Your email (optional)" />
-				
-				<button id="start-app-btn" class="start-app-button" onclick="startApplication()">
-					Launch Music Library
-				</button>
-				
-			</div>
 
-    
-			<!-- Progress state: Shows during service startup (hidden by default) -->
-			<div id="launcher-progress" class="launcher-progress" style="display: none;">
-				<h3>🔄 Starting Music Library...</h3>
-				<!-- Visual progress bar for user feedback during startup -->
-				<div class="launcher-progress-bar">
-					<div id="launcher-progress-fill" class="launcher-progress-fill"></div>
-				</div>
-				<p id="launcher-status">Initializing services...</p>
-				<p class="launcher-note">• AWS ECS Fargate + RDS • Lambda-triggered startup • Auto-scaling infrastructure</p>
-			</div>
-		</div>
+            <!-- Application Launcher Section -->
+            <div id="app-launcher" class="app-launcher-container">
+                <div id="launcher-loading" style="padding: 20px;">
+                    <h3>🎵 Music Library</h3>
+                    <p style="color: #666;">Checking application status...</p>
+                </div>
+                
+                <div id="launcher-idle" class="launcher-idle" style="display: none;">
+                    <h3>Launch Application</h3>
+                    <p>Runs on-demand to minimize costs. Takes ~5-7 minutes to start database and application.</p>
+                    <p>Enter your email to be notified when ready (optional).</p>
+                    
+                    <input type="email" id="user-email" class="launcher-email-input" placeholder="Your email (optional)" />
+                    
+                    <button id="start-app-btn" class="start-app-button" onclick="startApplication()">
+                        Launch Music Library
+                    </button>
+                    
+                    <p class="launcher-note" style="margin-top: 15px;">
+                        <strong>What happens:</strong> Lambda starts RDS → ECS Fargate deploys → DNS updates automatically
+                    </p>
+                </div>
 
+                <div id="launcher-progress" class="launcher-progress" style="display: none;">
+                    <h3>🔄 Starting Music Library...</h3>
+                    <div class="launcher-progress-bar">
+                        <div id="launcher-progress-fill" class="launcher-progress-fill"></div>
+                    </div>
+                    <p id="launcher-status">Initializing services...</p>
+                    <p class="launcher-note">• AWS ECS Fargate • RDS MySQL • Lambda orchestration • Auto-shutdown after 30 min idle</p>
+                </div>
+            </div>
 
-
-            
-           
-			<hr style="border: 0; border-top: 2px solid #999; margin: 30px 0;">
+            <hr style="border: 0; border-top: 2px solid #999; margin: 30px 0;">
 
             <div class="cta-buttons">
-                
-                <a href="http://project.jcarl.net/swagger-ui.html" class="btn btn-success" target="_blank">📄 Live API Documentation (Swagger)</a>
-                <a href="https://github.com/jc-gh25/MusicLibrary" class="btn btn-secondary" target="_blank">💻 View Repository and Readme on GitHub</a>
+                <a href="#" id="swagger-link" class="btn btn-success disabled" target="_blank" style="pointer-events: none; opacity: 0.5;">📄 Live API Documentation (Swagger)</a>
+                <a href="https://github.com/jc-gh25/MusicLibrary" class="btn btn-secondary" target="_blank">💻 View Source & Full README on GitHub</a>
             </div>
         </header>
+
+        <!-- NEW: Cost Optimization Section - Near Top -->
+        <section class="section">
+            <h2>💰 98% Cost Reduction Through Architecture Redesign</h2>
+            <p>
+                This project demonstrates <strong>real-world cost optimization</strong> — the same strategies used by companies to reduce cloud spend. 
+                By redesigning from always-on to on-demand architecture, monthly costs dropped from ~$55 to ~$1.
+            </p>
+            
+            <div class="cost-comparison">
+                <div class="cost-card before">
+                    <div class="amount">~$55</div>
+                    <div class="label">Before (Always-On)</div>
+                    <div class="detail">ECS 24/7 + RDS 24/7 + ALB</div>
+                </div>
+                <div class="cost-card after">
+                    <div class="amount">~$1</div>
+                    <div class="label">After (On-Demand)</div>
+                    <div class="detail">Lambda + S3 + pay-per-use compute</div>
+                </div>
+            </div>
+            
+            <div style="text-align: center;">
+                <span class="savings-badge">98% Monthly Savings</span>
+            </div>
+
+            <h3>How It Works</h3>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>🌐 Always-On (Pennies/month)</h4>
+                    <p>S3 static site + CloudFront CDN + Lambda functions + API Gateway. Always available for visitors to launch the app.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>⚡ On-Demand (Pay per use)</h4>
+                    <p>RDS MySQL + ECS Fargate only run when launched. Auto-shutdown after 30 minutes of inactivity.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🤖 Smart Auto-Shutdown</h4>
+                    <p>Lambda monitors CloudWatch CPU metrics. When idle (CPU < 2% for 30 min), it stops ECS and RDS automatically.</p>
+                </div>
+            </div>
+        </section>
 
         <section class="section">
             <h2>📋 Project Overview</h2>
             <p>
-                The <strong>Music Library API</strong> is a comprehensive backend application developed as a final bootcamp project, 
-                demonstrating professional-grade software engineering practices. This RESTful API provides complete CRUD operations 
-                for managing a music catalog including artists, albums, and genres with sophisticated relationship management. Album track integration can be added as the next feature.
+                The <strong>Music Library API</strong> is a comprehensive backend application developed as a bootcamp final project, 
+                then expanded into a <strong>400+ hour deep dive</strong> into AWS cloud infrastructure and cost optimization.
+                This RESTful API provides complete CRUD operations for managing a music catalog including artists, albums, and genres.
             </p>
             <p>
-                Built following best practices for layered architecture, this project showcases expertise in Spring Boot ecosystem, 
-                database design, API development, testing strategies, and cloud deployment practices. The application features a comprehensive music library with 50 artists and over 100 albums, now deployed on AWS cloud infrastructure with production-grade reliability.
+                Built with Spring Boot following best practices for layered architecture. Features a library of 50 artists and 100+ albums, 
+                deployed on AWS with production-grade reliability and professional UX despite the on-demand architecture.
             </p>
             <p>
-                <strong>Live AWS Production API:</strong> <span class="highlight">http://project.jcarl.net/api</span><br>
-                <strong>Deployment Status:</strong> <span class="highlight"> Validated with 182 requests, 600 tests, 100% pass rate</span>
+                <strong>Live API:</strong> <span class="highlight">http://project.jcarl.net/api</span> (when running)<br>
+                <strong>Validation:</strong> <span class="highlight">182 API requests, 600 tests, 100% pass rate</span>
             </p>
         </section>
-
-        <section class="section">
+		
+		        <section class="section">
             <h2>🌟 Key Features</h2>
             <div class="features-grid">
                 <div class="feature-card">
-                    <h4>🛠️ Robust REST Architecture</h4>
-                    <p>Full Create, Read, Update, Delete functionality adhering to REST principles with proper HTTP status codes and standardized response envelopes.</p>
+                    <h4>🛠️ Full REST API</h4>
+                    <p>Complete CRUD operations for Artists, Albums, and Genres with proper HTTP status codes and standardized error responses.</p>
                 </div>
                 <div class="feature-card">
                     <h4>🔗 Complex Relationships</h4>
-                    <p>Managed One-to-Many (Artist-Album) and Many-to-Many (Album-Genre) JPA relationships with bidirectional synchronization and orphan removal.</p>
+                    <p>One-to-Many (Artist-Album) and Many-to-Many (Album-Genre) JPA relationships with bidirectional synchronization.</p>
                 </div>
                 <div class="feature-card">
                     <h4>📄 Pagination & Sorting</h4>
-                    <p>Optimized data retrieval using Spring Data Pageable to handle large datasets efficiently without performance bottlenecks.</p>
+                    <p>All list endpoints support page, size, and sort parameters for efficient data retrieval.</p>
                 </div>
                 <div class="feature-card">
-                    <h4>🔍 Dynamic Search Specifications</h4>
-                    <p>Advanced filtering system using JPA Specifications to query by title, release date ranges, and genre associations dynamically.</p>
-                </div>
-                <div class="feature-card">
-                    <h4>✅ Bean Validation Security</h4>
-                    <p>Strict data integrity enforcement using JSR-380 (Bean Validation) custom constraints at the API boundary to prevent malformed data.</p>
-                </div>
-                <div class="feature-card">
-                    <h4>🛡️ Global Exception Handling</h4>
-                    <p>Centralized @RestControllerAdvice mechanism that transforms Java exceptions into user-friendly, consistent JSON error responses.</p>
+                    <h4>✅ Input Validation</h4>
+                    <p>Bean Validation (JSR-380) with detailed field-level error messages for data integrity.</p>
                 </div>
                 <div class="feature-card">
                     <h4>📖 Interactive API Docs</h4>
-                    <p>Self-documenting API using Swagger UI (OpenAPI 3.0), allowing developers to visualize and test endpoints directly in the browser.</p>
+                    <p>Swagger UI (OpenAPI 3.0) for exploring and testing endpoints directly in the browser.</p>
                 </div>
                 <div class="feature-card">
-                    <h4>🔬 Test-Driven Reliability</h4>
-                    <p>Comprehensive suite including Unit tests with Mockito, Integration tests using Testcontainers to real database interactions, and Maven Surefire test reporting.</p>
+                    <h4>🔬 Comprehensive Testing</h4>
+                    <p>Unit tests with Mockito, integration tests with Spring Boot Test, 600 automated tests passing.</p>
                 </div>
                 <div class="feature-card">
-                    <h4>🎵 Automated Media Enrichment</h4>
-                    <p>Custom integration with the iTunes Search API to automatically discover, fetch, and resize high-resolution album artwork.</p>
+                    <h4>🚀 On-Demand Infrastructure</h4>
+                    <p>Lambda-orchestrated startup, auto-shutdown after inactivity, 98% cost reduction vs always-on.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📊 Real-Time Monitoring</h4>
+                    <p>Live infrastructure status API showing database and application state with progress tracking.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🎵 Rich Music Library</h4>
+                    <p>50 artists and 100+ albums with cover images, loaded via Postman collection for demonstrations.</p>
                 </div>
             </div>
         </section>
@@ -604,12 +598,12 @@
                     </ul>
                 </div>
                 <div class="tech-card">
-                    <h4>Database &amp; ORM</h4>
+                    <h4>Database & ORM</h4>
                     <ul>
-                        <li>MySQL (Production)</li>
+                        <li>MySQL 8.4 LTS (AWS RDS)</li>
                         <li>H2 Database (Testing)</li>
                         <li>Hibernate ORM</li>
-                        <li>Hibernate DDL Auto-Update</li>
+                        <li>On-demand start/stop</li>
                     </ul>
                 </div>
                 <div class="tech-card">
@@ -617,220 +611,125 @@
                     <ul>
                         <li>Java 17</li>
                         <li>Maven Build Tool</li>
-                        <li>Lombok</li>
-                        <li>Jackson (JSON with Java 8 date/time)</li>
+                        <li>Docker (multi-stage builds)</li>
+                        <li>Lombok, Jackson</li>
                     </ul>
                 </div>
                 <div class="tech-card">
-                    <h4>API &amp; Documentation</h4>
+                    <h4>API & Documentation</h4>
                     <ul>
                         <li>RESTful Architecture</li>
                         <li>SpringDoc OpenAPI 3</li>
                         <li>Swagger UI</li>
-                        <li>JSON Response Format</li>
+                        <li>Postman Collection</li>
                     </ul>
                 </div>
                 <div class="tech-card">
-                    <h4>Testing</h4>
+                    <h4>AWS Compute & Storage</h4>
                     <ul>
-                        <li>JUnit 5</li>
-                        <li>Mockito (Unit testing framework)</li>
-                        <li>Testcontainers (Docker-based integration testing)</li>
-                        <li>Maven Surefire (Test execution and reporting)</li>
+                        <li>ECS Fargate (serverless containers)</li>
+                        <li>RDS MySQL (managed database)</li>
+                        <li>ECR (container registry)</li>
+                        <li>S3 + CloudFront (static hosting)</li>
                     </ul>
                 </div>
                 <div class="tech-card">
-                    <h4>Cloud Deployment (AWS)</h4>
+                    <h4>AWS Serverless & Automation</h4>
                     <ul>
-                        <li>AWS RDS MySQL (Production Database)</li>
-                        <li>AWS ECR (Container Registry)</li>
-                        <li>AWS ECS Fargate (Serverless Containers)</li>
-                        <li>Namesilo DNS API (Automated DNS Management)</li>
-                        <li>AWS CloudShell (Docker Build Environment)</li>
-                        <li>AWS CodeBuild (CI/CD Pipeline)</li>
-                        <li>Docker Containerization</li>
+                        <li>Lambda (status, startup, shutdown)</li>
+                        <li>API Gateway (REST endpoints)</li>
+                        <li>EventBridge (scheduled triggers)</li>
+                        <li>CloudWatch (metrics & logs)</li>
+                    </ul>
+                </div>
+                <div class="tech-card">
+                    <h4>AWS Security & Mail</h4>
+                    <ul>
+                        <li>IAM (role-based access)</li>
+                        <li>ACM (SSL certificates)</li>
+                        <li>SES (email notifications)</li>
+                        <li>VPC Security Groups</li>
+                    </ul>
+                </div>
+                <div class="tech-card">
+                    <h4>DNS & Networking</h4>
+                    <ul>
+                        <li>Namesilo DNS API</li>
+                        <li>Dynamic IP automation</li>
+                        <li>Container-based DNS updates</li>
+                        <li>Direct IP fallback for users</li>
                     </ul>
                 </div>
             </div>
         </section>
 
         <section class="section">
-            <h2>🏗️ Architecture Overview</h2>
+            <h2>🏗️ On-Demand Architecture</h2>
             <p>
-                The application follows a <strong>layered architecture</strong> pattern with clear separation of concerns, 
-                promoting maintainability, testability, and scalability. Each layer has distinct responsibilities and 
-                communicates through well-defined interfaces.
+                The application uses a <strong>serverless-first architecture</strong> that scales to zero when not in use. 
+                This is the same pattern used by companies to optimize cloud costs for low-traffic applications.
             </p>
 
+            <h3>Architecture Components</h3>
             <div class="architecture-layer">
-                <h4>🚦 Controller Layer (Presentation)</h4>
+                <h4>🌐 Always-On Layer (Pennies/month)</h4>
                 <p>
-                    Handles HTTP requests and responses, maps URLs to service methods, validates input, and formats output. 
-                    Uses Spring MVC annotations for RESTful endpoint definition.
+                    <strong>S3 Static Site</strong> hosts this launcher page at <code>projectlauncher.jcarl.net</code><br>
+                    <strong>CloudFront + ACM</strong> provides HTTPS and CDN caching<br>
+                    <strong>API Gateway + Lambda</strong> handles status checks and startup requests<br>
+                    <strong>EventBridge</strong> triggers auto-shutdown Lambda every 5 minutes
                 </p>
-                <div class="class-list">
-                    <div class="class-item">
-                        <h5>MusicLibraryController</h5>
-                        <pre><code class="language-java">@RestController</code></pre>
-                        <p>Main REST controller exposing all API endpoints for Artists, Albums, and Genres. Implements comprehensive 
-                        OpenAPI annotations for documentation. Handles pagination with <code class="language-java">@ParameterObject Pageable</code>.</p>
-                    </div>
-                    <div class="class-item">
-                        <h5>SwaggerRedirectController</h5>
-                        <pre><code class="language-java">@Controller</code></pre>
-                        <p>Redirects root URL to Swagger UI for convenient API documentation access.</p>
-                    </div>
-                </div>
             </div>
 
             <div class="architecture-layer">
-                <h4>⚙️ Service Layer (Business Logic)</h4>
+                <h4>⚡ On-Demand Layer (Pay only when running)</h4>
                 <p>
-                    Contains business logic, transaction management, and orchestrates operations between controllers and repositories. 
-                    Annotated with <code class="language-java">@Service</code> and <code class="language-java">@Transactional</code> for proper transaction boundaries.
+                    <strong>RDS MySQL</strong> starts when user clicks "Launch" (~2-3 min startup)<br>
+                    <strong>ECS Fargate</strong> deploys container once database is available (~2-3 min)<br>
+                    <strong>Namesilo DNS</strong> automatically updated with new public IP<br>
+                    <strong>Spring Boot App</strong> serves API at <code>project.jcarl.net</code>
                 </p>
-                <div class="class-list">
-                    <div class="class-item">
-                        <h5>ArtistService</h5>
-                        <pre><code class="language-java">@Service @Transactional</code></pre>
-                        <p>Manages artist CRUD operations with pagination support. Throws <code class="language-java">ResourceNotFoundException</code> 
-                        for missing entities. Uses constructor injection via <code class="language-java">@RequiredArgsConstructor</code>.</p>
-                    </div>
-                    <div class="class-item">
-                        <h5>AlbumService</h5>
-                        <pre><code class="language-java">@Service @Transactional</code></pre>
-                        <p>Handles album operations including complex many-to-many genre relationships. Implements advanced search 
-                        using JPA Specifications. Manages bidirectional relationship synchronization with explicit Hibernate initialization.</p>
-                    </div>
-                    <div class="class-item">
-                        <h5>GenreService</h5>
-                        <pre><code class="language-java">@Service @Transactional</code></pre>
-                        <p>Manages genre entities and their album associations. Provides methods for adding/removing albums from genres 
-                        while maintaining referential integrity.</p>
-                    </div>
-                </div>
             </div>
 
             <div class="architecture-layer">
-                <h4>🗃️ Repository Layer (Data Access)</h4>
+                <h4>🤖 Auto-Shutdown System</h4>
                 <p>
-                    Interfaces extending Spring Data JPA repositories for database operations. Provides automatic CRUD implementation 
-                    and custom query methods using Spring Data naming conventions.
+                    <strong>EventBridge</strong> triggers Lambda every 5 minutes<br>
+                    <strong>CloudWatch Metrics</strong> analyzed for ECS CPU utilization (30-min average)<br>
+                    <strong>Threshold: CPU < 2%</strong> indicates true idle (no requests)<br>
+                    <strong>Shutdown Action</strong> stops ECS service and RDS instance automatically
                 </p>
-                <div class="class-list">
-                    <div class="class-item">
-                        <h5>ArtistRepository</h5>
-                        <pre><code class="language-java">extends JpaRepository&lt;Artist, Long&gt;</code></pre>
-                        <p>Data access interface for Artist entities. Inherits standard CRUD and pagination methods from JpaRepository.</p>
-                    </div>
-                    <div class="class-item">
-                        <h5>AlbumRepository</h5>
-                        <pre><code class="language-java">extends JpaRepository, JpaSpecificationExecutor</code></pre>
-                        <p>Repository with custom query methods: <code class="language-java">findByArtist_ArtistId()</code> and <code class="language-java">findByGenres_GenreId()</code>. 
-                        Implements JpaSpecificationExecutor for dynamic query building.</p>
-                    </div>
-                    <div class="class-item">
-                        <h5>GenreRepository</h5>
-                        <pre><code class="language-java">extends JpaRepository&lt;Genre, Long&gt;</code></pre>
-                        <p>Simple repository interface for Genre entity persistence operations.</p>
-                    </div>
-                </div>
             </div>
 
-            <div class="architecture-layer">
-                <h4>📄 Entity Layer (Domain Model)</h4>
-                <p>
-                    JPA entities representing database tables with proper relationships, validation constraints, and lifecycle callbacks. 
-                    Uses Lombok for boilerplate reduction and Jackson annotations for JSON serialization control.
-                </p>
-                <div class="class-list">
-                    <div class="class-item">
-                        <h5>Artist</h5>
-                        <pre><code class="language-java">@Entity @Table(name="artist")</code></pre>
-                        <p><strong>Fields:</strong> artistId (PK), name (required, max 255), description (TEXT), createdAt, updatedAt<br>
-                        <strong>Relationships:</strong> One-to-Many with Album (cascade ALL, orphan removal)<br>
-                        <strong>Features:</strong> @PrePersist/@PreUpdate for timestamps, @JsonIgnore on albums collection to prevent cycles</p>
-                    </div>
-                    <div class="class-item">
-                        <h5>Album</h5>
-                        <pre><code class="language-java">@Entity @Table(name="album")</code></pre>
-                        <p><strong>Fields:</strong> albumId (PK), title (required), releaseDate, coverImageUrl, trackCount, catalogNumber (unique), 
-                        createdAt, updatedAt<br>
-                        <strong>Relationships:</strong> Many-to-One with Artist (required), Many-to-Many with Genre via join table<br>
-                        <strong>Features:</strong> Transient getReleaseYear() method, custom setGenres() for bidirectional sync, LAZY fetching</p>
-                    </div>
-                    <div class="class-item">
-                        <h5>Genre</h5>
-                        <pre><code class="language-java">@Entity @Table(name="genre")</code></pre>
-                        <p><strong>Fields:</strong> genreId (PK), name (required, max 100), description (TEXT), createdAt, updatedAt<br>
-                        <strong>Relationships:</strong> Many-to-Many with Album (inverse side, EAGER fetch for testing)<br>
-                        <strong>Features:</strong> @JsonIgnore on albums to break serialization cycles, @EqualsAndHashCode.Exclude on collections</p>
-                    </div>
+            <h3>Lambda Functions</h3>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>📊 Status Lambda</h4>
+                    <p>Queries ECS and RDS state. Returns database status, app status, and public IP. Powers the real-time progress UI.</p>
                 </div>
-            </div>
-
-            <div class="architecture-layer">
-                <h4>🔍 Specification Layer (Dynamic Queries)</h4>
-                <p>
-                    Implements the Specification pattern for building dynamic, type-safe queries with JPA Criteria API.
-                </p>
-                <div class="class-list">
-                    <div class="class-item">
-                        <h5>AlbumSpecs</h5>
-                        <pre><code class="language-java">Specification&lt;Album&gt;</code></pre>
-                        <p>Provides static factory methods for album filtering:<br>
-                        • <code class="language-java">titleContains(String)</code> - Case-insensitive title search<br>
-                        • <code class="language-java">releasedBetween(Integer, Integer)</code> - Date range filtering<br>
-                        • <code class="language-java">hasGenre(Long)</code> - Filter by genre association with JOIN</p>
-                    </div>
+                <div class="feature-card">
+                    <h4>🚀 Startup Lambda</h4>
+                    <p>Orchestrates startup sequence: starts RDS, waits for availability, then starts ECS service. Handles email notifications via SES.</p>
                 </div>
-            </div>
-
-            <div class="architecture-layer">
-                <h4>🚨 Exception Handling Layer</h4>
-                <p>
-                    Centralized exception handling using Spring's @RestControllerAdvice for consistent error responses across the API.
-                </p>
-                <div class="class-list">
-                    <div class="class-item">
-                        <h5>GlobalExceptionHandler</h5>
-                        <pre><code class="language-java">@RestControllerAdvice</code></pre>
-                        <p>Handles multiple exception types with specific handlers:<br>
-                        • <code class="language-java">MethodArgumentNotValidException</code> → 400 (validation errors)<br>
-                        • <code class="language-java">ConstraintViolationException</code> → 400 (constraint violations)<br>
-                        • <code class="language-java">ResourceNotFoundException</code> → 404 (entity not found)<br>
-                        • <code class="language-java">MethodArgumentTypeMismatchException</code> → 400 (type errors)<br>
-                        • <code class="language-java">HttpMessageNotReadableException</code> → 400 (malformed JSON)<br>
-                        • <code class="language-java">Exception</code> → 500 (unexpected errors with logging)</p>
-                    </div>
-                    <div class="class-item">
-                        <h5>ResourceNotFoundException</h5>
-                        <pre><code class="language-java">extends RuntimeException</code></pre>
-                        <p>Custom exception thrown when requested entities don't exist. Automatically converted to 404 responses 
-                        by GlobalExceptionHandler.</p>
-                    </div>
-                    <div class="class-item">
-                        <h5>ApiError</h5>
-                        <pre><code class="language-java">@Builder</code></pre>
-                        <p>Uniform error response DTO containing: timestamp, status code, error type, message, request path, 
-                        and optional validation error list. Provides consistent error format across all endpoints.</p>
-                    </div>
+                <div class="feature-card">
+                    <h4>🛑 Auto-Shutdown Lambda</h4>
+                    <p>Monitors CloudWatch CPU metrics. Stops ECS and RDS when idle for 30 minutes. Prevents cost accumulation.</p>
                 </div>
             </div>
         </section>
 
         <section class="section">
             <h2>📡 API Endpoints</h2>
-            <p>All endpoints are prefixed with <code>/api</code> and return JSON responses.</p>
+            <p>All endpoints prefixed with <code>/api</code>. Full documentation available in <a href="https://github.com/jc-gh25/MusicLibrary" target="_blank">GitHub README</a>.</p>
 
-            <h3>🎤 Artist Endpoints</h3>
-            <div class="api-endpoint">
-                <span class="endpoint-method method-post">POST</span>
-                <code>/api/artists</code> - Create a new artist
-            </div>
+            <h3>🎤 Artists</h3>
             <div class="api-endpoint">
                 <span class="endpoint-method method-get">GET</span>
-                <code>/api/artists?page=0&amp;size=20&amp;sort=name,asc</code> - Get paginated artists
+                <code>/api/artists</code> - Get paginated artists
+            </div>
+            <div class="api-endpoint">
+                <span class="endpoint-method method-post">POST</span>
+                <code>/api/artists</code> - Create artist
             </div>
             <div class="api-endpoint">
                 <span class="endpoint-method method-get">GET</span>
@@ -846,17 +745,17 @@
             </div>
             <div class="api-endpoint">
                 <span class="endpoint-method method-get">GET</span>
-                <code>/api/artists/{artistId}/albums</code> - Get all albums by artist
+                <code>/api/artists/{id}/albums</code> - Get albums by artist
             </div>
 
-            <h3>💿 Album Endpoints</h3>
-            <div class="api-endpoint">
-                <span class="endpoint-method method-post">POST</span>
-                <code>/api/albums</code> - Create a new album
-            </div>
+            <h3>💿 Albums</h3>
             <div class="api-endpoint">
                 <span class="endpoint-method method-get">GET</span>
-                <code>/api/albums?page=0&amp;size=20</code> - Get paginated albums
+                <code>/api/albums</code> - Get paginated albums
+            </div>
+            <div class="api-endpoint">
+                <span class="endpoint-method method-post">POST</span>
+                <code>/api/albums</code> - Create album
             </div>
             <div class="api-endpoint">
                 <span class="endpoint-method method-get">GET</span>
@@ -871,14 +770,14 @@
                 <code>/api/albums/{id}</code> - Delete album
             </div>
 
-            <h3>🎸 Genre Endpoints</h3>
-            <div class="api-endpoint">
-                <span class="endpoint-method method-post">POST</span>
-                <code>/api/genres</code> - Create a new genre
-            </div>
+            <h3>🎸 Genres</h3>
             <div class="api-endpoint">
                 <span class="endpoint-method method-get">GET</span>
-                <code>/api/genres?page=0&amp;size=20</code> - Get paginated genres
+                <code>/api/genres</code> - Get paginated genres
+            </div>
+            <div class="api-endpoint">
+                <span class="endpoint-method method-post">POST</span>
+                <code>/api/genres</code> - Create genre
             </div>
             <div class="api-endpoint">
                 <span class="endpoint-method method-get">GET</span>
@@ -894,570 +793,654 @@
             </div>
             <div class="api-endpoint">
                 <span class="endpoint-method method-get">GET</span>
-                <code>/api/genres/{genreId}/albums</code> - Get all albums by genre
+                <code>/api/genres/{id}/albums</code> - Get albums by genre
             </div>
         </section>
-
-        <section class="section">
-            <h2>💡 Technical Highlights</h2>
-            <div class="tech-card">
-                <h4>🔐 Data Validation</h4>
-                <p>Comprehensive input validation using Bean Validation (JSR-380) annotations:</p>
-                <ul>
-                    <li>🛡️ @NotBlank, @Size for string fields</li>
-                    <li>🛡️ @NotNull for required relationships</li>
-                    <li>🛡️ @PositiveOrZero for numeric constraints</li>
-                    <li>🛡️ Custom validation messages for user-friendly errors</li>
-                </ul>
-            </div>
-
-            <div class="tech-card">
-                <h4>🔄 Bidirectional Relationships</h4>
-                <p>Properly managed JPA relationships with:</p>
-                <ul>
-                    <li>🔗 Cascade operations for dependent entities</li>
-                    <li>🔗 Orphan removal for data integrity</li>
-                    <li>🔗 Explicit Hibernate.initialize() to prevent LazyInitializationException</li>
-                    <li>🔗 @JsonIgnore to break serialization cycles</li>
-                    <li>🔗 Custom setters for bidirectional synchronization</li>
-                </ul>
-            </div>
-
-            <div class="tech-card">
-                <h4>📊 Advanced Querying</h4>
-                <p>Flexible data retrieval with:</p>
-                <ul>
-                    <li>🔍 Spring Data JPA derived query methods</li>
-                    <li>🔍 JPA Specifications for dynamic filtering</li>
-                    <li>🔍 Pagination and sorting support</li>
-                    <li>🔍 Property path navigation (e.g., findByArtist_ArtistId)</li>
-                </ul>
-            </div>
-
-            <div class="tech-card">
-                <h4>✅ Testing Strategy</h4>
-                <p>Multi-layered testing approach:</p>
-                <ul>
-                    <li>✔️ Unit tests with Mockito for service layer isolation</li>
-                    <li>✔️ Integration tests with @SpringBootTest</li>
-                    <li>✔️ Testcontainers for real MySQL database testing</li>
-                    <li>✔️ Maven Surefire - Test execution framework that generates detailed test reports</li>
-                    <li>✔️ Separate test profile with H2 in-memory database</li>
-                </ul>
-            </div>
-
-            <div class="tech-card">
-                <h4>🗄️ Database Management</h4>
-                <p>Professional database practices:</p>
-                <ul>
-                    <li>⚙️ Hibernate DDL auto-update for automatic schema management</li>
-                    <li>⚙️ Separate profiles for dev/test/production</li>
-                    <li>⚙️ Proper indexing on foreign keys</li>
-                    <li>⚙️ Timestamp tracking with @PrePersist/@PreUpdate</li>
-                </ul>
-            </div>
-
-            <div class="tech-card">
-                <h4>📖 API Documentation</h4>
-                <p>Comprehensive OpenAPI 3.0 documentation:</p>
-                <ul>
-                    <li>📚 @Operation annotations with descriptions</li>
-                    <li>📚 @ApiResponses for all status codes</li>
-                    <li>📚 Request/response examples</li>
-                    <li>📚 Interactive Swagger UI for testing</li>
-                </ul>
-            </div>
-        </section>
-
-        <section class="section">
-            <h2>☁️ AWS Cloud Deployment</h2>
-            <p>
-                The Music Library API is deployed on <strong>Amazon Web Services (AWS)</strong> using modern cloud-native technologies 
-                and best practices for production-grade applications. The deployment leverages containerization and serverless compute 
-                for scalability, reliability, and cost-effectiveness.
-            </p>
-
-            <h3>🏗️ AWS Architecture</h3>
-            <div class="tech-stack">
-                <div class="tech-card">
-                    <h4>🗄️ AWS RDS MySQL</h4>
-                    <ul>
-                        <li>Managed relational database service</li>
-                        <li>Automatic backups and point-in-time recovery</li>
-                        <li>Multi-AZ deployment for high availability</li>
-                        <li>Automated patching and maintenance</li>
-                    </ul>
-                </div>
-                <div class="tech-card">
-                    <h4>🐳 Docker Containerization</h4>
-                    <ul>
-                        <li>Application packaged as Docker container</li>
-                        <li>Consistent environment across dev/prod</li>
-                        <li>Isolated dependencies and runtime</li>
-                        <li>Efficient resource utilization</li>
-                    </ul>
-                </div>
-                <div class="tech-card">
-                    <h4>📦 AWS ECR (Elastic Container Registry)</h4>
-                    <ul>
-                        <li>Private Docker image repository</li>
-                        <li>Secure image storage and versioning</li>
-                        <li>Integration with ECS for deployment</li>
-                        <li>Automated vulnerability scanning</li>
-                    </ul>
-                </div>
-                <div class="tech-card">
-				<h4>🚀 AWS ECS Fargate</h4>
-				<ul>
-					<li>Serverless container orchestration</li>
-					<li>No server management required</li>
-					<li>Ephemeral infrastructure design</li> <!-- Changed this line -->
-					<li>Pay-per-use pricing model</li>
-				</ul>
-			</div>
-                <div class="tech-card">
-					<h4>🔧 AWS CodeBuild</h4>
-					<ul>
-						<li><strong>S3-Triggered Pipeline:</strong> Automated deployments upon source artifact upload</li>
-						<li><strong>Multi-Stage Builds:</strong> Optimized Docker images for minimal runtime footprint</li>
-						<li><strong>Dependency Management:</strong> Integrated with AWS Public ECR mirrors</li>
-						<li><strong>Artifact Handling:</strong> Automated pushing to Private ECR repository</li>
-					</ul>
-				</div>
-				<div class="tech-card">
-					<h4>🛡️ Security & Access Control</h4>
-					<ul>
-						<li><strong>AWS IAM:</strong> Role-based access control (RBAC) with Principle of Least Privilege</li>
-						<li><strong>VPC Security Groups:</strong> Granular network firewalling for port isolation</li>
-						<li><strong>Container Security:</strong> Hardened Alpine Linux runtime (minimal attack surface)</li>
-						<li><strong>Secret Management:</strong> Secure environment variable injection</li>
-					</ul>
-				</div>
-				<div class="tech-card">
-					<h4>🛠️ DevOps & Management</h4>
-					<ul>
-						<li><strong>AWS CloudShell:</strong> Browser-based environment for Docker builds and scripting</li>
-						<li><strong>AWS CLI:</strong> Command-line interaction with ECR and ECS</li>
-						<li><strong>AWS S3:</strong> Artifact storage and CodeBuild pipeline trigger</li>
-						<li><strong>Bash Scripting:</strong> Custom automation for DNS updates and deployment</li>
-					</ul>
-				</div>
-				<div class="tech-card">
-					<h4>📊 Operations & Observability</h4>
-					<ul>
-						<li><strong>AWS CloudWatch:</strong> Real-time log aggregation and monitoring</li>
-						<li><strong>Health Checks:</strong> Spring Boot Actuator endpoints for container health</li>
-						<li><strong>Lambda Status API:</strong> Custom endpoint for application state monitoring</li>
-					</ul>
-				</div>
-			</div>
-            <h3>📊 Current Deployment Status</h3>
-            <div class="architecture-layer">
-                <h4>☁️ Production Environment</h4>
-                <p>
-                    <strong>Domain:</strong> <code>project.jcarl.net</code><br>
-                    <strong>Port:</strong> <code>80 (HTTP)</code><br>
-                    <strong>DNS Provider:</strong> Namesilo with automated API-based updates<br>
-                    <strong>Container Platform:</strong> AWS ECS Fargate (Serverless)<br>
-                    <strong>Task Revision:</strong> Latest (auto-deployed via ECS)<br>
-                    <strong>Build Environment:</strong> AWS CloudShell + CodeBuild<br>
-                </p>
-            </div>
-            <h3>✅ Deployment Validation</h3>
-            <p>
-                The AWS deployment has been thoroughly validated using Postman collection runner with comprehensive test coverage:
-            </p>
-            <ul style="margin-left: 20px; color: var(--text-dark);">
-                <li>✔️ <strong>121 API requests</strong> executed successfully</li>
-                <li>✔️ <strong>484 automated tests</strong> passed (100% success rate)</li>
-                <li>✔️ All CRUD operations verified across Artists, Albums, and Genres</li>
-                <li>✔️ Pagination, filtering, and relationship management tested</li>
-                <li>✔️ Error handling and validation confirmed</li>
-                <li>✔️ Database connectivity and persistence validated</li>
-            </ul>
-			<h3>📈 Project Metrics</h3>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <h4>🔨 Build Iterations</h4>
-                    <p><strong>33+ Docker builds</strong> executed through AWS CloudShell and CodeBuild, demonstrating iterative development and continuous improvement of the containerized application.</p>
-                </div>
-                <div class="feature-card">
-                    <h4>🏗️ Infrastructure Revisions</h4>
-                    <p><strong>11+ ECS task definition updates</strong> deployed, reflecting ongoing optimization of container configurations, resource allocation, and environment variables.</p>
-                </div>
-                <div class="feature-card">
-                    <h4>🌐 DNS Automation</h4>
-                    <p><strong>Custom DNS update script</strong> integrated with Namesilo API to automatically update A records when ECS assigns new public IPs, ensuring zero-downtime availability.</p>
-                </div>
-            </div>
-			<h3>🌐 Other Deployment Options</h3>
-            <div class="architecture-layer">
-                <h4>🚂 Railway (Alternative Cloud Platform - Not Currently Used)</h4>
-                <p>
-                    <strong>Features:</strong> Simple deployment, automatic HTTPS, built-in database<br>
-                    <strong>Use Case:</strong> Evaluated as an alternative cloud deployment option<br>
-                    <strong>Note:</strong> AWS ECS Fargate was selected for production deployment
-                </p>
-            </div>
-
-            <div class="architecture-layer">
-                <h4>🖥️ ngrok (Previous Local Development Configuration)</h4>
-                <p>
-                    <strong>Features:</strong> Secure tunneling, temporary public URLs, webhook testing<br>
-                    <strong>Use Case:</strong> Previously used for local development, testing, and demonstration purposes<br>
-                    <strong>Note:</strong> This was a temporary development configuration and is no longer active
-                </p>
-            </div>
-        </section>
-
-        <section class="section">
+		
+		        <section class="section">
             <h2>🛤️ Deployment Journey</h2>
             <p>
-                This project evolved through several deployment iterations, overcoming real-world cloud infrastructure challenges 
-                and implementing production-grade solutions. Each challenge provided valuable learning experiences in DevOps and cloud architecture.
+                This project evolved through multiple iterations, technology pivots, and 400+ hours of hands-on learning. 
+                What started as a bootcamp final project became a comprehensive study in AWS infrastructure and cost optimization.
             </p>
+
+            <h3>📈 Project Metrics</h3>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>🔨 115+ Docker Builds</h4>
+                    <p>Iterative development through AWS CloudShell and CodeBuild, refining container configuration and startup scripts.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🏗️ 17+ ECS Task Revisions</h4>
+                    <p>Continuous optimization of container settings, environment variables, and resource allocation.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>⏱️ 400+ Development Hours</h4>
+                    <p>From bootcamp project to production-ready, cost-optimized cloud infrastructure.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>💰 98% Cost Reduction</h4>
+                    <p>Redesigned from $55/month always-on to ~$1/month on-demand architecture.</p>
+                </div>
+            </div>
 
             <h3>🔥 Challenges Overcome</h3>
             <div class="features-grid">
                 <div class="feature-card">
-                    <h4>🐛 Duplicate DNS A Records Bug</h4>
-                    <p>
-                        Diagnosed and resolved DNS resolution failures caused by duplicate A records pointing to old and new IPs. 
-                        Implemented proper DNS record cleanup logic in the automation script, ensuring single authoritative A record 
-                        per deployment and preventing DNS propagation conflicts.
-                    </p>
+                    <h4>🐚 Shell Compatibility (Alpine Linux)</h4>
+                    <p>Route 53 DNS scripts failed due to ash vs bash differences. Pivoted to Namesilo API with simple curl commands that work in Alpine's ash shell.</p>
                 </div>
                 <div class="feature-card">
                     <h4>🔄 ECS Circuit Breaker Rollbacks</h4>
-                    <p>
-                        Resolved automatic task rollbacks triggered by ECS Circuit Breaker due to health check failures. 
-                        Debugged container startup issues, corrected environment variable configurations, and validated health 
-                        check endpoints to achieve stable deployments without rollbacks.
-                    </p>
+                    <p>Tasks repeatedly rolled back due to health check failures during DNS script execution. Simplified startup sequence and increased health check grace period.</p>
                 </div>
                 <div class="feature-card">
-                    <h4>💻 Windows LTSB Docker Incompatibility</h4>
-                    <p>
-                        Overcame local Docker Desktop limitations on Windows LTSB by pivoting to AWS CloudShell as the primary 
-                        build environment. Leveraged CloudShell's pre-configured Docker and AWS CLI to establish a reliable, 
-                        cloud-based build pipeline independent of local system constraints.
-                    </p>
+                    <h4>💻 Windows LTSB Docker Issues</h4>
+                    <p>Local system incompatible with Docker Desktop. Pivoted to AWS CloudShell as primary build environment — cloud-based development solved local limitations.</p>
                 </div>
                 <div class="feature-card">
                     <h4>🔐 IAM Permission Complexity</h4>
-                    <p>
-                        Navigated AWS IAM role and policy configurations to establish secure, least-privilege access patterns. 
-                        Configured ECS task execution roles, ECR permissions, RDS security groups, and VPC networking to ensure 
-                        secure communication between services while maintaining production security standards.
-                    </p>
-                </div>
-            </div>
-
-            <h3>🏁 Deployment Milestones</h3>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <h4>🌐 DNS Migration: Route 53 → Namesilo</h4>
-                    <p>
-                        Migrated from AWS Route 53 to Namesilo DNS API for automated domain management. Implemented custom DNS update 
-                        automation to dynamically update A records when ECS tasks receive new public IPs, ensuring continuous availability 
-                        at project.jcarl.net without manual intervention.
-                    </p>
+                    <p>Learned distinction between task execution role vs task role. Configured proper cross-service permissions for Lambda to access ECS, RDS, and CloudWatch.</p>
                 </div>
                 <div class="feature-card">
-                    <h4>🐳 AWS CloudShell Integration</h4>
-                    <p>
-                        Leveraged AWS CloudShell as a cloud-based Docker build environment, eliminating local dependency issues and 
-                        providing consistent, reproducible builds. CloudShell's pre-configured AWS CLI and Docker support streamlined 
-                        the container image creation and ECR push workflow.
-                    </p>
+                    <h4>🌐 DNS Migration (Route 53 → Namesilo)</h4>
+                    <p>Route 53 API too complex for container scripts. Migrated to Namesilo's simpler HTTP API. Sometimes the best solution is the simplest one.</p>
                 </div>
                 <div class="feature-card">
-                    <h4>📦 ECS Fargate Deployment Automation</h4>
-                    <p>
-                        Configured AWS ECS Fargate for serverless container orchestration with automatic task deployment. Implemented 
-                        task definitions with proper resource allocation, environment variable management, and health checks for 
-                        production-grade reliability and zero-downtime deployments.
-                    </p>
+                    <h4>📁 Static File Serving</h4>
+                    <p>Spring Boot update disabled default static resources on AWS. Fixed with environment variable: <code>SPRING_WEB_RESOURCES_STATIC_LOCATIONS</code>.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📄 Swagger Pagination Conflicts</h4>
+                    <p>Swagger UI injected invalid sort parameters causing 500 errors. Migrated to explicit @RequestParam declarations for consistent behavior.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>💰 Cost Optimization Architecture</h4>
+                    <p>Redesigned entire infrastructure: eliminated ALB ($16/mo), implemented Lambda orchestration, built auto-shutdown system with CloudWatch metrics.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🤖 Auto-Shutdown Calibration</h4>
+                    <p>Initial 35% CPU threshold was too aggressive — shut down active app. Production testing revealed Spring Boot idles at 10-12%. Calibrated to 2% for true idle detection.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📊 Real-Time Status Monitoring</h4>
+                    <p>Built Lambda to extract public IP from ECS task ENI attachments. Required EC2 network interface permissions and handling of various RDS states.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📧 SES Email Integration</h4>
+                    <p>Configured domain verification with DKIM, obtained production access, implemented async Lambda pattern for delayed notifications.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🗄️ Database Cold Start Optimization</h4>
+                    <p>Upgraded MySQL 8.0→8.4 LTS, migrated to Graviton2 (db.t4g), actively testing instance sizes to balance cold-start time vs running cost.</p>
                 </div>
             </div>
 
             <h3>💡 Key Learnings</h3>
             <div class="architecture-layer">
-                <h4>Technical Insights Gained</h4>
+                <h4>Technical Insights</h4>
                 <ul style="margin-left: 20px; color: var(--text-dark);">
-                    <li>📝 <strong>DNS Management:</strong> Automated DNS updates require careful handling of record cleanup to prevent duplicate entries and resolution conflicts</li>
-                    <li>📝 <strong>Container Health Checks:</strong> ECS Circuit Breaker provides automatic rollback protection but requires properly configured health endpoints and startup grace periods</li>
-                    <li>📝 <strong>Cloud-Based Development:</strong> AWS CloudShell eliminates local environment dependencies and provides consistent build environments across team members</li>
-                    <li>📝 <strong>Iterative Deployment:</strong> Production deployments benefit from incremental changes, comprehensive logging, and systematic troubleshooting of infrastructure issues</li>
+                    <li>📝 <strong>Simplicity wins:</strong> Third-party APIs can be more reliable than complex AWS service integrations</li>
+                    <li>📝 <strong>Shell compatibility matters:</strong> Alpine Linux (ash) ≠ Ubuntu/Debian (bash)</li>
+                    <li>📝 <strong>IAM roles are distinct:</strong> Task execution role (infrastructure) vs task role (application permissions)</li>
+                    <li>📝 <strong>Idle detection requires calibration:</strong> Production testing essential for threshold tuning</li>
+                    <li>📝 <strong>Cloud dev environments:</strong> AWS CloudShell overcomes local system limitations</li>
+                    <li>📝 <strong>Cost optimization is architecture:</strong> 98% savings came from design, not tweaking</li>
                 </ul>
             </div>
         </section>
 
         <section class="section">
             <h2>🎓 Learning Outcomes</h2>
-            <p>This project demonstrates experience with:</p>
+            <p>This project demonstrates proficiency across backend development, cloud infrastructure, and DevOps practices:</p>
+            
             <div class="features-grid">
                 <div class="feature-card">
                     <h4>Backend Development</h4>
-                    <p>Spring Boot, Spring MVC, dependency injection, RESTful API design, HTTP protocol</p>
+                    <p>Spring Boot 3.x, REST API design, JPA/Hibernate, Bean Validation, DTO patterns, global exception handling, comprehensive testing.</p>
                 </div>
                 <div class="feature-card">
-                    <h4>Database Design</h4>
-                    <p>Relational modeling, JPA/Hibernate, entity relationships, query optimization, migrations</p>
+                    <h4>AWS Compute & Storage</h4>
+                    <p>ECS Fargate, RDS MySQL, ECR, S3, CloudFront. Hands-on deployment, configuration, and troubleshooting.</p>
                 </div>
                 <div class="feature-card">
-                    <h4>Software Architecture</h4>
-                    <p>Layered architecture, separation of concerns, SOLID principles, design patterns</p>
+                    <h4>AWS Serverless</h4>
+                    <p>Lambda functions (Python/boto3), API Gateway, EventBridge scheduling, CloudWatch metrics analysis.</p>
                 </div>
                 <div class="feature-card">
-                    <h4>Testing &amp; Quality</h4>
-                    <p>Unit testing, integration testing, test-driven development, code coverage</p>
+                    <h4>Cost Optimization</h4>
+                    <p>On-demand architecture, auto-shutdown systems, ALB elimination, resource right-sizing. 98% cost reduction.</p>
                 </div>
                 <div class="feature-card">
-                    <h4>DevOps &amp; Cloud Deployment</h4>
-                    <p>AWS cloud services (RDS, ECR, ECS, CloudShell, CodeBuild), Docker containerization, CI/CD pipelines, DNS automation (Namesilo API), IAM security, infrastructure as code</p>
+                    <h4>DevOps Practices</h4>
+                    <p>Docker multi-stage builds, CI/CD with CodeBuild, DNS automation, infrastructure monitoring, production debugging.</p>
                 </div>
                 <div class="feature-card">
-                    <h4>Best Practices</h4>
-                    <p>Error handling, validation, logging, documentation, code organization</p>
+                    <h4>Problem Solving</h4>
+                    <p>400+ hours of iteration. Pivoted strategies when approaches failed. Made data-driven decisions based on production metrics.</p>
                 </div>
             </div>
         </section>
 
         <section class="section">
             <h2>🚀 Getting Started</h2>
-            <h3>Prerequisites</h3>
-            <ul style="margin-left: 20px; color: var(--text-dark);">
-                <li>Java 17 or higher</li>
-                <li>Maven 3.6+</li>
-                <li>MySQL 8.0+ (or use H2 for testing)</li>
-            </ul>
+            
+            <h3>Try the Live Demo</h3>
+            <p>Click "Launch Music Library" at the top of this page. The app takes ~5-7 minutes to start, then auto-shuts down after 30 minutes of inactivity.</p>
 
-            <h3>Running Locally</h3>
+            <h3>Run Locally</h3>
             <div class="api-endpoint">
                 <code>git clone https://github.com/jc-gh25/MusicLibrary.git</code>
             </div>
             <div class="api-endpoint">
-                <code>cd music-library</code>
+                <code>cd music-library && mvn spring-boot:run</code>
             </div>
-            <div class="api-endpoint">
-                <code>mvn spring-boot:run</code>
-            </div>
-            <p>Access the API at <code>http://localhost:8080/api</code> and Swagger UI at <code>http://localhost:8080/swagger-ui.html</code></p>
-            <p><strong>For public access:</strong> Use the AWS production URL: <code>http://project.jcarl.net/api</code></p>
+            <p>Requires Java 17+, Maven 3.6+, and MySQL 8.0+. See <a href="https://github.com/jc-gh25/MusicLibrary" target="_blank">GitHub README</a> for full setup instructions.</p>
 
-            <h3>Running Tests</h3>
+            <h3>Run Tests</h3>
             <div class="api-endpoint">
                 <code>mvn test</code>
             </div>
-            <div class="api-endpoint">
-                <code>mvn verify</code> (runs all tests with detailed reporting)
-            </div>
+            <p>Runs unit and integration tests using H2 in-memory database. 600 automated tests, 100% pass rate.</p>
         </section>
-		
-
 
         <footer>
-			<p>Built with ❤️ as a Backend Development Bootcamp Final Project</p>
-			<p>Connect: <a href="https://www.linkedin.com/in/jeffcarllinked/" target="_blank" style="color: #3b82f6; text-decoration: none;">LinkedIn Profile</a></p>
-			<div class="cta-buttons" style="margin-top: 20px;">
-				<a href="http://project.jcarl.net/swagger-ui.html" class="btn btn-primary" target="_blank">Try the AWS Production API</a>
-			</div>
-			<p style="margin-top: 30px; font-size: 0.8em; color: #666;">
-				Deployed on AWS ECS Fargate • Serverless Container • AWS RDS MySQL
-			</p>
-		</footer>
+            <p>Built with ❤️ as a Backend Development Portfolio Project</p>
+            <p>Connect: <a href="https://www.linkedin.com/in/jeffcarllinked/" target="_blank" style="color: #3b82f6; text-decoration: none;">LinkedIn Profile</a></p>
+            <div class="cta-buttons" style="margin-top: 20px;">
+                <a href="#" id="swagger-link-footer" class="btn btn-primary disabled" target="_blank" style="pointer-events: none; opacity: 0.5;">Try the Live API (Swagger UI)</a>
+            </div>
+            <p style="margin-top: 30px; font-size: 0.8em; color: #666;">
+                AWS ECS Fargate • Lambda • RDS MySQL • S3 • CloudFront • API Gateway • EventBridge • CloudWatch • SES
+            </p>
+        </footer>
     </div>
 
-    <!-- Prism.js JavaScript for syntax highlighting -->
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <!-- Prism.js for syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+	
+	    <script>
+        /**
+         * Music Library Launcher
+         * =======================
+         * Handles on-demand AWS infrastructure startup and real-time status monitoring.
+         * 
+         * Architecture:
+         *   - S3 static site (this page) is always available
+         *   - Lambda functions start/stop RDS and ECS on demand
+         *   - Auto-shutdown after 30 min idle saves ~98% vs always-on
+         * 
+         * User Flow:
+         *   1. Page loads → detectContext() checks if app is already running
+         *   2. If running → show direct access links
+         *   3. If stopped → show "Launch" button
+         *   4. On launch → call Lambda API, poll status until ready
+         *   5. When ready → show "Open Music Library" link with direct IP
+         * 
+         * State Persistence:
+         *   Uses localStorage to track launch-in-progress across page refreshes.
+         *   Prevents duplicate launch requests and resumes status monitoring.
+         */
 
-			
-			<script>
-			// Configuration
-			const APP_DOMAIN = 'http://project.jcarl.net';
-			const STATUS_ENDPOINT = 'https://edxuxft6x1.execute-api.us-east-1.amazonaws.com/prod/status';
-			const START_ENDPOINT = 'https://edxuxft6x1.execute-api.us-east-1.amazonaws.com/prod';
+        // =============================================================================
+        // CONFIGURATION
+        // =============================================================================
 
-			// Detect if the app is already running
-			async function detectContext() {
-				console.log('Checking application status...');
-				
-				try {
-					const response = await fetch(STATUS_ENDPOINT);
-					const data = await response.json();
-					
-					console.log('Lambda status response:', data);
-					
-					if (data.database_status === 'available' && 
-						data.application_status === 'RUNNING') {
-						console.log('App is running - showing direct access');
-						showDirectAccess(data);  // Pass full data object
-					} else {
-						console.log('App not running - showing launcher');
-						showLauncher();
-					}
-					
-				} catch (error) {
-					console.error('Status endpoint error:', error);
-					showLauncher();
-				}
-			}
+        /** Base URL for the running application (used as fallback if IP unavailable) */
+        const APP_DOMAIN = 'http://project.jcarl.net';
 
-			// Show the direct access UI when app is running
-			function showDirectAccess(data) {
-				const launcherDiv = document.getElementById('app-launcher');
-				const directUrl = data.public_ip ? `http://${data.public_ip}` : APP_DOMAIN;
-				
-				launcherDiv.innerHTML = `
-					<h2>🎵 Music Library is Running</h2>
-					<p style="color: #10b981; font-weight: bold; font-size: 1.1rem;">✓ Application is online and ready</p>
-					<p>The database and application services are currently active.</p>
-					
-					<div style="margin-top: 25px;">
-						<a href="${directUrl}/library.html" class="btn" target="_blank" 
-						   style="font-size: 1.1rem; 
-								  padding: 15px 35px; 
-								  text-decoration: none;
-								  background: linear-gradient(120deg, #ffffff 0%, #eee 100%);
-								  color: #6f42c1;
-								  border: 4px solid #6f42c1;
-								  box-shadow: 0 14px 16px rgba(2, 2, 2, 0.7);
-								  font-weight: bold;">
-							Browse Music Library
-						</a>
-					</div>
-					
-					${data.public_ip ? `
-					<p class="launcher-note" style="margin-top: 15px; font-size: 0.85rem;">
-						<strong>Direct IP:</strong> <code>${data.public_ip}</code><br>
-						<span style="color: #999;">(DNS may take hours to update after dynamic IP assignment)</span>
-					</p>
-					` : ''}
-					
-					<p class="launcher-note" style="margin-top: 20px;">
-						• AWS ECS Fargate • RDS MySQL Database • On-demand infrastructure
-					</p>
-				`;
-				launcherDiv.style.display = 'block';
-			}
+        /** Lambda endpoint that returns current RDS/ECS status and public IP */
+        const STATUS_ENDPOINT = 'https://edxuxft6x1.execute-api.us-east-1.amazonaws.com/prod/status';
 
-			// Show the launcher form when app is not running
-			function showLauncher() {
-				document.getElementById('launcher-idle').style.display = 'block';
-				document.getElementById('launcher-progress').style.display = 'none';
-				document.getElementById('app-launcher').style.display = 'block';
-			}
+        /** Lambda endpoint that triggers RDS and ECS startup sequence */
+        const START_ENDPOINT = 'https://edxuxft6x1.execute-api.us-east-1.amazonaws.com/prod';
 
+        /** Maximum time to wait for startup before considering it failed (15 minutes) */
+        const LAUNCH_TIMEOUT_MS = 15 * 60 * 1000;
 
-			// Poll the Lambda status endpoint until the app is ready
-			async function checkApplicationStatus() {
-				try {
-					const response = await fetch(STATUS_ENDPOINT);
-					const data = await response.json();
+        /** Polling interval for status checks during startup (10 seconds) */
+        const POLL_INTERVAL_MS = 10000;
 
-					console.log('Polling status:', data);
+        // =============================================================================
+        // STATUS FORMATTING
+        // =============================================================================
 
-					const dbStatus = data.database_status || 'checking...';
-					const appStatus = data.application_status || 'checking...';
-					document.getElementById('launcher-status').textContent =
-						`Database: ${dbStatus} | App: ${appStatus}`;
+        /**
+         * Converts raw AWS status codes into user-friendly display text.
+         * Handles both RDS database statuses and ECS application statuses.
+         * 
+         * @param {string} status - Raw status from Lambda API
+         * @returns {string} Human-readable status text
+         */
+        function formatStatus(status) {
+            if (!status) return 'Checking...';
+            
+            const statusMap = {
+                // RDS Database statuses
+                'starting': 'Starting',
+                'available': 'Available',
+                'stopped': 'Stopped',
+                'stopping': 'Stopping',
+                'configuring-enhanced-monitoring': 'Configuring',
+                'backing-up': 'Backing Up',
+                'modifying': 'Modifying',
+                
+                // ECS Application statuses
+                'WAITING_FOR_DATABASE': 'Waiting for Database',
+                'RUNNING': 'Running',
+                'STARTING': 'Starting',
+                'STOPPED': 'Stopped',
+                'PENDING': 'Pending',
+                'PROVISIONING': 'Provisioning',
+                'ACTIVATING': 'Activating',
+                'NOT_FOUND': 'Not Found',
+                'ERROR': 'Error'
+            };
+            
+            return statusMap[status] || status;
+        }
 
-					if (data.database_status === 'available' &&
-						data.application_status === 'RUNNING') {
-						document.getElementById('launcher-progress-fill').style.width = '100%';
-						return data;  // ← Changed: return data instead of true
-					}
+        // =============================================================================
+        // LAUNCH STATE MANAGEMENT (localStorage)
+        // =============================================================================
+        // These functions persist launch state across page refreshes, allowing users
+        // to close/reopen the page without losing progress or triggering duplicate starts.
 
-					let progress = 20;
-					if (data.database_status === 'starting') progress = 40;
-					if (data.database_status === 'available') progress = 60;
-					if (data.application_status === 'PENDING') progress = 70;
-					if (data.application_status === 'PROVISIONING') progress = 80;
-					if (data.application_status === 'ACTIVATING') progress = 90;
-					
-					document.getElementById('launcher-progress-fill').style.width = `${progress}%`;
-					return null;  // ← Changed: return null instead of false
-					
-				} catch (error) {
-					console.error('Status check error:', error);
-					document.getElementById('launcher-status').textContent = 'Checking services...';
-					return null;  // ← Changed: return null instead of false
-				}
-			}
+        /**
+         * Checks if a launch is currently in progress and hasn't timed out.
+         * Used on page load to determine whether to resume monitoring.
+         * 
+         * @returns {boolean} True if launch in progress and within timeout window
+         */
+        function isLaunchInProgress() {
+            const launching = localStorage.getItem('musicLibraryLaunching');
+            const startTime = localStorage.getItem('launchStartTime');
+            
+            if (launching === 'true' && startTime) {
+                const elapsed = Date.now() - parseInt(startTime);
+                if (elapsed < LAUNCH_TIMEOUT_MS) {
+                    return true;
+                } else {
+                    // Launch has timed out - clear stale state
+                    clearLaunchState();
+                }
+            }
+            return false;
+        }
 
-			// Monitor startup after launch request
-			function monitorStartup() {
-				const interval = setInterval(async () => {
-					const data = await checkApplicationStatus();  // ← Changed: ready → data
-					if (data) {
-						clearInterval(interval);
-						
-						const button = document.getElementById('start-app-btn');
-						button.textContent = '✓ App Running';
-						button.style.backgroundColor = '#28a745';
-						button.disabled = true;
-						button.style.cursor = 'default';
-						button.style.opacity = '1';
+        /**
+         * Records that a launch has been initiated.
+         * Called after successful API call to start services.
+         */
+        function setLaunchState() {
+            localStorage.setItem('musicLibraryLaunching', 'true');
+            localStorage.setItem('launchStartTime', Date.now().toString());
+        }
 
-						// ← Added: Build URL from IP with fallback
-						const directUrl = data.public_ip ? `http://${data.public_ip}` : APP_DOMAIN;
+        /**
+         * Clears launch state from localStorage.
+         * Called when launch completes, times out, or fails.
+         */
+        function clearLaunchState() {
+            localStorage.removeItem('musicLibraryLaunching');
+            localStorage.removeItem('launchStartTime');
+        }
 
-						const openLink = document.createElement('a');
-						openLink.textContent = 'Open Music Library';
-						openLink.href = `${directUrl}/library.html`;  // ← Changed: use directUrl
-						openLink.target = '_blank';
-						openLink.className = 'btn btn-success';
-						openLink.style.cssText = `
-							display: block;
-							width: fit-content;
-							margin: 20px auto 15px auto;
-							font-size: 1.1rem;
-							padding: 15px 35px;
-							text-decoration: none;
-						`;
-						
-						document.getElementById('launcher-progress').appendChild(openLink);
-					}
-				}, 10000);
-			}
+        // =============================================================================
+        // UI UPDATES
+        // =============================================================================
 
-			// Main "Start Application" handler
-			async function startApplication() {
-				const email = document.getElementById('user-email').value;
-				const button = document.getElementById('start-app-btn');
-				const originalText = button.textContent;
+        /**
+         * Enables the Swagger UI links in header and footer with the correct URL.
+         * Uses direct IP when available to bypass DNS propagation delays.
+         * 
+         * @param {string} directUrl - Base URL (either IP-based or domain)
+         */
+        function enableSwaggerLinks(directUrl) {
+            const swaggerLink = document.getElementById('swagger-link');
+            const swaggerLinkFooter = document.getElementById('swagger-link-footer');
+            
+            [swaggerLink, swaggerLinkFooter].forEach(link => {
+                if (link) {
+                    link.href = `${directUrl}/swagger-ui.html`;
+                    link.style.pointerEvents = 'auto';
+                    link.style.opacity = '1';
+                    link.classList.remove('disabled');
+                }
+            });
+        }
 
-				button.textContent = 'Starting Services…';
-				button.disabled = true;
+        /**
+         * Shows the "App is Running" UI with direct access link.
+         * Displayed when app is detected as running on page load.
+         * 
+         * @param {Object} data - Status response from Lambda
+         * @param {string} data.public_ip - Current Fargate task public IP
+         * @param {string} data.database_status - RDS status
+         * @param {string} data.application_status - ECS task status
+         */
+        function showDirectAccess(data) {
+            const launcherDiv = document.getElementById('app-launcher');
+            
+            // Prefer direct IP to avoid DNS propagation delays
+            const directUrl = data.public_ip ? `http://${data.public_ip}` : APP_DOMAIN;
+            
+            enableSwaggerLinks(directUrl);
+            
+            document.getElementById('launcher-loading').style.display = 'none';
+            launcherDiv.innerHTML = `
+                <h3>🎵 Music Library is Running</h3>
+                <p style="color: #10b981; font-weight: bold; font-size: 1.1rem;">✓ Application is online and ready</p>
+                <p>The database and application are currently active.</p>
+                
+                <div style="margin-top: 25px;">
+                    <a href="${directUrl}/library.html" class="btn btn-success" target="_blank" 
+                       style="font-size: 1.1rem; padding: 15px 35px; text-decoration: none;">
+                        Browse Music Library
+                    </a>
+                </div>
+                
+                ${data.public_ip ? `
+                <p class="launcher-note" style="margin-top: 15px; font-size: 0.85rem;">
+                    <strong>Direct IP:</strong> <code>${data.public_ip}</code><br>
+                    <span style="color: #999;">(DNS for project.jcarl.net may take hours to propagate after IP change)</span>
+                </p>
+                ` : ''}
+                
+                <p class="launcher-note" style="margin-top: 20px;">
+                    • Auto-shutdown after 30 min idle • On-demand infrastructure • 98% cost savings
+                </p>
+            `;
+            launcherDiv.style.display = 'block';
+        }
 
-				try {
-					const response = await fetch(START_ENDPOINT, {
-						method: 'POST',
-						headers: { 'Content-Type': 'application/json' },
-						body: JSON.stringify({ email: email || null })
-					});
+        /**
+         * Shows the initial launcher form with "Launch" button.
+         * Displayed when app is not running and no launch is in progress.
+         */
+        function showLauncher() {
+            document.getElementById('launcher-loading').style.display = 'none';
+            document.getElementById('launcher-idle').style.display = 'block';
+            document.getElementById('launcher-progress').style.display = 'none';
+            document.getElementById('app-launcher').style.display = 'block';
+        }
 
-					const result = await response.json();
-					console.log('Start response:', result);
+        /**
+         * Shows the progress UI with status updates and progress bar.
+         * Used both for new launches and when resuming after page refresh.
+         */
+        function showProgressUI() {
+            document.getElementById('launcher-loading').style.display = 'none';
+            document.getElementById('launcher-idle').style.display = 'none';
+            document.getElementById('launcher-progress').style.display = 'block';
+            document.getElementById('app-launcher').style.display = 'block';
+            
+            // Disable button to prevent duplicate clicks
+            const button = document.getElementById('start-app-btn');
+            if (button) {
+                button.textContent = 'Starting Services…';
+                button.disabled = true;
+            }
+        }
 
-					document.getElementById('launcher-idle').style.display = 'none';
-					document.getElementById('launcher-progress').style.display = 'block';
+        // =============================================================================
+        // STATUS POLLING
+        // =============================================================================
 
-					monitorStartup();
-					
-				} catch (error) {
-					console.error('Error starting application:', error);
-					alert('Failed to start application. Please try again.');
-					button.textContent = originalText;
-					button.disabled = false;
-				}
-			}
+        /**
+         * Fetches current infrastructure status from Lambda and updates UI.
+         * Called repeatedly during startup to show progress.
+         * 
+         * Progress bar mapping:
+         *   20% - Initial (just started)
+         *   40% - RDS starting
+         *   50% - RDS configuring
+         *   60% - RDS available, waiting for ECS
+         *   70% - ECS task pending
+         *   80% - ECS provisioning
+         *   90% - ECS activating
+         *   100% - App running, ready for use
+         * 
+         * @returns {Object|null} Status data if app is ready, null if still starting
+         */
+        async function checkApplicationStatus() {
+            try {
+                const response = await fetch(STATUS_ENDPOINT);
+                const data = await response.json();
 
-			// Initialize on page load
-			window.addEventListener('DOMContentLoaded', detectContext);
-		</script>
+                console.log('Polling status:', data);
 
-	</body>
+                // Update status text display
+                const dbStatusDisplay = data.database_status || 'checking...';
+                const appStatusDisplay = data.application_status || 'checking...';
+                const statusElement = document.getElementById('launcher-status');
+                if (statusElement) {
+                    statusElement.textContent = `Database: ${formatStatus(dbStatusDisplay)} | App: ${formatStatus(appStatusDisplay)}`;
+                }
+
+                // Normalize for comparison
+                const dbStatus = (data.database_status || '').toLowerCase();
+                const appStatus = data.application_status || '';
+
+                // Check if fully ready
+                // Note: We consider "configuring-enhanced-monitoring" and "backing-up" as "available enough"
+                // because the database is accessible during these states
+                const dbReady = dbStatus === 'available' || dbStatus.includes('configuring') || dbStatus === 'backing-up';
+                if (dbReady && appStatus === 'RUNNING') {
+                    document.getElementById('launcher-progress-fill').style.width = '100%';
+                    return data;
+                }
+
+                // Calculate progress percentage based on current state
+                let progress = 20;
+                if (dbStatus === 'starting') progress = 40;
+                if (dbStatus.includes('configuring')) progress = 50;
+                if (dbStatus === 'available') progress = 60;
+                if (appStatus === 'PENDING') progress = 70;
+                if (appStatus === 'PROVISIONING') progress = 80;
+                if (appStatus === 'ACTIVATING') progress = 90;
+                
+                // Update progress bar
+                const progressFill = document.getElementById('launcher-progress-fill');
+                if (progressFill) {
+                    progressFill.style.width = `${progress}%`;
+                }
+                
+                return null; // Not ready yet
+                
+            } catch (error) {
+                console.error('Status check error:', error);
+                const statusElement = document.getElementById('launcher-status');
+                if (statusElement) {
+                    statusElement.textContent = 'Checking services...';
+                }
+                return null;
+            }
+        }
+
+        /**
+         * Starts polling loop that checks status every 10 seconds until app is ready.
+         * Called after initiating startup or when resuming a launch in progress.
+         * 
+         * When app becomes ready:
+         *   - Clears launch state from localStorage
+         *   - Updates UI to show success state
+         *   - Adds "Open Music Library" link
+         */
+        function monitorStartup() {
+            const interval = setInterval(async () => {
+                const data = await checkApplicationStatus();
+                
+                if (data) {
+                    // App is ready - stop polling and update UI
+                    clearInterval(interval);
+                    clearLaunchState();
+                    
+                    const directUrl = data.public_ip ? `http://${data.public_ip}` : APP_DOMAIN;
+                    enableSwaggerLinks(directUrl);
+                    
+                    // Update header to show success
+                    const progressDiv = document.getElementById('launcher-progress');
+                    if (progressDiv) {
+                        const header = progressDiv.querySelector('h3');
+                        if (header) {
+                            header.textContent = '✓ Music Library is Ready';
+                            header.style.color = '#10b981';
+                        }
+                    }
+                    
+                    // Update status text
+                    const statusElement = document.getElementById('launcher-status');
+                    if (statusElement) {
+                        statusElement.textContent = 'Database and application are running.';
+                        statusElement.style.color = '#10b981';
+                        statusElement.style.fontWeight = 'bold';
+                    }
+                    
+                    // Update button appearance
+                    const button = document.getElementById('start-app-btn');
+                    if (button) {
+                        button.textContent = '✓ App Running';
+                        button.style.backgroundColor = '#28a745';
+                        button.disabled = true;
+                        button.style.cursor = 'default';
+                        button.style.opacity = '1';
+                    }
+
+                    // Add link to open the application
+                    const openLink = document.createElement('a');
+                    openLink.textContent = 'Open Music Library';
+                    openLink.href = `${directUrl}/library.html`;
+                    openLink.target = '_blank';
+                    openLink.className = 'btn btn-success';
+                    openLink.style.cssText = `
+                        display: block;
+                        width: fit-content;
+                        margin: 20px auto 15px auto;
+                        font-size: 1.1rem;
+                        padding: 15px 35px;
+                        text-decoration: none;
+                    `;
+                    
+                    if (progressDiv) {
+                        progressDiv.appendChild(openLink);
+                    }
+                }
+            }, POLL_INTERVAL_MS);
+        }
+
+        // =============================================================================
+        // INITIALIZATION & MAIN HANDLERS
+        // =============================================================================
+
+        /**
+         * Determines initial UI state based on current infrastructure status.
+         * Called automatically when page loads (DOMContentLoaded event).
+         * 
+         * Decision tree:
+         *   - If app is running → show direct access UI
+         *   - If launch in progress (from localStorage) → resume monitoring
+         *   - Otherwise → show launcher form
+         */
+        async function detectContext() {
+            console.log('Checking application status...');
+            
+            try {
+                const response = await fetch(STATUS_ENDPOINT);
+                const data = await response.json();
+                
+                console.log('Lambda status response:', data);
+                
+                const dbStatus = (data.database_status || '').toLowerCase();
+                const dbReady = dbStatus === 'available' || dbStatus.includes('configuring') || dbStatus === 'backing-up';
+                
+                if (dbReady && data.application_status === 'RUNNING') {
+                    // App is already running - show direct access
+                    console.log('App is running - showing direct access');
+                    clearLaunchState();
+                    showDirectAccess(data);
+                } else if (isLaunchInProgress()) {
+                    // User started launch earlier (before refresh) - resume monitoring
+                    console.log('Launch in progress - resuming monitoring');
+                    showProgressUI();
+                    monitorStartup();
+                } else {
+                    // App is not running - show launcher
+                    console.log('App not running - showing launcher');
+                    showLauncher();
+                }
+                
+            } catch (error) {
+                console.error('Status endpoint error:', error);
+                // On error, check if we should resume monitoring or show launcher
+                if (isLaunchInProgress()) {
+                    showProgressUI();
+                    monitorStartup();
+                } else {
+                    showLauncher();
+                }
+            }
+        }
+
+        /**
+         * Handles "Launch Music Library" button click.
+         * Calls Lambda to start RDS and ECS, then begins status monitoring.
+         * 
+         * Flow:
+         *   1. Disable button to prevent duplicate clicks
+         *   2. POST to Lambda start endpoint (with optional email for notifications)
+         *   3. On success, save launch state and switch to progress UI
+         *   4. On failure, show error and re-enable button
+         */
+        async function startApplication() {
+            const email = document.getElementById('user-email').value;
+            const button = document.getElementById('start-app-btn');
+            const originalText = button.textContent;
+
+            // Disable button during API call
+            button.textContent = 'Starting Services…';
+            button.disabled = true;
+
+            try {
+                const response = await fetch(START_ENDPOINT, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email || '' })
+                });
+
+                const result = await response.json();
+                console.log('Start response:', result);
+
+                // Check for errors in response
+                if (!response.ok || result.status === 'error') {
+                    throw new Error(result.message || 'Failed to start services');
+                }
+
+                // Success - save state and switch to progress UI
+                setLaunchState();
+                document.getElementById('launcher-idle').style.display = 'none';
+                document.getElementById('launcher-progress').style.display = 'block';
+                
+                // Begin polling for status updates
+                monitorStartup();
+                
+            } catch (error) {
+                // Handle failure - show error and restore button
+                console.error('Error starting application:', error);
+                clearLaunchState();
+                alert('Failed to start application. Please try again.');
+                button.textContent = originalText;
+                button.disabled = false;
+            }
+        }
+
+        // =============================================================================
+        // EVENT LISTENERS
+        // =============================================================================
+
+        // Initialize launcher when DOM is fully loaded
+        window.addEventListener('DOMContentLoaded', detectContext);
+    </script>
+</body>
 </html>

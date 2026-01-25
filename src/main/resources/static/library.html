@@ -3,10 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="Browse the Music Library album collection - a Spring Boot REST API portfolio project.">
+    <meta name="description" content="Browse the Music Library album collection - a Spring Boot REST API portfolio project.">
     <title>Music Library - Browse Albums</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
     <style>
+        /* =====================================================================
+           MUSIC LIBRARY - BROWSE ALBUMS STYLESHEET
+           =====================================================================
+           This page displays the album collection from the Music Library API.
+           
+           Layout Structure:
+             - Header: Title, navigation links
+             - Controls: Search input, filter dropdowns, stats cards
+             - Albums Grid: Responsive card layout
+             - Pagination: Previous/Next navigation
+             - Footer: Project info and links
+           
+           Design Principles:
+             - Dark gradient background for visual appeal
+             - White cards for content contrast
+             - Purple/blue accent colors matching project branding
+             - Mobile-responsive with breakpoints at 768px
+           ===================================================================== */
+
+        /* ---------------------------------------------------------------------
+           CSS RESET & BASE STYLES
+           --------------------------------------------------------------------- */
         * {
             margin: 0;
             padding: 0;
@@ -25,6 +48,10 @@
             margin: 0 auto;
         }
 
+        /* ---------------------------------------------------------------------
+           HEADER STYLES
+           Title, subtitle, and navigation links
+           --------------------------------------------------------------------- */
         header {
             background: white;
             padding: 30px;
@@ -59,6 +86,10 @@
             background: #764ba2;
         }
 
+        /* ---------------------------------------------------------------------
+           CONTROLS SECTION
+           Search box, filter dropdowns, and statistics cards
+           --------------------------------------------------------------------- */
         .controls {
             background: white;
             padding: 20px;
@@ -67,6 +98,7 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
+        /* Search and filter row - flexbox layout with wrapping */
         .search-box {
             display: flex;
             gap: 10px;
@@ -74,12 +106,14 @@
             flex-wrap: wrap;
         }
 
+        /* Wrapper for search input + clear button positioning */
         .search-input-wrapper {
             position: relative;
             flex: 1;
             min-width: 200px;
         }
 
+        /* Clear button (X) inside search input */
         .search-clear-btn {
             position: absolute;
             right: 10px;
@@ -91,7 +125,7 @@
             font-size: 1.2rem;
             cursor: pointer;
             padding: 5px;
-            display: none;
+            display: none;  /* Hidden by default, shown via .visible class */
             transition: color 0.2s;
             line-height: 1;
         }
@@ -104,21 +138,23 @@
             display: block;
         }
 
+        /* Form inputs - search field and dropdowns */
         .search-box input,
         .search-box select {
             flex: 1;
             min-width: 200px;
             padding: 12px;
-            padding-right: 40px;
+            padding-right: 40px;  /* Space for clear button */
             border: 2px solid #e0e0e0;
             border-radius: 5px;
             font-size: 1rem;
         }
 
         .search-box select {
-            padding-right: 12px;
+            padding-right: 12px;  /* Dropdowns don't need clear button space */
         }
 
+        /* Action buttons - Search and Clear */
         .search-box button {
             padding: 12px 30px;
             background: #667eea;
@@ -135,6 +171,11 @@
             background: #764ba2;
         }
 
+        /* ---------------------------------------------------------------------
+           STATISTICS CARDS
+           Display album, artist, and genre counts
+           Updates dynamically when filters are applied
+           --------------------------------------------------------------------- */
         .stats {
             display: flex;
             gap: 20px;
@@ -160,6 +201,9 @@
             opacity: 0.9;
         }
 
+        /* ---------------------------------------------------------------------
+           LOADING & ERROR STATES
+           --------------------------------------------------------------------- */
         .loading {
             text-align: center;
             padding: 40px;
@@ -176,6 +220,11 @@
             text-align: center;
         }
 
+        /* ---------------------------------------------------------------------
+           ALBUM GRID
+           Responsive grid layout using CSS Grid
+           Auto-fills columns based on available width
+           --------------------------------------------------------------------- */
         .albums-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -183,19 +232,24 @@
             margin-top: 20px;
         }
 
+        /* ---------------------------------------------------------------------
+           ALBUM CARDS
+           Individual album display with cover image and metadata
+           --------------------------------------------------------------------- */
         .album-card {
-			background: white;
-			border-radius: 12px;
-			overflow: hidden;
-			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-			transition: transform 0.3s, box-shadow 0.3s;
-		}
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
 
-		.album-card:hover {
-			transform: translateY(-5px);
-			box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-		}
+        .album-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
 
+        /* Album cover image - fixed height with cover fit */
         .album-cover {
             width: 100%;
             height: 250px;
@@ -203,6 +257,7 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
+        /* Album metadata section */
         .album-info {
             padding: 15px;
         }
@@ -229,6 +284,7 @@
             margin-top: 8px;
         }
 
+        /* Genre tags - pill-shaped badges */
         .genre-tags {
             display: flex;
             flex-wrap: wrap;
@@ -244,6 +300,7 @@
             color: #555;
         }
 
+        /* Empty state when no albums match filters */
         .no-results {
             text-align: center;
             padding: 60px 20px;
@@ -255,6 +312,10 @@
             margin-bottom: 20px;
         }
 
+        /* ---------------------------------------------------------------------
+           PAGINATION CONTROLS
+           Previous/Next buttons and current page indicator
+           --------------------------------------------------------------------- */
         .pagination {
             display: flex;
             justify-content: center;
@@ -289,6 +350,9 @@
             color: white;
         }
 
+        /* ---------------------------------------------------------------------
+           FOOTER
+           --------------------------------------------------------------------- */
         footer {
             text-align: center;
             color: white;
@@ -296,11 +360,16 @@
             margin-top: 40px;
         }
 
+        /* ---------------------------------------------------------------------
+           RESPONSIVE DESIGN
+           Adjustments for tablets and mobile devices
+           --------------------------------------------------------------------- */
         @media (max-width: 768px) {
             h1 {
                 font-size: 1.8rem;
             }
 
+            /* Stack grid into fewer columns on small screens */
             .albums-grid {
                 grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
                 gap: 15px;
@@ -310,6 +379,7 @@
                 height: 150px;
             }
 
+            /* Stack search controls vertically */
             .search-box {
                 flex-direction: column;
             }
@@ -324,8 +394,10 @@
 <body>
     <div class="container">
 
-	
-	
+        <!-- ================================================================
+             HEADER
+             Page title and navigation back to documentation/API docs
+             ================================================================ -->
         <header>
             <h1>🎵 Music Library</h1>
             <p style="color: #666; margin-top: 10px;">Browse and explore the album collection</p>
@@ -335,21 +407,32 @@
             </div>
         </header>
 
+        <!-- ================================================================
+             CONTROLS
+             Search input, filter dropdowns, and statistics display
+             ================================================================ -->
         <div class="controls">
             <div class="search-box">
+                <!-- Search input with clear button -->
                 <div class="search-input-wrapper">
                     <input type="text" id="searchInput" placeholder="Search albums by title...">
                     <button class="search-clear-btn" id="searchClearBtn" onclick="clearSearchInput()" title="Clear search">✕</button>
                 </div>
+                
+                <!-- Filter dropdowns - populated dynamically from API -->
                 <select id="artistFilter">
                     <option value="">All Artists</option>
                 </select>
                 <select id="genreFilter">
                     <option value="">All Genres</option>
                 </select>
+                
+                <!-- Action buttons -->
                 <button onclick="searchAlbums()">Search</button>
                 <button onclick="clearFilters()" style="background: #999;">Clear</button>
             </div>
+            
+            <!-- Statistics cards - update based on current filter results -->
             <div class="stats" id="stats">
                 <div class="stat-card">
                     <div class="number" id="albumCount">-</div>
@@ -366,6 +449,10 @@
             </div>
         </div>
 
+        <!-- ================================================================
+             DYNAMIC CONTENT AREAS
+             Loading indicator, error messages, and album grid
+             ================================================================ -->
         <div id="loading" class="loading" style="display: none;">
             Loading albums...
         </div>
@@ -376,42 +463,124 @@
 
         <div id="pagination" class="pagination"></div>
 
+        <!-- ================================================================
+             FOOTER
+             Project info and GitHub link
+             ================================================================ -->
         <footer>
             <p>Music Library API - Built with Spring Boot & Java</p>
             <p style="margin-top: 10px; font-size: 0.9rem;">
                 <a href="https://github.com/jc-gh25/MusicLibrary" style="color: white;" target="_blank">VIEW ON GITHUB</a>
-            </p><p style="margin-top: 20px;"><i>All images are copyrighted by their respective owners and displayed only for demonstration purposes.</i></p>
+            </p>
+            <p style="margin-top: 20px;">
+                <i>All images are copyrighted by their respective owners and displayed only for demonstration purposes.</i>
+            </p>
         </footer>
     </div>
+	
+	    <script>
+        /**
+         * Music Library - Album Browser
+         * ==============================
+         * Interactive frontend for browsing the Music Library REST API.
+         * 
+         * Features:
+         *   - Paginated album display with responsive grid layout
+         *   - Filter by artist, genre, or search by title
+         *   - Dynamic statistics that update based on current filters
+         *   - Album cover images with fallback placeholder
+         *   - Client-side filtering when using nested API endpoints
+         * 
+         * API Integration:
+         *   - /api/albums - Paginated album list (server-side pagination)
+         *   - /api/artists - Artist list for filter dropdown
+         *   - /api/genres - Genre list for filter dropdown
+         *   - /api/artists/{id}/albums - Albums by specific artist (returns array)
+         *   - /api/genres/{id}/albums - Albums by specific genre (returns array)
+         * 
+         * Pagination Strategy:
+         *   - Main albums endpoint: Server-side pagination (Spring Data Page)
+         *   - Artist/Genre endpoints: Return arrays, client-side pagination
+         *   - Search: Fetches all, filters client-side, then paginates
+         * 
+         * Statistics Behavior:
+         *   - On initial load: Shows total counts from database
+         *   - When filtered: Updates to show counts from filtered results
+         *   - When cleared: Restores original totals
+         */
 
-    <script>
-        // API base URL - Automatically detects local vs deployed environment
+        // =============================================================================
+        // CONFIGURATION
+        // =============================================================================
+
+        /** 
+         * API base URL - relative path works for both local and deployed environments.
+         * The Spring Boot backend serves both the static files and API from same origin.
+         */
         const API_BASE = '/api';
-        
-        // Current page state
-        let currentPage = 0;
-        let totalPages = 0;
+
+        /** Number of albums to display per page */
         const pageSize = 20;
-        
-        // Store current filter state for pagination
+
+        // =============================================================================
+        // STATE MANAGEMENT
+        // =============================================================================
+
+        /** Current page number (zero-indexed for Spring Data compatibility) */
+        let currentPage = 0;
+
+        /** Total number of pages available for current query */
+        let totalPages = 0;
+
+        /** 
+         * Stores original statistics from initial load.
+         * Used to restore totals when filters are cleared.
+         */
+        let originalStats = { albums: 0, artists: 0, genres: 0 };
+
+        /** 
+         * Current filter state - preserved for pagination.
+         * When user clicks Next/Previous, we need to remember what filters were active.
+         */
         let currentFilters = {
             artistId: '',
             genreId: '',
             searchTerm: ''
         };
 
-        // Load initial data when page loads
+        // =============================================================================
+        // INITIALIZATION
+        // =============================================================================
+
+        /**
+         * Initialize the page when DOM is fully loaded.
+         * Loads all required data in parallel for faster initial render.
+         */
         window.addEventListener('DOMContentLoaded', function() {
-            loadStats();
-            loadArtists();
-            loadGenres();
-            loadAlbums();
-			toggleClearButton();
+            loadStats();      // Fetch total counts for stat cards
+            loadArtists();    // Populate artist filter dropdown
+            loadGenres();     // Populate genre filter dropdown
+            loadAlbums();     // Load first page of albums
+            toggleClearButton();  // Set initial state of search clear button
         });
 
-        // Load statistics
+        // =============================================================================
+        // STATISTICS LOADING & UPDATES
+        // =============================================================================
+
+        /**
+         * Loads initial statistics (total counts) from the API.
+         * Uses pagination endpoints with size=1 to get totalElements without fetching all data.
+         * 
+         * Note: The API returns totals in different formats depending on Spring Data version:
+         *   - totalElements (standard)
+         *   - total (some versions)
+         *   - page.totalElements (wrapped format)
+         * This function handles all variants for compatibility.
+         */
         async function loadStats() {
             try {
+                // Fetch all three counts in parallel for performance
                 const [albums, artists, genres] = await Promise.all([
                     fetch(`${API_BASE}/albums?page=0&size=1`).then(r => r.json()),
                     fetch(`${API_BASE}/artists?page=0&size=1`).then(r => r.json()),
@@ -420,30 +589,76 @@
 
                 console.log('Stats API responses:', { albums, artists, genres });
 
-                // Extract totalElements from paginated responses with fallbacks
+                // Extract totals - handle multiple response formats
                 const albumTotal = albums?.totalElements ?? albums?.total ?? albums?.page?.totalElements ?? (Array.isArray(albums) ? albums.length : 0);
                 const artistTotal = artists?.totalElements ?? artists?.total ?? artists?.page?.totalElements ?? (Array.isArray(artists) ? artists.length : 0);
                 const genreTotal = genres?.totalElements ?? genres?.total ?? genres?.page?.totalElements ?? (Array.isArray(genres) ? genres.length : 0);
 
+                // Store for later restoration when filters are cleared
+                originalStats = { albums: albumTotal, artists: artistTotal, genres: genreTotal };
+
+                // Update UI
                 document.getElementById('albumCount').textContent = albumTotal;
                 document.getElementById('artistCount').textContent = artistTotal;
                 document.getElementById('genreCount').textContent = genreTotal;
+                
             } catch (error) {
                 console.error('Error loading stats:', error);
+                // Show zeros on error rather than leaving dashes
                 document.getElementById('albumCount').textContent = '0';
                 document.getElementById('artistCount').textContent = '0';
                 document.getElementById('genreCount').textContent = '0';
             }
         }
 
-        // Load artists for filter dropdown
+        /**
+         * Updates statistics to reflect currently filtered/displayed albums.
+         * Called when artist, genre, or search filters are active.
+         * 
+         * Counts unique artists and genres from the filtered album set,
+         * providing accurate stats for the current view.
+         * 
+         * @param {Array} albums - Array of album objects from filtered results
+         */
+        function updateFilteredStats(albums) {
+            // Count unique artists using Set for deduplication
+            const uniqueArtists = new Set();
+            albums.forEach(album => {
+                if (album.artist?.artistId) {
+                    uniqueArtists.add(album.artist.artistId);
+                }
+            });
+            
+            // Count unique genres across all albums
+            const uniqueGenres = new Set();
+            albums.forEach(album => {
+                if (album.genres) {
+                    album.genres.forEach(genre => uniqueGenres.add(genre.genreId));
+                }
+            });
+            
+            // Update UI with filtered counts
+            document.getElementById('albumCount').textContent = albums.length;
+            document.getElementById('artistCount').textContent = uniqueArtists.size;
+            document.getElementById('genreCount').textContent = uniqueGenres.size;
+        }
+
+        // =============================================================================
+        // FILTER DROPDOWN POPULATION
+        // =============================================================================
+
+        /**
+         * Loads all artists from API and populates the artist filter dropdown.
+         * Fetches up to 100 artists sorted alphabetically by name.
+         */
         async function loadArtists() {
             try {
                 const response = await fetch(`${API_BASE}/artists?size=100&sort=name,asc`);
                 const data = await response.json();
                 
                 const select = document.getElementById('artistFilter');
-                const artists = data.content || data;
+                const artists = data.content || data;  // Handle paginated or array response
+                
                 artists.forEach(artist => {
                     const option = document.createElement('option');
                     option.value = artist.artistId;
@@ -455,14 +670,18 @@
             }
         }
 
-        // Load genres for filter dropdown
+        /**
+         * Loads all genres from API and populates the genre filter dropdown.
+         * Fetches up to 100 genres sorted alphabetically by name.
+         */
         async function loadGenres() {
             try {
                 const response = await fetch(`${API_BASE}/genres?size=100&sort=name,asc`);
                 const data = await response.json();
                 
                 const select = document.getElementById('genreFilter');
-                const genres = data.content || data;
+                const genres = data.content || data;  // Handle paginated or array response
+                
                 genres.forEach(genre => {
                     const option = document.createElement('option');
                     option.value = genre.genreId;
@@ -474,50 +693,74 @@
             }
         }
 
-        // Load albums with filters
+        // =============================================================================
+        // ALBUM LOADING & FILTERING
+        // =============================================================================
+
+        /**
+         * Main function to load and display albums based on current filters.
+         * 
+         * Routing Logic:
+         *   1. If artistId selected → Use /api/artists/{id}/albums (returns array)
+         *   2. Else if genreId selected → Use /api/genres/{id}/albums (returns array)
+         *   3. Else if searchTerm entered → Fetch all albums, filter client-side
+         *   4. Else → Use /api/albums with server-side pagination
+         * 
+         * The nested endpoints (artist/genre) return arrays, so we apply:
+         *   - Additional filters client-side (e.g., genre filter on artist results)
+         *   - Client-side pagination (slice the array)
+         * 
+         * @param {number} page - Page number to load (zero-indexed)
+         */
         async function loadAlbums(page = 0) {
+            // Get UI elements
             const loading = document.getElementById('loading');
             const error = document.getElementById('error');
             const container = document.getElementById('albumsContainer');
             
+            // Show loading state
             loading.style.display = 'block';
             error.style.display = 'none';
             container.innerHTML = '';
 
             try {
+                // Read current filter values from form
                 const artistId = document.getElementById('artistFilter').value;
                 const genreId = document.getElementById('genreFilter').value;
                 const searchTerm = document.getElementById('searchInput').value.trim();
 
-                // Store current filters for pagination
+                // Store filters for pagination (Next/Previous buttons need these)
                 currentFilters = { artistId, genreId, searchTerm };
 
                 let url;
                 let response;
                 let data;
                 let albums;
-                let isPaginated = false;
+                let isPaginated = false;  // Tracks if server provided pagination
 
-                // Route to correct endpoint based on filters
+                // -----------------------------------------------------------------
+                // ROUTE 1: Filter by Artist (nested endpoint)
+                // -----------------------------------------------------------------
                 if (artistId) {
-                    // Use nested artist endpoint - returns array
                     url = `${API_BASE}/artists/${artistId}/albums`;
                     console.log('Fetching albums by artist:', url);
+                    
                     response = await fetch(url);
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
+                    
                     data = await response.json();
                     albums = Array.isArray(data) ? data : [];
                     
-                    // Apply genre filter client-side if needed
+                    // Apply additional genre filter client-side if selected
                     if (genreId) {
                         albums = albums.filter(album => 
                             album.genres && album.genres.some(g => g.genreId == genreId)
                         );
                     }
                     
-                    // Apply search filter client-side
+                    // Apply search filter client-side if entered
                     if (searchTerm) {
                         const term = searchTerm.toLowerCase();
                         albums = albums.filter(album => 
@@ -525,24 +768,31 @@
                         );
                     }
                     
-                    // Client-side pagination for array results
+                    // Update stats BEFORE pagination slice (show total filtered count)
+                    updateFilteredStats(albums);
+                    
+                    // Client-side pagination
                     totalPages = Math.ceil(albums.length / pageSize);
                     currentPage = Math.min(page, Math.max(0, totalPages - 1));
                     const start = currentPage * pageSize;
                     albums = albums.slice(start, start + pageSize);
                     
+                // -----------------------------------------------------------------
+                // ROUTE 2: Filter by Genre (nested endpoint)
+                // -----------------------------------------------------------------
                 } else if (genreId) {
-                    // Use nested genre endpoint - returns array
                     url = `${API_BASE}/genres/${genreId}/albums`;
                     console.log('Fetching albums by genre:', url);
+                    
                     response = await fetch(url);
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
+                    
                     data = await response.json();
                     albums = Array.isArray(data) ? data : [];
                     
-                    // Apply search filter client-side
+                    // Apply search filter client-side if entered
                     if (searchTerm) {
                         const term = searchTerm.toLowerCase();
                         albums = albums.filter(album => 
@@ -550,22 +800,30 @@
                         );
                     }
                     
-                    // Client-side pagination for array results
+                    // Update stats BEFORE pagination slice
+                    updateFilteredStats(albums);
+                    
+                    // Client-side pagination
                     totalPages = Math.ceil(albums.length / pageSize);
                     currentPage = Math.min(page, Math.max(0, totalPages - 1));
                     const start = currentPage * pageSize;
                     albums = albums.slice(start, start + pageSize);
                     
+                // -----------------------------------------------------------------
+                // ROUTE 3: No artist/genre filter - use main albums endpoint
+                // -----------------------------------------------------------------
                 } else {
-                    // Use main albums endpoint
                     if (searchTerm) {
-                        // When searching, fetch ALL albums to search across entire library
+                        // Search requires fetching all albums to search entire library
+                        // (Server doesn't have a search endpoint in this API)
                         url = `${API_BASE}/albums?page=0&size=1000&sort=title,asc`;
                         console.log('Fetching all albums for search:', url);
+                        
                         response = await fetch(url);
                         if (!response.ok) {
                             throw new Error(`HTTP error! status: ${response.status}`);
                         }
+                        
                         data = await response.json();
                         albums = data.content || [];
                         
@@ -575,30 +833,43 @@
                             album.title.toLowerCase().includes(term)
                         );
                         
-                        // Client-side pagination for filtered results
+                        // Update stats with filtered results
+                        updateFilteredStats(albums);
+                        
+                        // Client-side pagination
                         totalPages = Math.ceil(albums.length / pageSize);
                         currentPage = Math.min(page, Math.max(0, totalPages - 1));
                         const start = currentPage * pageSize;
                         albums = albums.slice(start, start + pageSize);
                         isPaginated = false;
+                        
                     } else {
-                        // No search term - use server-side pagination
+                        // No filters - use server-side pagination (most efficient)
                         url = `${API_BASE}/albums?page=${page}&size=${pageSize}&sort=title,asc`;
                         console.log('Fetching all albums:', url);
+                        
                         response = await fetch(url);
                         if (!response.ok) {
                             throw new Error(`HTTP error! status: ${response.status}`);
                         }
+                        
                         data = await response.json();
                         albums = data.content || [];
-                        currentPage = data.page.number || 0;
-                        totalPages = data.page.totalPages || 0;
+                        currentPage = data.page?.number || 0;
+                        totalPages = data.page?.totalPages || 0;
                         isPaginated = true;
+                        
+                        // Restore original stats when no filters active
+                        document.getElementById('albumCount').textContent = originalStats.albums;
+                        document.getElementById('artistCount').textContent = originalStats.artists;
+                        document.getElementById('genreCount').textContent = originalStats.genres;
                     }
                 }
                 
+                // Hide loading indicator
                 loading.style.display = 'none';
 
+                // Render results or empty state
                 if (albums && albums.length > 0) {
                     displayAlbums(albums);
                     displayPagination(isPaginated ? data : null);
@@ -611,15 +882,26 @@
                     `;
                     document.getElementById('pagination').innerHTML = '';
                 }
+                
             } catch (err) {
+                // Handle errors - show error message to user
                 loading.style.display = 'none';
                 error.style.display = 'block';
                 error.textContent = `Error loading albums: ${err.message}`;
                 console.error('Error:', err);
             }
         }
+		
+		        // =============================================================================
+        // ALBUM DISPLAY RENDERING
+        // =============================================================================
 
-        // Display albums in grid
+        /**
+         * Renders album cards into the grid container.
+         * Clears existing content and creates new cards for each album.
+         * 
+         * @param {Array} albums - Array of album objects to display
+         */
         function displayAlbums(albums) {
             const container = document.getElementById('albumsContainer');
             container.innerHTML = '';
@@ -630,14 +912,35 @@
             });
         }
 
-
-        // Create album card element
+        /**
+         * Creates a single album card DOM element.
+         * 
+         * Card structure:
+         *   - Cover image (with fallback placeholder)
+         *   - Album title (truncated with ellipsis if too long)
+         *   - Artist name
+         *   - Release year and track count
+         *   - Genre tags (pill-shaped badges)
+         * 
+         * @param {Object} album - Album data from API
+         * @param {string} album.title - Album title
+         * @param {Object} album.artist - Artist object with name
+         * @param {string} album.releaseDate - ISO date string
+         * @param {string} album.coverImageUrl - URL to cover image
+         * @param {number} album.trackCount - Number of tracks
+         * @param {Array} album.genres - Array of genre objects
+         * @returns {HTMLElement} Album card div element
+         */
         function createAlbumCard(album) {
             const card = document.createElement('div');
             card.className = 'album-card';
             
-            const releaseYear = album.releaseDate ? new Date(album.releaseDate).getFullYear() : 'Unknown';
+            // Extract release year from date string
+            const releaseYear = album.releaseDate 
+                ? new Date(album.releaseDate).getFullYear() 
+                : 'Unknown';
             
+            // Build genre tags HTML
             let genreTags = '';
             if (album.genres && album.genres.length > 0) {
                 genreTags = album.genres.map(genre => 
@@ -645,11 +948,16 @@
                 ).join('');
             }
 
+            // SVG placeholder for albums without cover images
+            // Creates a purple gradient with "No Cover" text
             const placeholderSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Crect fill='%23667eea' width='250' height='250'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' fill='white' font-size='20' dy='.3em'%3ENo Cover%3C/text%3E%3C/svg%3E";
+            
             const imageUrl = album.coverImageUrl || placeholderSvg;
             const artistName = album.artist?.name || 'Unknown Artist';
             const albumTitle = album.title;
             
+            // Build card HTML
+            // Note: onerror handler provides fallback if image URL fails to load
             card.innerHTML = `
                 <img src="${imageUrl}" 
                      alt="${albumTitle}" 
@@ -670,20 +978,42 @@
             return card;
         }
 
-        // Handle image load errors with fallback to placeholder
-		async function handleImageError(imgElement) {
-			imgElement.onerror = null;
-			
-			const placeholderSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Crect fill='%23667eea' width='250' height='250'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' fill='white' font-size='20' dy='.3em'%3ENo Cover%3C/text%3E%3C/svg%3E";
-			imgElement.src = placeholderSvg;
+        /**
+         * Handles image load failures by replacing with placeholder.
+         * Called via onerror attribute on img elements.
+         * 
+         * Prevents infinite error loops by clearing onerror before changing src.
+         * 
+         * @param {HTMLImageElement} imgElement - The img element that failed to load
+         */
+        async function handleImageError(imgElement) {
+            // Clear handler to prevent infinite loop if placeholder also fails
+            imgElement.onerror = null;
+            
+            // Replace with SVG placeholder
+            const placeholderSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Crect fill='%23667eea' width='250' height='250'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' fill='white' font-size='20' dy='.3em'%3ENo Cover%3C/text%3E%3C/svg%3E";
+            imgElement.src = placeholderSvg;
         }
 
-        // Display pagination controls
+        // =============================================================================
+        // PAGINATION
+        // =============================================================================
+
+        /**
+         * Renders pagination controls (Previous, Page Info, Next).
+         * 
+         * Uses currentPage and totalPages state variables set during loadAlbums().
+         * Clicking Previous/Next calls loadAlbums() with the new page number,
+         * which preserves current filters via currentFilters state.
+         * 
+         * @param {Object|null} data - Server response data (used for server-side pagination)
+         *                             Pass null for client-side pagination
+         */
         function displayPagination(data) {
             const pagination = document.getElementById('pagination');
             pagination.innerHTML = '';
 
-            // Always show pagination controls
+            // Determine button states
             const isFirstPage = currentPage === 0;
             const isLastPage = currentPage >= totalPages - 1;
 
@@ -694,7 +1024,7 @@
             prevBtn.onclick = () => loadAlbums(currentPage - 1);
             pagination.appendChild(prevBtn);
 
-            // Page info
+            // Page indicator (disabled button styled as info display)
             const pageInfo = document.createElement('button');
             pageInfo.textContent = `Page ${currentPage + 1} of ${totalPages}`;
             pageInfo.className = 'current-page';
@@ -709,22 +1039,38 @@
             pagination.appendChild(nextBtn);
         }
 
-        // Search albums (resets to page 0)
+        // =============================================================================
+        // SEARCH & FILTER ACTIONS
+        // =============================================================================
+
+        /**
+         * Triggers a new search/filter operation.
+         * Resets to page 0 since filter results may have different page count.
+         * Called by Search button click.
+         */
         function searchAlbums() {
             currentPage = 0;
             loadAlbums(0);
         }
 
-        // Clear all filters
+        /**
+         * Clears all filters and search input, reloads unfiltered album list.
+         * Restores original statistics.
+         * Called by Clear button click.
+         */
         function clearFilters() {
             document.getElementById('searchInput').value = '';
             document.getElementById('artistFilter').value = '';
             document.getElementById('genreFilter').value = '';
+            toggleClearButton();  // Hide the X button in search input
             currentPage = 0;
             loadAlbums(0);
         }
 
-        // Clear search input and reload albums
+        /**
+         * Clears just the search input and reloads.
+         * Called by the X button inside the search input field.
+         */
         function clearSearchInput() {
             document.getElementById('searchInput').value = '';
             toggleClearButton();
@@ -732,7 +1078,10 @@
             loadAlbums(0);
         }
 
-        // Toggle clear button visibility based on input content
+        /**
+         * Shows or hides the clear (X) button inside the search input.
+         * Button is visible only when there's text in the input.
+         */
         function toggleClearButton() {
             const searchInput = document.getElementById('searchInput');
             const clearBtn = document.getElementById('searchClearBtn');
@@ -744,16 +1093,26 @@
             }
         }
 
-        // Allow Enter key to trigger search
+        // =============================================================================
+        // EVENT LISTENERS
+        // =============================================================================
+
+        /**
+         * Allow Enter key to trigger search from the search input field.
+         * Provides better UX - users don't have to click the Search button.
+         */
         document.getElementById('searchInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 searchAlbums();
             }
         });
 
-        // Monitor search input for changes to show/hide clear button        document.getElementById('searchInput').addEventListener('input', toggleClearButton);
-
-
+        /**
+         * Monitor search input changes to show/hide the clear (X) button.
+         * Updates in real-time as user types.
+         */
+        document.getElementById('searchInput').addEventListener('input', toggleClearButton);
     </script>
 </body>
 </html>
+		
