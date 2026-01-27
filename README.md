@@ -13,7 +13,7 @@ This application runs **on-demand** to minimize AWS costs (~98% savings vs alway
 3. The database and application deploy in approximately **5-7 minutes**
 4. Use the **direct IP link provided** (DNS for project.jcarl.net may take hours to propagate)
 
-![Application Webpage](src/main/resources/static/docs/screenshot.png)
+![Application Webpage](src/main/resources/static/docs/screenshot.jpg)
 
 **Why On-Demand?**
 
