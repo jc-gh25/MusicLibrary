@@ -13,6 +13,8 @@ This application runs **on-demand** to minimize AWS costs (~98% savings vs alway
 3. The database and application deploy in approximately **5-7 minutes**
 4. Use the **direct IP link provided** (DNS for project.jcarl.net may take hours to propagate)
 
+![Application Webpage](src/main/resources/static/docs/screenshot.png)
+
 **Why On-Demand?**
 
 | Architecture | Monthly Cost |
@@ -75,7 +77,8 @@ The Music Library API is a portfolio-quality Spring Boot application that demons
 
 ### Key Capabilities
 
-✅ Full CRUD operations for all entities  
+✅ Full CRUD operations for all entities
+✅ Search albums by title or artist name
 ✅ Pagination and sorting on all list endpoints  
 ✅ Input validation with detailed error messages  
 ✅ Automatic timestamp tracking (createdAt, updatedAt)  
@@ -96,7 +99,7 @@ This project was developed using **AI-assisted development**, with AI tools gene
 
 ### Project Timeline & Scope
 
-What started as a bootcamp final project became a 500+ hour deep dive into cloud infrastructure:
+What started as a bootcamp final project became a 400+ hour deep dive into cloud infrastructure:
 
 | Phase | Time Invested | What Happened |
 |-------|---------------|---------------|
@@ -150,7 +153,7 @@ AI tools (Claude, GPT, and others) generated:
 
 This project demonstrates:
 
-- **Persistence** — 500+ hours, 110+ builds, mass trial and error
+- **Persistence** — 400+ hours, 110+ builds, mass trial and error
 - **Cost consciousness** — Reduced hosting costs by 98% through architectural redesign
 - **Real infrastructure skills** — AWS deployment, debugging, multi-service integration
 - **Serverless thinking** — On-demand resources, event-driven architecture
@@ -337,6 +340,7 @@ The web UI polls this endpoint every 10 seconds during startup, showing:
 
 ### API Features
 - **RESTful Design**: Standard HTTP methods (GET, POST, PUT, DELETE)
+- **Search**: Find albums by title or artist name (case-insensitive)
 - **Pagination**: All list endpoints support `page`, `size`, and `sort` parameters
 - **Relationship Queries**: Get albums by artist or genre
 - **Input Validation**: Comprehensive validation with detailed error messages
@@ -519,6 +523,7 @@ The Swagger UI provides:
 |--------|----------|-------------|--------|
 | POST | `/api/albums` | Create a new album | 201 |
 | GET | `/api/albums` | Get all albums (paginated) | 200 |
+| GET | `/api/albums/search?q={query}` | Search albums by title or artist | 200 |
 | GET | `/api/albums/{id}` | Get album by ID | 200 |
 | PUT | `/api/albums/{id}` | Update an album | 200 |
 | DELETE | `/api/albums/{id}` | Delete an album | 204 |
@@ -552,6 +557,9 @@ All list endpoints support pagination and sorting:
 **Example Requests:**
 
 ```bash
+# Search for albums by title or artist name
+GET /api/albums/search?q=beatles&page=0&size=20
+
 # Get first page of artists, sorted by name
 GET /api/artists?page=0&size=10&sort=name,asc
 

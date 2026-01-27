@@ -150,4 +150,77 @@ public class AlbumControllerIT {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
+	
+	@Test
+	void testSearchAlbumsByTitle() {
+		// Create test albums
+		Album album1 = new Album();
+		album1.setTitle("Abbey Road");
+		album1.setReleaseDate(LocalDate.of(1969, 9, 26));
+		album1.setArtist(testArtist);
+		albumRepository.save(album1);
+
+		Album album2 = new Album();
+		album2.setTitle("Let It Be");
+		album2.setReleaseDate(LocalDate.of(1970, 5, 8));
+		album2.setArtist(testArtist);
+		albumRepository.save(album2);
+
+		// Search for "abbey" - should find Abbey Road
+		ResponseEntity<RestResponsePage<Album>> response = restTemplate.exchange(
+				baseUrl + "/search?q=abbey",
+				HttpMethod.GET,
+				null,
+				new ParameterizedTypeReference<RestResponsePage<Album>>() {}
+		);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.getBody()).isNotNull();
+		assertThat(response.getBody().getContent()).hasSize(1);
+		assertThat(response.getBody().getContent().get(0).getTitle()).isEqualTo("Abbey Road");
+	}
+
+	@Test
+	void testSearchAlbumsByArtistName() {
+		// Create a second artist
+		Artist beatles = new Artist();
+		beatles.setName("The Beatles");
+		beatles.setDescription("British rock band");
+		beatles = artistRepository.save(beatles);
+
+		// Create album for Beatles
+		Album album = new Album();
+		album.setTitle("Help!");
+		album.setReleaseDate(LocalDate.of(1965, 8, 6));
+		album.setArtist(beatles);
+		albumRepository.save(album);
+
+		// Search for "beatles" - should find the album by artist name
+		ResponseEntity<RestResponsePage<Album>> response = restTemplate.exchange(
+				baseUrl + "/search?q=beatles",
+				HttpMethod.GET,
+				null,
+				new ParameterizedTypeReference<RestResponsePage<Album>>() {}
+		);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.getBody()).isNotNull();
+		assertThat(response.getBody().getContent()).hasSize(1);
+		assertThat(response.getBody().getContent().get(0).getTitle()).isEqualTo("Help!");
+	}
+
+	@Test
+	void testSearchAlbumsNoResults() {
+		// Search for something that doesn't exist
+		ResponseEntity<RestResponsePage<Album>> response = restTemplate.exchange(
+				baseUrl + "/search?q=xyznonexistent",
+				HttpMethod.GET,
+				null,
+				new ParameterizedTypeReference<RestResponsePage<Album>>() {}
+		);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.getBody()).isNotNull();
+		assertThat(response.getBody().getContent()).isEmpty();
+	}
 }

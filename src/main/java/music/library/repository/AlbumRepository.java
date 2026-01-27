@@ -6,6 +6,10 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import music.library.entity.Album;
 
@@ -63,6 +67,20 @@ public interface AlbumRepository extends JpaRepository<Album, Long>, JpaSpecific
      * @return Optional containing the album if found, empty otherwise
      */
     Optional<Album> findByTitleIgnoreCase(String title);
+	
+	/**
+	* Searches albums by title OR artist name (case-insensitive substring match).
+	* Returns albums, not artists - so album covers display in the UI.
+	* 
+	* @param query the search term
+	* @param pageable pagination parameters
+	* @return paginated albums matching the search
+	*/
+	@EntityGraph(attributePaths = {"artist", "genres"})
+	@Query("SELECT a FROM Album a WHERE " +
+		   "LOWER(a.title) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
+		   "LOWER(a.artist.name) LIKE LOWER(CONCAT('%', :query, '%'))")
+	Page<Album> searchByTitleOrArtist(@Param("query") String query, Pageable pageable);
     
     /**
      * Checks if an album with the given title exists (case-insensitive).

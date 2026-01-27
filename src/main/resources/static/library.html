@@ -415,7 +415,7 @@
             <div class="search-box">
                 <!-- Search input with clear button -->
                 <div class="search-input-wrapper">
-                    <input type="text" id="searchInput" placeholder="Search albums by title...">
+                    <input type="text" id="searchInput" placeholder="Search album name or artist...">
                     <button class="search-clear-btn" id="searchClearBtn" onclick="clearSearchInput()" title="Clear search">✕</button>
                 </div>
                 
@@ -795,10 +795,11 @@
                     // Apply search filter client-side if entered
                     if (searchTerm) {
                         const term = searchTerm.toLowerCase();
-                        albums = albums.filter(album => 
-                            album.title.toLowerCase().includes(term)
-                        );
-                    }
+						albums = albums.filter(album => 
+							album.title.toLowerCase().includes(term) ||
+							(album.artist?.name && album.artist.name.toLowerCase().includes(term))
+						);
+					}
                     
                     // Update stats BEFORE pagination slice
                     updateFilteredStats(albums);
@@ -812,38 +813,41 @@
                 // -----------------------------------------------------------------
                 // ROUTE 3: No artist/genre filter - use main albums endpoint
                 // -----------------------------------------------------------------
-                } else {
-                    if (searchTerm) {
-                        // Search requires fetching all albums to search entire library
-                        // (Server doesn't have a search endpoint in this API)
-                        url = `${API_BASE}/albums?page=0&size=1000&sort=title,asc`;
-                        console.log('Fetching all albums for search:', url);
-                        
-                        response = await fetch(url);
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-                        
-                        data = await response.json();
-                        albums = data.content || [];
-                        
-                        // Apply search filter client-side
-                        const term = searchTerm.toLowerCase();
-                        albums = albums.filter(album => 
-                            album.title.toLowerCase().includes(term)
-                        );
-                        
-                        // Update stats with filtered results
-                        updateFilteredStats(albums);
-                        
-                        // Client-side pagination
-                        totalPages = Math.ceil(albums.length / pageSize);
-                        currentPage = Math.min(page, Math.max(0, totalPages - 1));
-                        const start = currentPage * pageSize;
-                        albums = albums.slice(start, start + pageSize);
-                        isPaginated = false;
-                        
-                    } else {
+				} else {
+					if (searchTerm) {
+						// Use server-side search endpoint (searches title AND artist name)
+						url = `${API_BASE}/albums/search?q=${encodeURIComponent(searchTerm)}&page=${page}&size=${pageSize}`;
+						console.log('Searching albums:', url);
+						
+						response = await fetch(url);
+						if (!response.ok) {
+							throw new Error(`HTTP error! status: ${response.status}`);
+						}
+						
+						data = await response.json();
+						albums = data.content || [];
+						
+						// Handle Spring Boot 3.x pagination response format
+						currentPage = data.page?.number ?? data.number ?? 0;
+						totalPages = data.page?.totalPages ?? data.totalPages ?? 1;
+						isPaginated = true;
+						
+						// Update album count from server's total (accurate)
+						const totalFound = data.page?.totalElements ?? data.totalElements ?? albums.length;
+						document.getElementById('albumCount').textContent = totalFound;
+						
+						// For artist/genre counts during search, count from current page
+						// (Not perfectly accurate but reasonable for UX)
+						const uniqueArtists = new Set();
+						const uniqueGenres = new Set();
+						albums.forEach(album => {
+							if (album.artist?.artistId) uniqueArtists.add(album.artist.artistId);
+							if (album.genres) album.genres.forEach(g => uniqueGenres.add(g.genreId));
+						});
+						document.getElementById('artistCount').textContent = uniqueArtists.size + (totalPages > 1 ? '+' : '');
+						document.getElementById('genreCount').textContent = uniqueGenres.size + (totalPages > 1 ? '+' : '');
+						
+					} else {
                         // No filters - use server-side pagination (most efficient)
                         url = `${API_BASE}/albums?page=${page}&size=${pageSize}&sort=title,asc`;
                         console.log('Fetching all albums:', url);
@@ -1115,4 +1119,3 @@
     </script>
 </body>
 </html>
-		

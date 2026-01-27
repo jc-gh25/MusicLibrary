@@ -92,6 +92,26 @@ public class AlbumService {
 		return albumRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException(
 				"Album with id " + id + " not found"));
 	}
+	
+	/**
+	 * Searches albums by title or artist name.
+	 * Case-insensitive substring matching on both fields.
+	 * 
+	 * Examples:
+	 * - "beatles" finds all Beatles albums
+	 * - "abbey" finds "Abbey Road"
+	 * - "eagles" finds Eagles albums (not "Greatest" from "test")
+	 * 
+	 * @param query the search term
+	 * @param pageable pagination parameters
+	 * @return paginated search results
+	 */
+	public Page<Album> searchByTitleOrArtist(String query, Pageable pageable) {
+		if (query == null || query.isBlank()) {
+			return albumRepo.findAll(pageable);
+		}
+		return albumRepo.searchByTitleOrArtist(query.trim(), pageable);
+	}
 
 	/**
 	 * Creates a new album from an Album entity.

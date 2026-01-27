@@ -314,6 +314,39 @@ public class MusicLibraryController {
 		@PathVariable Long id) {
 		return artistSvc.findById(id);
 	}
+	
+	/**
+	 * Searches albums by title or artist name.
+	 * Returns albums (with cover images), not artists.
+	 * 
+	 * @param q search query (searches both album title and artist name)
+	 * @param page page number (default: 0)
+	 * @param size page size (default: 20)
+	 * @return paginated albums matching the search
+	 */
+	@Operation(
+		summary = "Search albums",
+		description = "Searches albums by title OR artist name (case-insensitive). "
+				+ "Example: 'beatles' returns all Beatles albums, 'abbey' returns Abbey Road."
+	)
+	@ApiResponses(value = {
+		@ApiResponse(
+			responseCode = "200",
+			description = "Successfully retrieved search results",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = Page.class))
+		)
+	})
+	@GetMapping("/albums/search")
+	@Tag(name = "Albums", description = "CRUD operations for albums")
+	public Page<Album> searchAlbums(
+		@Parameter(description = "Search query (matches album title or artist name)")
+		@RequestParam String q,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size) {
+		
+		Pageable pageable = PageRequest.of(page, size, Sort.by("title").ascending());
+		return albumSvc.searchByTitleOrArtist(q, pageable);
+	}
 
 	/**
 	 * Updates an existing artist using a DTO.

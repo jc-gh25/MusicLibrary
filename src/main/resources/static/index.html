@@ -430,7 +430,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>🎵 Music Library API</h1>
+            <h1>Music Library API</h1>
             <p class="subtitle">Spring Boot REST API with On-Demand AWS Infrastructure</p>
             
             <div style="margin-bottom: 20px;">
@@ -479,12 +479,29 @@
             <hr style="border: 0; border-top: 2px solid #999; margin: 30px 0;">
 
             <div class="cta-buttons">
-                <a href="#" id="swagger-link" class="btn btn-success disabled" target="_blank" style="pointer-events: none; opacity: 0.5;">📄 Live API Documentation (Swagger)</a>
-                <a href="https://github.com/jc-gh25/MusicLibrary" class="btn btn-secondary" target="_blank">💻 View Source & Full README on GitHub</a>
+                <a href="#" id="swagger-link" class="btn btn-success disabled" target="_blank" style="pointer-events: none; opacity: 0.5;">📄 API Documentation (Swagger)</a>
+                <a href="https://github.com/jc-gh25/MusicLibrary" class="btn btn-secondary" target="_blank">💻 Code & README on GitHub</a>
             </div>
         </header>
 
-        <!-- NEW: Cost Optimization Section - Near Top -->
+        <section class="section">
+            <h2>📋 Project Overview</h2>
+            <p>
+                The <strong>Music Library API</strong> is a comprehensive backend application developed as a bootcamp final project, 
+                then expanded into a <strong>400+ hour deep dive</strong> into AWS cloud infrastructure and cost optimization.
+                This RESTful API provides complete CRUD operations for managing a music catalog including artists, albums, and genres.
+            </p>
+            <p>
+                Built with Spring Boot following best practices for layered architecture. Features a library of 50 artists and 100+ albums, 
+                deployed on AWS with production-grade reliability and professional UX despite the on-demand architecture.
+            </p>
+            <p>
+                <strong>Live API:</strong> <span class="highlight">http://project.jcarl.net/api</span> (when running)<br>
+                <strong>Validation:</strong> <span class="highlight">182 API requests, 600 tests, 100% pass rate</span>
+            </p>
+        </section>
+		
+		<!-- NEW: Cost Optimization Section -->
         <section class="section">
             <h2>💰 98% Cost Reduction Through Architecture Redesign</h2>
             <p>
@@ -505,9 +522,9 @@
                 </div>
             </div>
             
-            <div style="text-align: center;">
+            <!-- <div style="text-align: center;">
                 <span class="savings-badge">98% Monthly Savings</span>
-            </div>
+            </div> -->
 
             <h3>How It Works</h3>
             <div class="features-grid">
@@ -524,23 +541,6 @@
                     <p>Lambda monitors CloudWatch CPU metrics. When idle (CPU < 2% for 30 min), it stops ECS and RDS automatically.</p>
                 </div>
             </div>
-        </section>
-
-        <section class="section">
-            <h2>📋 Project Overview</h2>
-            <p>
-                The <strong>Music Library API</strong> is a comprehensive backend application developed as a bootcamp final project, 
-                then expanded into a <strong>400+ hour deep dive</strong> into AWS cloud infrastructure and cost optimization.
-                This RESTful API provides complete CRUD operations for managing a music catalog including artists, albums, and genres.
-            </p>
-            <p>
-                Built with Spring Boot following best practices for layered architecture. Features a library of 50 artists and 100+ albums, 
-                deployed on AWS with production-grade reliability and professional UX despite the on-demand architecture.
-            </p>
-            <p>
-                <strong>Live API:</strong> <span class="highlight">http://project.jcarl.net/api</span> (when running)<br>
-                <strong>Validation:</strong> <span class="highlight">182 API requests, 600 tests, 100% pass rate</span>
-            </p>
         </section>
 		
 		        <section class="section">
@@ -753,6 +753,10 @@
                 <span class="endpoint-method method-get">GET</span>
                 <code>/api/albums</code> - Get paginated albums
             </div>
+			<div class="api-endpoint">
+				<span class="endpoint-method method-get">GET</span>
+				<code>/api/albums/search?q={query}</code> - Search by title or artist
+			</div>
             <div class="api-endpoint">
                 <span class="endpoint-method method-post">POST</span>
                 <code>/api/albums</code> - Create album
@@ -950,7 +954,7 @@
             <div class="cta-buttons" style="margin-top: 20px;">
                 <a href="#" id="swagger-link-footer" class="btn btn-primary disabled" target="_blank" style="pointer-events: none; opacity: 0.5;">Try the Live API (Swagger UI)</a>
             </div>
-            <p style="margin-top: 30px; font-size: 0.8em; color: #666;">
+            <p style="margin-top: 30px; font-size: 0.8em; color: #ddd;">
                 AWS ECS Fargate • Lambda • RDS MySQL • S3 • CloudFront • API Gateway • EventBridge • CloudWatch • SES
             </p>
         </footer>
@@ -1025,6 +1029,7 @@
                 'configuring-enhanced-monitoring': 'Configuring',
                 'backing-up': 'Backing Up',
                 'modifying': 'Modifying',
+				'rebooting': 'Rebooting',
                 
                 // ECS Application statuses
                 'WAITING_FOR_DATABASE': 'Waiting for Database',
@@ -1131,7 +1136,7 @@
             document.getElementById('launcher-loading').style.display = 'none';
             launcherDiv.innerHTML = `
                 <h3>🎵 Music Library is Running</h3>
-                <p style="color: #10b981; font-weight: bold; font-size: 1.1rem;">✓ Application is online and ready</p>
+                <p style="color: #10b981; font-weight: bold; font-size: 1.1rem;">Application is online and ready</p>
                 <p>The database and application are currently active.</p>
                 
                 <div style="margin-top: 25px;">
