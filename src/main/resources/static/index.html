@@ -534,7 +534,7 @@
                     <p>RDS MySQL + ECS Fargate only run when launched. Auto-shutdown after 30 minutes of inactivity.</p>
                 </div>
                 <div class="feature-card">
-                    <h4>🤖 Smart Auto-Shutdown</h4>
+                    <h4>⏰ Smart Auto-Shutdown</h4>
                     <p>Lambda monitors CloudWatch CPU metrics. When idle (CPU < 2% for 30 min), it stops ECS and RDS automatically.</p>
                 </div>
             </div>
@@ -763,7 +763,7 @@
             </div>
 
             <div class="architecture-layer">
-                <h4>⚡ On-Demand Layer (Pay only when running)</h4>
+                <h4>🔑 On-Demand Layer (Pay only when running)</h4>
                 <p>
                     <strong>RDS MySQL</strong> starts when user clicks "Launch" (~2-3 min startup)<br>
                     <strong>ECS Fargate</strong> deploys container once database is available (~2-3 min)<br>
@@ -773,7 +773,7 @@
             </div>
 
             <div class="architecture-layer">
-                <h4>🤖 Auto-Shutdown System</h4>
+                <h4>🔌 Auto-Shutdown System</h4>
                 <p>
                     <strong>EventBridge</strong> triggers Lambda every 5 minutes<br>
                     <strong>CloudWatch Metrics</strong> analyzed for ECS CPU utilization (30-min average)<br>
@@ -806,7 +806,7 @@
                 What started as a bootcamp final project became a comprehensive study in AWS infrastructure and cost optimization.
             </p>
 
-            <h3>📈 Project Metrics</h3>
+            <h3>Project Metrics</h3>
             <div class="features-grid">
                 <div class="feature-card">
                     <h4>🔨 115+ Docker Builds</h4>
@@ -822,7 +822,7 @@
                 </div>
             </div>
 
-            <h3>🔥 Challenges Overcome</h3>
+            <h3>Challenges Overcome</h3>
             <div class="features-grid">
                 <div class="feature-card">
                     <h4>🐚 Shell Compatibility (Alpine Linux)</h4>
@@ -857,7 +857,7 @@
                     <p>Redesigned entire infrastructure: eliminated ALB ($16/mo), implemented Lambda orchestration, built auto-shutdown system with CloudWatch metrics.</p>
                 </div>
                 <div class="feature-card">
-                    <h4>🤖 Auto-Shutdown Calibration</h4>
+                    <h4>⚙️ Auto-Shutdown Calibration</h4>
                     <p>Initial 35% CPU threshold was too aggressive — shut down active app. Production testing revealed Spring Boot idles at 10-12%. Calibrated to 2% for true idle detection.</p>
                 </div>
                 <div class="feature-card">
@@ -878,12 +878,12 @@
             <div class="architecture-layer">
                 
                 <ul style="margin-left: 20px; color: var(--text-dark);">
-                    <li>📝 <strong>Simplicity wins:</strong> Third-party APIs can be more reliable than complex AWS service integrations</li>
-                    <li>📝 <strong>Shell compatibility matters:</strong> Alpine Linux (ash) ≠ Ubuntu/Debian (bash)</li>
-                    <li>📝 <strong>IAM roles are distinct:</strong> Task execution role (infrastructure) vs task role (application permissions)</li>
-                    <li>📝 <strong>Idle detection requires calibration:</strong> Production testing essential for threshold tuning</li>
-                    <li>📝 <strong>Cloud dev environments:</strong> AWS CloudShell overcomes local system limitations</li>
-                    <li>📝 <strong>Cost optimization is architecture:</strong> 98% savings came from design, not tweaking</li>
+                    <li><strong>Simplicity wins:</strong> Third-party APIs can be more reliable than complex AWS service integrations</li>
+                    <li><strong>Shell compatibility matters:</strong> Alpine Linux (ash) ≠ Ubuntu/Debian (bash)</li>
+                    <li><strong>IAM roles are distinct:</strong> Task execution role (infrastructure) vs task role (application permissions)</li>
+                    <li><strong>Idle detection requires calibration:</strong> Production testing essential for threshold tuning</li>
+                    <li><strong>Cloud dev environments:</strong> AWS CloudShell overcomes local system limitations</li>
+                    <li><strong>Cost optimization is architecture:</strong> 98% savings came from design, not tweaking</li>
                 </ul>
             </div>
         </section>
