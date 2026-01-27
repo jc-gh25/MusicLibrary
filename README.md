@@ -81,8 +81,8 @@ The Music Library API is a portfolio-quality Spring Boot application that demons
 
 ### Key Capabilities
 
-✅ Full CRUD operations for all entities
-✅ Search albums by title or artist name
+✅ Full CRUD operations for all entities  
+✅ Search albums by title or artist name  
 ✅ Pagination and sorting on all list endpoints  
 ✅ Input validation with detailed error messages  
 ✅ Automatic timestamp tracking (createdAt, updatedAt)  
