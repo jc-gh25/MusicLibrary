@@ -169,12 +169,12 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
-            margin: 20px 0;
+            margin: 5px 0;
         }
 
         .cost-card {
-            padding: 25px;
-            border-radius: 10px;
+            padding: 1px;
+            border-radius: 1px;
             text-align: center;
         }
 
@@ -479,25 +479,22 @@
             <hr style="border: 0; border-top: 2px solid #999; margin: 30px 0;">
 
             <div class="cta-buttons">
-                <a href="#" id="swagger-link" class="btn btn-success disabled" target="_blank" style="pointer-events: none; opacity: 0.5;">📄 API Documentation (Swagger)</a>
-                <a href="https://github.com/jc-gh25/MusicLibrary" class="btn btn-secondary" target="_blank">💻 Code & README on GitHub</a>
+                <a href="#" id="swagger-link" class="btn btn-success disabled" target="_blank" style="pointer-events: none; opacity: 0.5;">📄 Swagger (when running)</a>
+                <a href="https://github.com/jc-gh25/MusicLibrary" class="btn btn-secondary" target="_blank">💻 GitHub README & code</a>
             </div>
         </header>
 
         <section class="section">
             <h2>📋 Project Overview</h2>
             <p>
-                The <strong>Music Library API</strong> is a comprehensive backend application developed as a bootcamp final project, 
-                then expanded into a <strong>400+ hour deep dive</strong> into AWS cloud infrastructure and cost optimization.
-                This RESTful API provides complete CRUD operations for managing a music catalog including artists, albums, and genres.
+                The <strong>Music Library API</strong> is a comprehensive backend application developed as a bootcamp final project and expanded into a <strong>400+ hour deep dive</strong> into deployment options, AWS cloud infrastructure, and cost optimization. This RESTful API provides complete CRUD operations for managing a music catalog including artists, albums, and genres.
             </p>
             <p>
-                Built with Spring Boot following best practices for layered architecture. Features a library of 50 artists and 100+ albums, 
-                deployed on AWS with production-grade reliability and professional UX despite the on-demand architecture.
+                Built with Spring Boot following best practices for layered architecture. Features a library of 50 artists and 100+ albums. Deployed on AWS with production-grade reliability and professional UX.
             </p>
             <p>
-                <strong>Live API:</strong> <span class="highlight">http://project.jcarl.net/api</span> (when running)<br>
-                <strong>Validation:</strong> <span class="highlight">182 API requests, 600 tests, 100% pass rate</span>
+                <strong>Live API address after propagation:</strong> <span class="highlight">http://project.jcarl.net/api</span><br>
+                <strong>Validation Testing:</strong> <span class="highlight">182 API requests, 600 tests, 100% pass rate</span>
             </p>
         </section>
 		
@@ -530,7 +527,7 @@
             <div class="features-grid">
                 <div class="feature-card">
                     <h4>🌐 Always-On (Pennies/month)</h4>
-                    <p>S3 static site + CloudFront CDN + Lambda functions + API Gateway. Always available for visitors to launch the app.</p>
+                    <p>S3 static site + CloudFront CDN + Lambda functions + API Gateway. Always available for a user to launch the app.</p>
                 </div>
                 <div class="feature-card">
                     <h4>⚡ On-Demand (Pay per use)</h4>
@@ -544,7 +541,7 @@
         </section>
 		
 		        <section class="section">
-            <h2>🌟 Key Features</h2>
+            <h2>🌟 Application Features</h2>
             <div class="features-grid">
                 <div class="feature-card">
                     <h4>🛠️ Full REST API</h4>
@@ -571,7 +568,7 @@
                     <p>Unit tests with Mockito, integration tests with Spring Boot Test, 600 automated tests passing.</p>
                 </div>
                 <div class="feature-card">
-                    <h4>🚀 On-Demand Infrastructure</h4>
+                    <h4>🏁 On-Demand Infrastructure</h4>
                     <p>Lambda-orchestrated startup, auto-shutdown after inactivity, 98% cost reduction vs always-on.</p>
                 </div>
                 <div class="feature-card">
@@ -587,6 +584,7 @@
 
         <section class="section">
             <h2>🛠️ Technology Stack</h2>
+			<p>For more information please see the detailed <a href="https://github.com/jc-gh25/MusicLibrary" target="_blank">GitHub README</a>.</p>
             <div class="tech-stack">
                 <div class="tech-card">
                     <h4>Backend Framework</h4>
@@ -664,63 +662,8 @@
         </section>
 
         <section class="section">
-            <h2>🏗️ On-Demand Architecture</h2>
-            <p>
-                The application uses a <strong>serverless-first architecture</strong> that scales to zero when not in use. 
-                This is the same pattern used by companies to optimize cloud costs for low-traffic applications.
-            </p>
-
-            <h3>Architecture Components</h3>
-            <div class="architecture-layer">
-                <h4>🌐 Always-On Layer (Pennies/month)</h4>
-                <p>
-                    <strong>S3 Static Site</strong> hosts this launcher page at <code>projectlauncher.jcarl.net</code><br>
-                    <strong>CloudFront + ACM</strong> provides HTTPS and CDN caching<br>
-                    <strong>API Gateway + Lambda</strong> handles status checks and startup requests<br>
-                    <strong>EventBridge</strong> triggers auto-shutdown Lambda every 5 minutes
-                </p>
-            </div>
-
-            <div class="architecture-layer">
-                <h4>⚡ On-Demand Layer (Pay only when running)</h4>
-                <p>
-                    <strong>RDS MySQL</strong> starts when user clicks "Launch" (~2-3 min startup)<br>
-                    <strong>ECS Fargate</strong> deploys container once database is available (~2-3 min)<br>
-                    <strong>Namesilo DNS</strong> automatically updated with new public IP<br>
-                    <strong>Spring Boot App</strong> serves API at <code>project.jcarl.net</code>
-                </p>
-            </div>
-
-            <div class="architecture-layer">
-                <h4>🤖 Auto-Shutdown System</h4>
-                <p>
-                    <strong>EventBridge</strong> triggers Lambda every 5 minutes<br>
-                    <strong>CloudWatch Metrics</strong> analyzed for ECS CPU utilization (30-min average)<br>
-                    <strong>Threshold: CPU < 2%</strong> indicates true idle (no requests)<br>
-                    <strong>Shutdown Action</strong> stops ECS service and RDS instance automatically
-                </p>
-            </div>
-
-            <h3>Lambda Functions</h3>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <h4>📊 Status Lambda</h4>
-                    <p>Queries ECS and RDS state. Returns database status, app status, and public IP. Powers the real-time progress UI.</p>
-                </div>
-                <div class="feature-card">
-                    <h4>🚀 Startup Lambda</h4>
-                    <p>Orchestrates startup sequence: starts RDS, waits for availability, then starts ECS service. Handles email notifications via SES.</p>
-                </div>
-                <div class="feature-card">
-                    <h4>🛑 Auto-Shutdown Lambda</h4>
-                    <p>Monitors CloudWatch CPU metrics. Stops ECS and RDS when idle for 30 minutes. Prevents cost accumulation.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section">
             <h2>📡 API Endpoints</h2>
-            <p>All endpoints prefixed with <code>/api</code>. Full documentation available in <a href="https://github.com/jc-gh25/MusicLibrary" target="_blank">GitHub README</a>.</p>
+            <p>All endpoints prefixed with <code>/api</code>. Full documentation available in the <a href="https://github.com/jc-gh25/MusicLibrary" target="_blank">GitHub README</a>.</p>
 
             <h3>🎤 Artists</h3>
             <div class="api-endpoint">
@@ -801,7 +744,62 @@
             </div>
         </section>
 		
-		        <section class="section">
+		<section class="section">
+            <h2>🏗️ On-Demand Architecture</h2>
+            <p>
+                The application uses a <strong>serverless-first architecture</strong> that scales to zero when not in use. 
+                This is the same pattern used by companies to optimize cloud costs for low-traffic applications.
+            </p>
+
+            <h3>Architecture Components</h3>
+            <div class="architecture-layer">
+                <h4>🌐 Always-On Layer (Pennies/month)</h4>
+                <p>
+                    <strong>S3 Static Site</strong> hosts this launcher page at <code>projectlauncher.jcarl.net</code><br>
+                    <strong>CloudFront + ACM</strong> provides HTTPS and CDN caching<br>
+                    <strong>API Gateway + Lambda</strong> handles status checks and startup requests<br>
+                    <strong>EventBridge</strong> triggers auto-shutdown Lambda every 5 minutes
+                </p>
+            </div>
+
+            <div class="architecture-layer">
+                <h4>⚡ On-Demand Layer (Pay only when running)</h4>
+                <p>
+                    <strong>RDS MySQL</strong> starts when user clicks "Launch" (~2-3 min startup)<br>
+                    <strong>ECS Fargate</strong> deploys container once database is available (~2-3 min)<br>
+                    <strong>Namesilo DNS</strong> automatically updated with new public IP<br>
+                    <strong>Spring Boot App</strong> serves API at <code>project.jcarl.net</code>
+                </p>
+            </div>
+
+            <div class="architecture-layer">
+                <h4>🤖 Auto-Shutdown System</h4>
+                <p>
+                    <strong>EventBridge</strong> triggers Lambda every 5 minutes<br>
+                    <strong>CloudWatch Metrics</strong> analyzed for ECS CPU utilization (30-min average)<br>
+                    <strong>Threshold: CPU < 2%</strong> indicates true idle (no requests)<br>
+                    <strong>Shutdown Action</strong> stops ECS service and RDS instance automatically
+                </p>
+            </div>
+
+            <h3>Lambda Functions</h3>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>📊 Status Lambda</h4>
+                    <p>Queries ECS and RDS state. Returns database status, app status, and public IP. Powers the real-time progress UI.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>⚡ Startup Lambda</h4>
+                    <p>Orchestrates startup sequence: starts RDS, waits for availability, then starts ECS service. Handles email notifications via SES.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🛑 Auto-Shutdown Lambda</h4>
+                    <p>Monitors CloudWatch CPU metrics. Stops ECS and RDS when idle for 30 minutes. Prevents cost accumulation.</p>
+                </div>
+            </div>
+        </section>
+		
+		<section class="section">
             <h2>🛤️ Deployment Journey</h2>
             <p>
                 This project evolved through multiple iterations, technology pivots, and 400+ hours of hands-on learning. 
@@ -821,10 +819,6 @@
                 <div class="feature-card">
                     <h4>⏱️ 400+ Development Hours</h4>
                     <p>From bootcamp project to production-ready, cost-optimized cloud infrastructure.</p>
-                </div>
-                <div class="feature-card">
-                    <h4>💰 98% Cost Reduction</h4>
-                    <p>Redesigned from $55/month always-on to ~$1/month on-demand architecture.</p>
                 </div>
             </div>
 
@@ -880,9 +874,9 @@
                 </div>
             </div>
 
-            <h3>💡 Key Learnings</h3>
+            <h3>💡 Technical Insights</h3>
             <div class="architecture-layer">
-                <h4>Technical Insights</h4>
+                
                 <ul style="margin-left: 20px; color: var(--text-dark);">
                     <li>📝 <strong>Simplicity wins:</strong> Third-party APIs can be more reliable than complex AWS service integrations</li>
                     <li>📝 <strong>Shell compatibility matters:</strong> Alpine Linux (ash) ≠ Ubuntu/Debian (bash)</li>
@@ -913,7 +907,7 @@
                 </div>
                 <div class="feature-card">
                     <h4>Cost Optimization</h4>
-                    <p>On-demand architecture, auto-shutdown systems, ALB elimination, resource right-sizing. 98% cost reduction.</p>
+                    <p>On-demand architecture, auto-shutdown systems, ALB elimination, resource right-sizing.</p>
                 </div>
                 <div class="feature-card">
                     <h4>DevOps Practices</h4>
@@ -927,7 +921,7 @@
         </section>
 
         <section class="section">
-            <h2>🚀 Getting Started</h2>
+            <h2>▶️ Getting Started</h2>
             
             <h3>Try the Live Demo</h3>
             <p>Click "Launch Music Library" at the top of this page. The app takes ~5-7 minutes to start, then auto-shuts down after 30 minutes of inactivity.</p>
