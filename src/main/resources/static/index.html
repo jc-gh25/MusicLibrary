@@ -61,6 +61,7 @@
         .subtitle {
             font-size: 1.5rem;
             margin-bottom: 30px;
+			color: #555;
         }
 
         .badge {
@@ -69,7 +70,7 @@
             background: var(--accent-color);
             color: white;
             border-radius: 20px;
-            font-size: 0.80rem;
+            font-size: 0.70rem;
             margin: 5px;
             font-weight: 500;
         }
@@ -91,7 +92,7 @@
         }
 
         h2 {
-            color: var(--primary-color);
+            color: fff;
             font-size: 1.8rem;
             margin-bottom: 20px;
             padding-bottom: 10px;
@@ -433,27 +434,18 @@
             <h1>Music Library API</h1>
             <p class="subtitle">Spring Boot REST API with On-Demand AWS Infrastructure</p>
             
-            <div style="margin-bottom: 20px;">
-                <span class="badge badge-spring">Spring Boot 3.5.7</span>
-                <span class="badge badge-java">Java 17</span>
-                <span class="badge badge-mysql">MySQL 8.4</span>
-                <span class="badge badge-aws">AWS ECS</span>
-                <span class="badge badge-lambda">Lambda</span>
-                <span class="badge badge-docker">Docker</span>
-                <span class="badge badge-rest">RESTful API</span>
-            </div>
 
             <!-- Application Launcher Section -->
             <div id="app-launcher" class="app-launcher-container">
                 <div id="launcher-loading" style="padding: 20px;">
                     <h3>🎵 Music Library</h3>
-                    <p style="color: #666;">Checking application status...</p>
+                    <p style="color: #555;">Checking application status...</p>
                 </div>
                 
                 <div id="launcher-idle" class="launcher-idle" style="display: none;">
-                    <h3>Launch Application</h3>
-                    <p>Runs on-demand to minimize costs. Takes ~5-7 minutes to start database and application.</p>
-                    <p>Enter your email to be notified when ready (optional).</p>
+                    <h3>⚡ Launch Application</h3>
+                    <p>Takes ~5 minutes to start database and application.</p>
+                    <p>Optional: Enter email address to be notified when ready.</p>
                     
                     <input type="email" id="user-email" class="launcher-email-input" placeholder="Your email (optional)" />
                     
@@ -462,9 +454,20 @@
                     </button>
                     
                     <p class="launcher-note" style="margin-top: 15px;">
-                        <strong>What happens:</strong> Lambda starts RDS → ECS Fargate deploys → DNS updates automatically
+                        <strong>What happens:</strong> Lambda starts RDS, ECS Fargate deploys, DNS updates automatically, Access by IP until DNS propagation
                     </p>
+					<p></p>
                 </div>
+				
+				<div style="margin-bottom: 20px;">
+					<span class="badge badge-java">Java 17</span>
+					<span class="badge badge-spring">Spring Boot 3.5.7</span>
+					<span class="badge badge-mysql">MySQL 8.4</span>
+					<span class="badge badge-aws">AWS ECS</span>
+					<span class="badge badge-docker">Docker</span>
+					<span class="badge badge-lambda">Lambda</span>
+					<span class="badge badge-rest">RESTful API</span>
+				</div>
 
                 <div id="launcher-progress" class="launcher-progress" style="display: none;">
                     <h3>🔄 Starting Music Library...</h3>
@@ -479,8 +482,8 @@
             <hr style="border: 0; border-top: 2px solid #999; margin: 30px 0;">
 
             <div class="cta-buttons">
-                <a href="#" id="swagger-link" class="btn btn-success disabled" target="_blank" style="pointer-events: none; opacity: 0.5;">📄 Swagger (when running)</a>
-                <a href="https://github.com/jc-gh25/MusicLibrary" class="btn btn-secondary" target="_blank">💻 GitHub README & code</a>
+                <a href="#" id="swagger-link" class="btn btn-success disabled" target="_blank" style="pointer-events: none; opacity: 0.5;">📄 Swagger (When running)</a>
+                <a href="https://github.com/jc-gh25/MusicLibrary" class="btn btn-secondary" target="_blank">💻 GitHub README & Code</a>
             </div>
         </header>
 
