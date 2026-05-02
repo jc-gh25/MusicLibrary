@@ -2,40 +2,12 @@
 
 A comprehensive RESTful API for managing a music library built with **Spring Boot 3.5.7** and **MySQL**. This Java application provides full CRUD operations for artists, albums, and genres, with advanced features including pagination, search functionality, album cover images, comprehensive testing, and a Postman sample data import with 50 artists and over 100 albums.
 
-## Accessing the Live Demo
-
-This application runs **on-demand** to minimize AWS costs (~98% savings vs always-on).
-
-**For Employers/Reviewers:**
-
-1. **Visit the launcher:** [https://projectlauncher.jcarl.net](https://projectlauncher.jcarl.net)
-2. **Click "Launch Music Library"**
-3. The database and application deploy in approximately **5-7 minutes**
-4. Use the **direct IP link provided** (DNS for project.jcarl.net may take hours to propagate)
-
 <p align="center">
   <img src="src/main/resources/static/docs/screenshot.jpg" alt="Application Webpage" width="700">
   <br>
   <em>Album browser interface showing search and filtering</em>
 </p>
 
-**Why On-Demand?**
-
-| Architecture | Monthly Cost |
-|--------------|--------------|
-| Always-On (previous) | ~$55/month |
-| On-Demand (current) | ~$1/month idle |
-
-This architecture demonstrates real-world **cost optimization** and **serverless thinking** — the same strategies used by companies to reduce cloud spend by 90%+.
-
-**What Happens When You Click Launch:**
-1. Lambda function triggers RDS database startup (~2-3 min)
-2. Once DB is available, Lambda starts ECS Fargate task (~2-3 min)
-3. Container updates DNS record via Namesilo API
-4. Status page shows real-time progress and direct IP link
-5. After 30 minutes of inactivity, auto-shutdown Lambda stops everything
-
----
 
 ## 📋 Table of Contents
 
